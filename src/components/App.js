@@ -11,7 +11,7 @@ import {
   View,
   StatusBar
 } from 'react-native';
-import DrawerMain from './DrawerMain';
+import ProfileDrawer from './ProfileDrawer';
 
 
 export default class App extends Component {
@@ -21,7 +21,7 @@ export default class App extends Component {
   render() {
     return (
       // <View style={styles.container}>
-        <DrawerMain/>
+        <ProfileDrawer/>
       //  </View>
     );
   }
