@@ -31,7 +31,7 @@ export default class Albums extends Component {
   _handleButtonPress = () => {
     CameraRoll.getPhotos({
         first: 20,
-        assetType: 'All',
+        assetType: 'Photos',
       })
       .then(r => {
         this.setState({ photos: r.edges });

@@ -11,6 +11,16 @@ import {
   View,
   Image
 } from 'react-native';
+import {StackNavigator} from 'react-navigation';
+import Popular from './Popular';
+
+const StackConfigure=StackNavigator({
+  Popular:{
+    screen:Popular,
+  }
+},{
+  headerMode:'none'
+})
 
 
 export default class Home extends Component {
@@ -26,9 +36,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>home</Text>
-      </View>
+     <StackConfigure/>
     );
   }
 }

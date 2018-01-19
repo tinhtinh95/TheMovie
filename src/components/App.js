@@ -12,6 +12,8 @@ import {
   StatusBar
 } from 'react-native';
 import ProfileDrawer from './ProfileDrawer';
+import {Provider} from 'react-redux';
+import store from '../reducer/configureStore';
 
 
 export default class App extends Component {
@@ -20,12 +22,13 @@ export default class App extends Component {
   }
   render() {
     return (
-      // <View style={styles.container}>
-        <ProfileDrawer/>
-      //  </View>
+        <Provider store={store}>
+          <ProfileDrawer/>
+        </Provider>
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

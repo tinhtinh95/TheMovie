@@ -34,21 +34,21 @@ export default class Profile extends Component {
   render() {
     return (
       <View style={{ marginTop: 20, padding: 10 }}>
-      <View style={{justifyContent:'space-between', flexDirection:'row'}}>
-      <TouchableOpacity 
-        // onPress={()=>this.props.navigation.navigate('Albums')}
-        style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{fontSize: 20}}>CANCEL</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-        onPress={()=>{props.navigation.navigate('EditProfile')}}
-        style={{ backgroundColor: '#4374fd', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{fontSize: 20}}>DONE</Text>
-        </TouchableOpacity>
-      </View>
-        <TouchableOpacity 
-        onPress={()=>this.props.navigation.navigate('Albums')}
-        style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+          <TouchableOpacity
+            // onPress={()=>this.props.navigation.navigate('Albums')}
+            style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20 }}>CANCEL</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { props.navigation.navigate('EditProfile') }}
+            style={{ backgroundColor: '#4374fd', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20 }}>DONE</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('Albums')}
+          style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Image
             style={{ height: 150, width: 150 }}
             source={require('../../images/smile.png')}
@@ -74,17 +74,16 @@ export default class Profile extends Component {
             style={{ height: 26, width: 26, marginRight: 20 }}
             source={require('../../images/male.png')}
           />
-          <View style={{justifyContent:'space-between', flexDirection:'row'}}>
-          <RadioButton currentValue={this.state.value} value={0} onPress={this.handleOnPress.bind(this)}>
-            <Text>Male</Text>
-          </RadioButton>
-          <RadioButton 
-          currentValue={this.state.value} value={1} onPress={this.handleOnPress.bind(this)}>
-            <Text>Female</Text>
-          </RadioButton>
+          <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+            <RadioButton currentValue={this.state.value} value={0} onPress={this.handleOnPress.bind(this)}>
+              <Text>Male</Text>
+            </RadioButton>
+            <RadioButton
+              currentValue={this.state.value} value={1} onPress={this.handleOnPress.bind(this)}>
+              <Text>Female</Text>
+            </RadioButton>
+          </View>
         </View>
-        </View>
-        
       </View>
     );
   }
