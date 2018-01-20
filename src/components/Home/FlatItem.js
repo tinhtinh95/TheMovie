@@ -15,6 +15,7 @@ import {
 
 
 const { height, width } = Dimensions.get('window');
+const uri="http://image.tmdb.org/t/p/w185";
 
 export default class FlatItem extends Component {
   render() {
@@ -22,7 +23,7 @@ export default class FlatItem extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.above}>
-          <Text style={styles.title}>{item.title}</Text>
+          <View style={{width:width*0.8}}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <Image
             style={styles.icon}
             source={require('../../images/nonStar.png')}
@@ -30,10 +31,10 @@ export default class FlatItem extends Component {
         </View>
         <View style={styles.bellow}>
           <Image
-            style={{ flex: 3, height:80, width:30}}
-            source={{uri:'http://image.tmdb.org/t/p/w185///9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg'}}
+            style={{ flex: 2,marginRight:10, height:height/4, width:width/3}}
+            source={{uri:`${uri}${item.poster_path}`}}
           />
-          <View style={{ flex: 4 }}>
+          <View style={{ flex: 3 }}>
             <View style={styles.mainRight}>
               <Text style={styles.textRight}>Release date:   </Text>
               <Text style={styles.textRed}>{item.release_date}</Text>
@@ -69,7 +70,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+
   },
   icon: {
     width: 26,

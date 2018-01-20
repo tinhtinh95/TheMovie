@@ -8,11 +8,11 @@ function getPopular(data) {
 
     }
 }
-export function fetchData() {
+export function fetchData(name,page) {
     return (dispatch) => {
-        API.getList().then((data) => {
+        API.getList(name,page).then((data) => {
             // if (name === 'type') {
-                console.log('state fetchdatap:', data)
+                // alert(page)
                 dispatch(getPopular(data));
             // } else if (name === 'product') {
             //     dispatch(getDataProduct(data));

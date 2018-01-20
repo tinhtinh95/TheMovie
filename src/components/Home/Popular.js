@@ -24,6 +24,8 @@ class Popular extends Component {
     super(props);
     this.state = {
       data: [],
+      isRefresh: true,
+      page:1
     }
   }
   static navigationOptions = {
@@ -32,40 +34,36 @@ class Popular extends Component {
     }
   };
   componentDidMount() {
-    // console.log(this.props.listPopular);
-    this.props.fetchData();
-    console.log(this.props.listPopular);
-    // return (
-    //   fetch('https://api.themoviedb.org/3/movie/popular?api_key=0267c13d8c7d1dcddb40001ba6372235')
-    //     .then((response) => response.json())
-    //     .then((responseJson) => {
-    //       this.setState({ data: responseJson.results })
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     })
-    // )
+    this.props.fetchData("popular",this.state.page);
+    // this.setState({data:this.props.listPopular})
+    alert(JSON.stringify(this.props.listPopular))
+    // alert(JSON.stringify(this.state.data))
+  }
+
+  _onRefresh=(page)=>{
+    this.setState({page:page+1});
+    this.props.fetchData("popular",this.state.page);
   }
 
   render() {
-    console.log(this.props.listPopular);
+    // alert(JSON.stringify(this.props.listPopular))
     return (
       <View style={styles.container}>
         <FlatList
+         refreshing={false}
+         onRefresh={()=>this._onRefresh(this.state.page)}
+         initialNumToRender={10}
           data={this.props.listPopular}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => <FlatItem item={item} />
           }
-
-        />
-<Button onPress={this.props.fetchData()} title="nhap"></Button>
+        ></FlatList>
       </View>
     );
   }
 }
 
 function mapStateToProps(state) {
-  console.log('state',state);
    return {
      listPopular: state,
      }

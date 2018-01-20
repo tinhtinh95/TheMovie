@@ -37,7 +37,7 @@ const DrawerConfigure = DrawerNavigator({
 },
   {
     // drawerBackgroundColor: '#34B080',
-    drawerWidth:width*1,
+    drawerWidth:width*0.9,
     useNativeAnimations: true,
     contentComponent: (props) => (
       <ScrollView style={{ marginTop: 40, padding: 10 }}>
