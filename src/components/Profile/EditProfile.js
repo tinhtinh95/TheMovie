@@ -15,8 +15,22 @@ import {
   FlatList
 } from 'react-native';
 import RadioButton from 'radio-button-react-native';
-//  yarn add react-navigation
-// yarn add radio-button-react-native
+
+// var ImagePicker = require('react-native-image-picker');
+
+// var options = {
+//   tite: 'Select Avatar',
+//   customButtons: [
+//     {
+//       name: 'fb', title: 'Choose Photo from Facebook',
+//     },
+//   ],
+//   storageOptions: {
+//     skipBackup: true,
+//     path: 'images'
+//   }
+// }
+
 
 
 export default class Profile extends Component {
@@ -30,7 +44,23 @@ export default class Profile extends Component {
   handleOnPress(value) {
     this.setState({ value: value })
   }
-
+  // show(){
+  //   ImagePicker.showImagePicker(options, (res) => {
+  //     console.log('Res=', res);
+  //     if (res.didCancel) {
+  //       console.log('User canceled image picker');
+  //     } else if (res.error) {
+  //       console.log('ImagePicker Err ', res.error);
+  //     } else if (res.customButton) {
+  //       console.log('User tapped custom button: ', res.customButton);
+  //     } else {
+  //       let source = { uri: res.uri };
+  //       this.setState({
+  //         avartarSource: source
+  //       });
+  //     }
+  //   });
+  // }
   render() {
     return (
       <View style={{ marginTop: 20, padding: 10 }}>
@@ -47,7 +77,8 @@ export default class Profile extends Component {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Albums')}
+          // onPress={() => this.props.navigation.navigate('Albums')}
+          // onPress={this.show.bind(this)}
           style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Image
             style={{ height: 150, width: 150 }}
