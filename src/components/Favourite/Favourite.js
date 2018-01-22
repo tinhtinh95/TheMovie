@@ -9,11 +9,46 @@ import {
   StyleSheet,
   Text,
   Image,
-  View
+  View,
+  Button,
+  FlatList
 } from 'react-native';
+import FavouriteItem from './FavouriteItem';
+import { AsyncStorage } from 'react-native';
+import { connect } from 'react-redux';
 
 
-export default class Favourite extends Component {
+class Favourite extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      listFavourite: []
+    }
+  }
+
+  getFavourite = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@MyListFavourite');
+      alert("getttt");
+      if (value !== null) {
+        alert(JSON.stringify(value));
+        console.log(JSON.parse(value));
+        this.setState({ listFavourite: JSON.parse(value) });
+
+        // return JSON.parse(value);
+        // console.log(value)
+      } else {
+        console.log('dont have data');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+  // componentDidMount(){
+  //   this.getFavourite;
+  // }
+
   static navigationOptions = {
     tabBarLabel: 'Favourites',
     tabBarIcon: ({ tintColor }) => (
@@ -27,11 +62,28 @@ export default class Favourite extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>favourite</Text>
+        <Button title="click"
+          onPress={() => this.getFavourite()}
+        />
+        <FlatList
+          //  refreshing={false}
+          //  onRefresh={()=>this._onRefresh(this.state.page)}
+          data={this.props.listFavourite}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item }) => <FavouriteItem item={item} />
+          }
+        ></FlatList>
       </View>
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    listFavourite: state.listFavourite,
+  }
+}
+
+export default connect(mapStateToProps)(Favourite);
 
 const styles = StyleSheet.create({
   container: {

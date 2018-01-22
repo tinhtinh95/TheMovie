@@ -15,13 +15,12 @@ import {
   Button
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
-import {connect} from 'react-redux';
 
 
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
 
-class FlatItem extends Component {
+export default class DetailMovie extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,17 +28,17 @@ class FlatItem extends Component {
       favourite: 0,
     }
   }
+  static navigationOptions={
+    title:'DetailMovie',
+  }
 
   setFavourite = async (item) => {
     console.log('truoc')
     // let listNew=[];
     // listNew = this.state.listFavourite.concat(item );
     // console.log(listNew)
-    // this.setState({ listFavourite: this.state.listFavourite.concat(item), favourite: 1 });
-    // console.log(this.state.listFavourite);
-    var listFavourite=[];
-    listFavourite = this.props.listFavourite.concat(item);
-    // console.log(this.props.listFavourite);
+    this.setState({ listFavourite: this.state.listFavourite.concat(item), favourite: 1 });
+    console.log(this.state.listFavourite);
     try {
       await AsyncStorage.setItem('@MyListFavourite',JSON.stringify(listFavourite));
       console.log('sau');
@@ -52,11 +51,8 @@ class FlatItem extends Component {
 
   render() {
     const { item } = this.props;
-    // console.log(this.props.listFavourite);
     return (
-      <TouchableOpacity 
-      onPress={()=>this.props.navigation.navigate('DetailMovie1')}
-      style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <TouchableOpacity
@@ -93,16 +89,10 @@ class FlatItem extends Component {
           </View>
 
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }
-function mapStateToProps(state){
-  return{
-    listFavourite: state.listFavourite,
-  }
-}
-export default connect(mapStateToProps)(FlatItem);
 
 const styles = StyleSheet.create({
   container: {

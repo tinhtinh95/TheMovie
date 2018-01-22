@@ -28,15 +28,15 @@ class Popular extends Component {
       page:1
     }
   }
-  static navigationOptions = {
-    header: {
-      title: 'Popular'
-    }
-  };
+  // static navigationOptions = {
+  //   header: {
+  //     title: 'Popular'
+  //   }
+  // };
   componentDidMount() {
     this.props.fetchData("popular",this.state.page);
     // this.setState({data:this.props.listPopular})
-    alert(JSON.stringify(this.props.listPopular))
+    // alert(JSON.stringify(this.props.listPopular))
     // alert(JSON.stringify(this.state.data))
   }
 
@@ -46,16 +46,18 @@ class Popular extends Component {
   }
 
   render() {
-    // alert(JSON.stringify(this.props.listPopular))
     return (
       <View style={styles.container}>
+      <Button title="click"
+      onPress={()=>this.props.navigation.navigate('DetailMovie1')}
+      />
         <FlatList
          refreshing={false}
          onRefresh={()=>this._onRefresh(this.state.page)}
          initialNumToRender={10}
           data={this.props.listPopular}
           keyExtractor={(item, index) => index}
-          renderItem={({ item }) => <FlatItem item={item} />
+          renderItem={({ item }) => <FlatItem navigation={this.props.navigation} item={item} />
           }
         ></FlatList>
       </View>
@@ -65,7 +67,7 @@ class Popular extends Component {
 
 function mapStateToProps(state) {
    return {
-     listPopular: state,
+     listPopular: state.movies,
      }
 }
 

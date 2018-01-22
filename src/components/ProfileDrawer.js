@@ -36,7 +36,7 @@ const DrawerConfigure = DrawerNavigator({
   }
 },
   {
-    // drawerBackgroundColor: '#34B080',
+    drawerBackgroundColor: '#b7ffef',
     drawerWidth:width*0.9,
     useNativeAnimations: true,
     contentComponent: (props) => (
@@ -91,7 +91,7 @@ const DrawerConfigure = DrawerNavigator({
         <Text style={{fontSize: 15}}>CopyRight@Enclave 2017</Text>
         
 
-        {/* <DrawerItems
+        <DrawerItems
             {...props}
             getLabel={(scene) => (
               <View style={{
@@ -108,7 +108,7 @@ const DrawerConfigure = DrawerNavigator({
                 <Text style={styles.buttonText}>{props.getLabel(scene)}</Text>
               </View>
             )}
-          /> */}
+          />
       </ScrollView>
     )
   })

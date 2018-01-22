@@ -7,17 +7,20 @@ import { combineReducers } from 'redux';
 const defaultState = {
     movies: [],
     favourite: true,
+    listFavourite:[]
 }
 
-const reducer = (state = [], action) => {
+const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case types.GET_POPULAR:
-        console.log(state.movies);
-            state = action.payload;
-            console.log('state reducer: ', state.movies)
-            return state;
+            return{
+                ...state, 
+                movies:action.payload
+            }
+            // state.movies = action.payload;
+            // return state;
         default:
-            return state;
+            { return state; }
     }
 }
 

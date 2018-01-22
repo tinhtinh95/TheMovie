@@ -13,13 +13,17 @@ import {
 } from 'react-native';
 import {StackNavigator} from 'react-navigation';
 import Popular from './Popular';
+import DetailMovie1 from './DetailMovie1';
 
 const StackConfigure=StackNavigator({
   Popular:{
     screen:Popular,
+  },
+  DetailMovie1:{
+    screen: DetailMovie1
   }
 },{
-  headerMode:'none'
+  // headerMode:'none'
 })
 
 

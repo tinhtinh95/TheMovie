@@ -11,7 +11,8 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
-  Image
+  Image,
+  Button
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import TabMain from './TabMain';
@@ -39,6 +40,9 @@ export default class StackMain extends Component {
       <View style={styles.container}>
         <Header navigation={this.props.navigation}/>
         <TabMain />
+         {/* <Button title="click"
+        // onPress={()=>this.props.navigation.navigate('DrawerOpen')}
+        // /> */}
       </View>
     );
   }
