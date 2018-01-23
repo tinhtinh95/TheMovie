@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import Favourite from './Favourite/Favourite';
 import Home from './Home/Home';
+import Setting from './Settings/Settings';
+import About from './About/About';
 import { TabNavigator } from 'react-navigation';
 
 
@@ -22,6 +24,12 @@ const TabMain = TabNavigator({
   },
   Favourite: {
     screen: Favourite,
+  },
+  Setting: {
+    screen: Setting,
+  },
+  About: {
+    screen: About,
   }
 },
   {

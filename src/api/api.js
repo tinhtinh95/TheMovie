@@ -7,13 +7,13 @@ const API = {
         return fetch(`${BASE_URL}${name}?${API_KEY}&${PAGE}${page}`)
             .then((response) => response.json())
             .then((responseJson) => {
-                // if (name === 'popular') {
+                if (name === 'popular') {
                     // console.log('json', responseJson.results);
                     return responseJson.results;
                 // } else if (name === 'product'){
                     // console.log(name, responseJson.product);
                     // return responseJson.product;
-                // }
+                }
             })
             .catch((error) => {
                 // alert('error')

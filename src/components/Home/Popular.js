@@ -28,11 +28,11 @@ class Popular extends Component {
       page:1
     }
   }
-  // static navigationOptions = {
-  //   header: {
-  //     title: 'Popular'
-  //   }
-  // };
+  static navigationOptions = {
+    // header: {
+      title: 'Popular'
+    // }
+  };
   componentDidMount() {
     this.props.fetchData("popular",this.state.page);
     // this.setState({data:this.props.listPopular})

@@ -25,8 +25,8 @@ const {height, width}=Dimensions.get('window');
 
 const DrawerConfigure = DrawerNavigator({
   Home: {
-    screen: StackMain,
-    // screen: TabMain,
+    // screen: StackMain,
+    screen: TabMain,
   },
   // EditProfile:{
   //   screen: EditProfile

@@ -38,7 +38,7 @@ export default class StackMain extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header navigation={this.props.navigation}/>
+        {/* <Header navigation={this.props.navigation}/> */}
         <TabMain />
          {/* <Button title="click"
         // onPress={()=>this.props.navigation.navigate('DrawerOpen')}

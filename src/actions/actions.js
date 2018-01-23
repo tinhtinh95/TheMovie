@@ -11,12 +11,12 @@ function getPopular(data) {
 export function fetchData(name,page) {
     return (dispatch) => {
         API.getList(name,page).then((data) => {
-            // if (name === 'type') {
+            if (name === 'popular') {
                 // alert(page)
                 dispatch(getPopular(data));
             // } else if (name === 'product') {
             //     dispatch(getDataProduct(data));
-            // }
+            }
 
         })
             .catch((err) => console.log(err))

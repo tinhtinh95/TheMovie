@@ -9,33 +9,19 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  Dimensions,
+  TouchableOpacity
 } from 'react-native';
-import {StackNavigator} from 'react-navigation';
-import Popular from './Popular';
-import DetailMovie1 from './DetailMovie1';
 
-const StackConfigure=StackNavigator({
-  Popular:{
-    screen:Popular,
-    navigationOptions: {
-      title: 'Popular',
-    },
-  },
-  DetailMovie1:{
-    screen: DetailMovie1
-  }
-},{
-  
-})
+const { width, height } = Dimensions.get('window');
 
-
-export default class Home extends Component {
+export default class About extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Movies',
+    tabBarLabel: 'About',
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../../images/home.png')}
+        source={require('../../images/about.png')}
         style={[styles.icon, { tintColor: tintColor }]}
       />
     ),
@@ -43,11 +29,12 @@ export default class Home extends Component {
 
   render() {
     return (
-     <StackConfigure/>
+      <View style={styles.container}>
+        <Text>About</Text>
+      </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -56,7 +43,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   icon: {
-    width: 26,
-    height: 26,
+    width: 30,
+    height: 30,
   },
 });
+

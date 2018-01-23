@@ -32,7 +32,7 @@ const StackConfigure=StackNavigator({
 export default class StackProfile extends Component {
   render() {
     return (
-      <StackConfigure navigation={this.props.navigation} />
+      <StackConfigure/> //navigation={this.props.navigation} 
     );
   }
 }

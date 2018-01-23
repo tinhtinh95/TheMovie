@@ -55,7 +55,7 @@ class FlatItem extends Component {
     // console.log(this.props.listFavourite);
     return (
       <TouchableOpacity 
-      onPress={()=>this.props.navigation.navigate('DetailMovie1')}
+      onPress={()=>this.props.navigation.navigate('DetailMovie1', {item})}
       style={styles.container}>
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
