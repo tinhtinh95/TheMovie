@@ -21,15 +21,15 @@ export default class Header extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity
-        onPress={()=>{this.props.navigation.navigate('DrawerOpen')}}
+          onPress={() => { this.props.navigation.navigate('DrawerOpen') }}
         >
           <Image source={require('../../images/open.png')}
             style={styles.icon}
           />
         </TouchableOpacity>
-        <Text>Header</Text>
+        <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
         <TouchableOpacity>
-          <Image source={require('../../images/open.png')}
+          <Image source={require('../../images/grid.png')}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -41,7 +41,6 @@ export default class Header extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    
     alignItems: 'center',
     height: height * 0.1,
     flexDirection: 'row',
@@ -52,6 +51,11 @@ const styles = StyleSheet.create({
     margin: 10,
     width: 26,
     height: 26,
-    tintColor:'white'
+    tintColor: 'white'
   },
+  titleHeader: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold'
+  }
 });

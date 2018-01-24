@@ -12,12 +12,13 @@ import {
   Image,
   Dimensions,
   FlatList,
-  Button
+  Button, TouchableOpacity
 } from 'react-native';
 import FlatItem from './FlatItem';
 const { height, width } = Dimensions.get('window');
 import { connect } from "react-redux";
 import { fetchData } from '../../actions/actions';
+import Header from '../Header/Header'
 
 class Popular extends Component {
   constructor(props) {
@@ -25,39 +26,37 @@ class Popular extends Component {
     this.state = {
       data: [],
       isRefresh: true,
-      page:1
+      page: 1
     }
   }
-  static navigationOptions = {
-    // header: {
-      title: 'Popular'
-    // }
-  };
+
+  static navigationOptions = ({ navigation }) => {
+    let header = (<Header navigation={navigation} titleHeader={'Popular'}/>)
+    return { header }
+  }
+
   componentDidMount() {
-    this.props.fetchData("popular",this.state.page);
+    this.props.fetchData("popular", this.state.page);
     // this.setState({data:this.props.listPopular})
     // alert(JSON.stringify(this.props.listPopular))
     // alert(JSON.stringify(this.state.data))
   }
 
-  _onRefresh=(page)=>{
-    this.setState({page:page+1});
-    this.props.fetchData("popular",this.state.page);
+  _onRefresh = (page) => {
+    this.setState({ page: page + 1 });
+    this.props.fetchData("popular", this.state.page);
   }
 
   render() {
     return (
       <View style={styles.container}>
-      <Button title="click"
-      onPress={()=>this.props.navigation.navigate('DetailMovie1')}
-      />
         <FlatList
-         refreshing={false}
-         onRefresh={()=>this._onRefresh(this.state.page)}
-         initialNumToRender={10}
+          refreshing={false}
+          onRefresh={() => this._onRefresh(this.state.page)}
+          initialNumToRender={10}
           data={this.props.listPopular}
           keyExtractor={(item, index) => index}
-          renderItem={({ item }) => <FlatItem navigation={this.props.navigation} item={item} />
+          renderItem={({ item }) => <FlatItem navigation={this.props.navigation} item={item}/>
           }
         ></FlatList>
       </View>
@@ -66,9 +65,9 @@ class Popular extends Component {
 }
 
 function mapStateToProps(state) {
-   return {
-     listPopular: state.movies,
-     }
+  return {
+    listPopular: state.movies,
+  }
 }
 
 export default connect(mapStateToProps, { fetchData })(Popular);
@@ -80,4 +79,18 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
 
+  containerHeader: {
+
+    alignItems: 'center',
+    height: height * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgb(90,100,174)',
+  },
+  icon: {
+    margin: 10,
+    width: 26,
+    height: 26,
+    tintColor: 'white'
+  },
 });

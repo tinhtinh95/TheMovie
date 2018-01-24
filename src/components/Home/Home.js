@@ -7,56 +7,64 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Text,
+  Text, Button,
   View,
-  Image
+  Image, TouchableOpacity, Dimensions
 } from 'react-native';
-import {StackNavigator} from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 import Popular from './Popular';
-import DetailMovie1 from './DetailMovie1';
+import DetailMovie from './DetailMovie';
+import Header from '../Header/Header';
 
-const StackConfigure=StackNavigator({
-  Popular:{
-    screen:Popular,
-    navigationOptions: {
-      title: 'Popular',
-    },
-  },
-  DetailMovie1:{
-    screen: DetailMovie1
-  }
-},{
+const { width, height } = Dimensions.get('window');
+
+const StackConfigure = StackNavigator({
+  Popular: {
+    screen: Popular ,
+    
   
-})
-
-
-export default class Home extends Component {
-  static navigationOptions = {
-    tabBarLabel: 'Movies',
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../images/home.png')}
-        style={[styles.icon, { tintColor: tintColor }]}
-      />
-    ),
-  };
-
-  render() {
-    return (
-     <StackConfigure/>
-    );
+  },
+  DetailMovie: {
+    screen: DetailMovie,
+    header:<Text>ahihi</Text>
   }
-}
+}, {
+
+  })
+
+ export default StackConfigure;
+
+// export default class Home extends Component {
+//   static navigationOptions = {
+//     tabBarLabel: 'Movies',
+//     tabBarIcon: ({ tintColor }) => (
+//       <Image
+//         source={require('../../images/home.png')}
+//         style={[styles.icon, { tintColor: tintColor }]}
+//       />
+//     ),
+//   };
+
+//   render() {
+//     return (
+//       // <Button title="ahihi" onPress={()=>this.props.navigation.navigate('DrawerOpen')}></Button>
+//       <StackConfigure navgation1={this.props.navigation}/>
+//     );
+//   }
+// }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    height: height * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgb(90,100,174)',
   },
   icon: {
+    margin: 10,
     width: 26,
     height: 26,
+    tintColor: 'white'
   },
 });

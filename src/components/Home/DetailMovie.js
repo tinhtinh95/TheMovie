@@ -12,7 +12,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Button
+  Button, ScrollView, FlatList, KeyboardAvoidingView
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
 
@@ -21,90 +21,159 @@ const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
 
 export default class DetailMovie extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       listFavourite: [],
       favourite: 0,
+      listCast: []
     }
   }
-  static navigationOptions={
-    title:'DetailMovie',
-  }
-
-  setFavourite = async (item) => {
-    console.log('truoc')
-    // let listNew=[];
-    // listNew = this.state.listFavourite.concat(item );
-    // console.log(listNew)
-    this.setState({ listFavourite: this.state.listFavourite.concat(item), favourite: 1 });
-    console.log(this.state.listFavourite);
-    try {
-      await AsyncStorage.setItem('@MyListFavourite',JSON.stringify(listFavourite));
-      console.log('sau');
-    } catch (error) {
-      // Error saving data
-    }
-  }
-
   
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    let header = (
+      <View style={styles.containerHeader}>
+        <TouchableOpacity
+        style={{flexDirection:'row',}}
+          onPress={() => { navigation.goBack()}}
+        >
+          <Image source={require('../../images/stepBack.png')}
+            style={styles.iconHeader}
+          />
+          <Text style={[styles.titleHeader,{alignSelf:'center'}]}>Back</Text>
+        </TouchableOpacity>
+        
+        <Text style={[styles.titleHeader,
+          {
+            alignItems:'center',alignContent:'center'
+          }]}>{params.item.title}</Text>
+        <Text></Text>
+      </View>
+    )
+    return { header }
+  }
+
+  // static navigationOptions = {
+  //   // title: 'DetailMovie',
+
+  // }
+
+
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
+    console.log('params: ', params.item.id);
+    fetch(`https://api.themoviedb.org/3/movie/${params.item.id}/credits?api_key=0267c13d8c7d1dcddb40001ba6372235`)
+      .then(res => res.json())
+      .then(resJson => {
+        console.log(resJson.cast);
+        this.setState({ listCast: resJson.cast })
+      })
+      .catch(err => console.log(err))
+  }
+
+  // listCast = (id) => {
+  //   fetch(`https://api.themoviedb.org/3/movie/${id}/credits`)
+  //     .then(res => res.json())
+  //     .then(resJson => {
+  //       console.log(resJson.cast);
+  //       this.setState({ listCast: resJson.cast })
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   render() {
-    const { item } = this.props;
+    const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         <View style={styles.above}>
-          <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
-          <TouchableOpacity
-            onPress={() => this.setFavourite(item)}
-          >
-            {this.state.favourite === 0 ? <Image
+          <TouchableOpacity>
+            <Image
               style={styles.icon}
-              source={require('../../images/nonStar.png')}
-            /> : <Image
-                style={styles.icon}
-                source={require('../../images/fullStar.png')}
-              />}
+              source={require('../../images/nonStar.png')} />
           </TouchableOpacity>
-        </View>
-        <View style={styles.bellow}>
-          <Image
-            style={{ flex: 2, marginRight: 10, height: height / 4, width: width / 3 }}
-            source={{ uri: `${uri}${item.poster_path}` }}
-          />
-          <View style={{ flex: 3 }}>
+          <View style={{ paddingTop: 10 }}>
             <View style={styles.mainRight}>
-              <Text style={styles.textRight}>Release date:   </Text>
-              <Text style={styles.textRed}>{item.release_date}</Text>
+              <Text style={styles.text}> Release date: </Text>
+              <Text style={styles.textRed}> {params.item.release_date} </Text>
             </View>
             <View style={styles.mainRight}>
-              <Text style={styles.textRight}>Rating:   </Text>
-              <Text style={styles.textRed}>{item.vote_average}/10</Text>
+              <Text style={styles.text}> Release date: </Text>
+              <Text style={styles.textRed}> {params.item.vote_average}</Text>
             </View>
-            <View>
-              <Text style={styles.textRed}>Overview:</Text>
-              <Text numberOfLines={3} style={{ fontSize: 17 }}>{item.overview}</Text>
-            </View>
-
           </View>
-
+        </View>
+        <View style={[styles.bellow, { padding: 10, paddingTop: 0, height: height / 2.5 }]}>
+          <View style={{ marginRight: 10, marginBottom: 10 }}>
+            <Image style={{ width: width * 0.44, height: height * 0.27, marginBottom: 10 }}
+              source={{ uri: `${uri}${params.item.poster_path}` }}
+            >
+            </Image>
+            <TouchableOpacity style={{
+              borderRadius: 5,
+              backgroundColor: '#b00060',
+              padding: 5,
+              width: width * 0.37,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center'
+            }}>
+              <Text style={[styles.text, { color: 'white' }]}>REMINDER</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            <Text style={styles.textRed}>Overview:</Text>
+            <Text style={styles.text}>{params.item.overview}</Text>
+          </ScrollView>
+        </View>
+        <View style={{ marginBottom: height * 0.15 }}>
+          <Text style={{ marginBottom: 10, fontSize: 18, fontWeight: 'bold', marginLeft: 8 }}>Cast & Crew</Text>
+          <FlatList
+            horizontal={true}
+            data={this.state.listCast}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item }) =>//<Text>{item.profile_path}</Text>
+              <View style={{ width: width * 0.24, height: height * 0.35, marginRight: 7 }}>
+                <Image
+                  source={{ uri: `${uri}${item.profile_path}` }}
+                  style={{ width: width * 0.24, height: height * 0.15 }}
+                />
+                <Text style={{ alignSelf: 'center' }}>{item.name}</Text>
+              </View>
+            }
+          />
         </View>
       </View>
     );
   }
 }
 
+
+
 const styles = StyleSheet.create({
-  container: {
-    borderBottomWidth: 1,
-    borderColor: '#4bcb4d',
-    paddingTop: 10,
-    paddingBottom: 10
+  containerHeader: {
+    alignItems: 'center',
+    height: height * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgb(90,100,174)',
+  },
+  iconHeader: {
+    margin: 10,
+    width: 26,
+    height: 26,
+    tintColor: 'white'
+  },
+  titleHeader: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   above: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-around',
   },
   title: {
     fontSize: 20,
@@ -114,19 +183,21 @@ const styles = StyleSheet.create({
   icon: {
     width: 26,
     height: 26,
-    tintColor: 'blue'
+    tintColor: 'blue',
+    margin: 20
   },
   bellow: {
-    marginTop: 10,
+    // marginTop: 10,
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'space-between',
   },
   mainRight: {
-    marginBottom: 12,
+    marginBottom: 10,
     flexDirection: 'row',
+
   },
-  textRight: {
+  text: {
     fontSize: 16
   },
   textRed: {

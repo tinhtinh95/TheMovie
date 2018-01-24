@@ -16,82 +16,82 @@ import {
   Dimensions
 } from 'react-native';
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import StackMain from './StackMain';
 import TabMain from './TabMain';
-import EditProfile from './Profile/EditProfile'
-import StackProfile from './Profile/StackProfile';
+import EditProfile from './Profile/EditProfile';
 
-const {height, width}=Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const DrawerConfigure = DrawerNavigator({
   Home: {
-    // screen: StackMain,
     screen: TabMain,
   },
-  // EditProfile:{
-  //   screen: EditProfile
-  // }
-  StackProfile:{
-    screen: StackProfile
+  EditProfile: {
+    screen: EditProfile
   }
 },
   {
     drawerBackgroundColor: '#b7ffef',
-    drawerWidth:width*0.9,
+    drawerWidth: width * 0.9,
     useNativeAnimations: true,
     contentComponent: (props) => (
-      <ScrollView style={{ marginTop: 40, padding: 10 }}>
-        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <ScrollView style={styles.container}>
+        <TouchableOpacity style={styles.avatar}>
           <Image
-            style={{ height: 150, width: 150 }}
+            style={styles.avatarImage}
             source={require('../images/smile.png')}
-          />
+          />   
         </TouchableOpacity>
-        <Text style={{ justifyContent: 'center', alignItems: 'center', fontSize: 25, margin: 15 }}>Tina</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15, }}>
+        <Text style={styles.textName}>Tina</Text>
+        <View style={styles.infor}>
           <Image
-            style={{ height: 26, width: 26, marginRight: 20 }}
+            style={styles.imageInfor}
             source={require('../images/birthdayCake.png')}
           />
-          <Text>1995-12-07</Text>
+          <Text style={styles.fontText}>1995-12-07</Text>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
+        <View style={styles.infor}>
           <Image
-            style={{ height: 26, width: 26, marginRight: 20 }}
+            style={styles.imageInfor}
             source={require('../images/mail.png')}
           />
-          <Text>nttinh995@gmail.com</Text>
+          <Text style={styles.fontText}>nttinh995@gmail.com</Text>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
+        <View style={styles.infor}>
           <Image
-            style={{ height: 26, width: 26, marginRight: 20 }}
+             style={styles.imageInfor}
             source={require('../images/male.png')}
           />
-          <Text>Female</Text>
+          <Text style={styles.fontText}>Female</Text>
         </View>
-        <TouchableOpacity 
-        onPress={()=>{props.navigation.navigate('StackProfile')}}
-        style={{ backgroundColor: 'rgb(90,100,174)', padding: 5, borderRadius: 5, width: 80, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{fontSize: 15}}>Edit</Text>
+        <TouchableOpacity
+          onPress={() => { props.navigation.navigate('EditProfile') }}
+          style={styles.btnEdit}>
+          <Text style={styles.txtEdit}>Edit</Text>
         </TouchableOpacity>
-        <Text style={{fontSize: 25,fontWeight:'bold',margin:14 }}>Reminder List:</Text>
+        <Text style={styles.txtReminder}>Reminder List:</Text>
         <FlatList
         // data={this.props.data}
         // extraData={this.state}
         // keyExtractor={this._keyExtractor}
         // renderItem={this._renderItem}
-      />
-      <View style={{backgroundColor:'#4dbebb', padding:7, marginBottom:20}}>
-      <Text style={{fontSize: 20 }}>Reminder List:</Text>
-      <Text style={{fontSize: 20}}>Reminder List:</Text>
-      </View>
-      <TouchableOpacity style={{ backgroundColor: 'rgb(90,100,174)', padding: 5, borderRadius: 5, width: 80, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{fontSize: 15}}>Show All</Text>
+        />
+        <View style={{
+          backgroundColor: '#4dbebb',
+          padding: 7,
+          marginBottom: 20
+        }}>
+          <Text style={{ fontSize: 20 }}>Reminder List:</Text>
+          <Text style={{ fontSize: 20 }}>Reminder List:</Text>
+        </View>
+        <TouchableOpacity 
+        onPress={()=>props.navigation.navigate('Setting')}
+        style={styles.btnShowAll}>
+          <Text style={styles.txtEdit}>Show All</Text>
         </TouchableOpacity>
-        <Text style={{fontSize: 15}}>CopyRight@Enclave 2017</Text>
-        
+        <Text style={{ fontSize: 15 ,alignSelf:'center' }}>CopyRight@Enclave 2017</Text>
 
-        <DrawerItems
+
+        {/* <DrawerItems
             {...props}
             getLabel={(scene) => (
               <View style={{
@@ -108,26 +108,78 @@ const DrawerConfigure = DrawerNavigator({
                 <Text style={styles.buttonText}>{props.getLabel(scene)}</Text>
               </View>
             )}
-          />
+          /> */}
       </ScrollView>
     )
   })
 
 
-export default class ProfileDrawer extends Component {
-  render() {
-    return (
-      <DrawerConfigure />
-    );
-  }
-}
+export default DrawerConfigure;
+
+// export default class ProfileDrawer extends Component {
+//   render() {
+//     return (
+//       <DrawerConfigure />
+//     );
+//   }
+// }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+container:{
+   marginTop: 40, 
+   padding: 10 
   },
+avatar:{ 
+  alignSelf:'center'
+},
+avatarImage:{ 
+  height: 150, 
+  width: 150
+ },
+ textName:{
+  fontSize: 25,
+  margin: 15,
+  alignSelf:'center'
+},
+infor:{
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 15,
+},
+imageInfor:{
+  height: 26,
+  width: 26,
+  marginRight: 20
+},
+fontText:{
+  fontSize:17
+},
+btnEdit:{
+  backgroundColor: 'rgb(90,100,174)',
+  padding: 5,
+  borderRadius: 5,
+  width: 80,
+  alignItems: 'center',
+  alignSelf:'center'
+},
+txtEdit:{ 
+  fontSize: 15 ,
+  color:'white',
+  fontWeight:'bold'}
+,
+txtReminder:{ 
+  fontSize: 25, 
+  fontWeight: 'bold', 
+  margin: 14 
+},
+btnShowAll:{
+  backgroundColor: 'rgb(90,100,174)',
+  padding: 5,
+  borderRadius: 5,
+  width: 80,
+  alignItems: 'center',
+  alignSelf:'center',
+  marginBottom:5
+}
 
 });

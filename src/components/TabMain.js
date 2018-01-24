@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button, Image, Dimensions
 } from 'react-native';
 import Favourite from './Favourite/Favourite';
 import Home from './Home/Home';
@@ -17,10 +17,20 @@ import Setting from './Settings/Settings';
 import About from './About/About';
 import { TabNavigator } from 'react-navigation';
 
+const { width, height } = Dimensions.get('window');
 
 const TabMain = TabNavigator({
   Home: {
     screen: Home,
+    navigationOptions: {
+      tabBarLabel: 'Movies',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('../images/home.png')}
+          style={[styles.icon, { tintColor: tintColor }]}
+        />
+      ),
+    }
   },
   Favourite: {
     screen: Favourite,
@@ -47,8 +57,27 @@ export default TabMain;
 // export default class TabMain extends Component {
 //   render() {
 //     return (
-//         <TabConfigure navigation={this.props.navigation}/>
+//       // <View>
+// <TabConfigure />
+// // {/* <Button title="ahihi" onPress={()=>this.props.navigation.navigate('DrawerOpen')}></Button> */}
+//       // </View>
+        
 //     ); 
 //   }
 // }
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    height: height * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgb(90,100,174)',
+  },
+  icon: {
+    margin: 10,
+    width: 26,
+    height: 26,
+    tintColor: 'white'
+  },
+});
