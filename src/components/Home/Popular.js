@@ -15,6 +15,7 @@ import {
   Button, TouchableOpacity
 } from 'react-native';
 import FlatItem from './FlatItem';
+// import FlatItemGrid from './FlatItemGrid';
 const { height, width } = Dimensions.get('window');
 import { connect } from "react-redux";
 import { fetchData } from '../../actions/actions';
@@ -26,20 +27,18 @@ class Popular extends Component {
     this.state = {
       data: [],
       isRefresh: true,
-      page: 1
+      page: 1,
+      isGridList: false,
     }
   }
 
   static navigationOptions = ({ navigation }) => {
-    let header = (<Header navigation={navigation} titleHeader={'Popular'}/>)
+    let header = (<Header navigation={navigation} titleHeader={'Popular'} />)
     return { header }
   }
 
   componentDidMount() {
     this.props.fetchData("popular", this.state.page);
-    // this.setState({data:this.props.listPopular})
-    // alert(JSON.stringify(this.props.listPopular))
-    // alert(JSON.stringify(this.state.data))
   }
 
   _onRefresh = (page) => {
@@ -56,7 +55,10 @@ class Popular extends Component {
           initialNumToRender={10}
           data={this.props.listPopular}
           keyExtractor={(item, index) => index}
-          renderItem={({ item }) => <FlatItem navigation={this.props.navigation} item={item}/>
+          renderItem={({ item }) =>
+            // this.state.isGridList ?
+              <FlatItem navigation={this.props.navigation} item={item} />
+              // : <FlatItemGrid navigation={this.props.navigation} item={item} />
           }
         ></FlatList>
       </View>

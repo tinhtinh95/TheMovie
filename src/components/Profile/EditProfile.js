@@ -14,13 +14,13 @@ import {
   Image,
   FlatList,
   Dimensions,
-  TextInput, DatePickerIOS,Button
+  TextInput, DatePickerIOS, Button, Alert
 } from 'react-native';
 import RadioButton from 'radio-button-react-native';
-import ModalDate from './ModalDate';
 const { width, height } = Dimensions.get('window');
 import { StackNavigator } from 'react-navigation';
-import Modal from 'react-native-modal'
+
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 var ImagePicker = require('react-native-image-picker');
 
@@ -39,30 +39,34 @@ var options = {
 
 
 
-class Profile extends Component {
+export default class Profile extends Component {
   constructor(props) {
     super(props)
     this.state = {
       name: 'Tina',
       birthDay: '1995-07-12',
       email: 'nttinh995@gmail.com',
-
       value: 0,
       avartarSource: null,
-      isModalVisible: false,
-      chosenDate: new Date(),
-
+      isDateTimePickerVisible: false,
     }
-    this.setDate = this.setDate.bind(this);
   }
-  setDate(newDate) {
-    this.setState({chosenDate: newDate})
-  }
-  _showModal = () => this.setState({ isModalVisible: true })
 
-  _hideModal = () => this.setState({ isModalVisible: false })
+  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
+  _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
+  _handleDatePicked = (date) => {
+    this._hideDateTimePicker();
+    currentDate = new Date();
+    if (date < currentDate) {
+      var dn = date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDate();
+      this.setState({ birthDay: dn })
+    } else {
+      Alert.alert("Invalid");
+      this._showDateTimePicker();
+    }
+  };
   handleOnPress = (value) => {
     this.setState({ value: value })
   }
@@ -85,8 +89,10 @@ class Profile extends Component {
   }
   render() {
     return (
-      <View style={{ backgroundColor: '#b7ffef', height: height }}>
-        <View style={{ marginTop: 20, padding: 10, justifyContent: 'space-between', flexDirection: 'row' }}>
+      <View style={{ backgroundColor: 'white', height: height }}>
+        <View style={{ marginTop: 20, padding: 10, 
+          justifyContent: 'space-between',
+           flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('')}
             style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
@@ -109,69 +115,38 @@ class Profile extends Component {
               style={{ height: 200, width: 200, borderRadius: 100 }}
               source={this.state.avartarSource}
             />}
+
         </TouchableOpacity>
+        {/* <Text style={{alignSelf:'center',
+          justifyContent:'center',}}>ahii</Text> */}
         <TextInput style={{
-          justifyContent: 'center',
-          alignItems: 'center',
+          width:width*0.8,
+          alignSelf:'center',
+          justifyContent:'center',
+          padding: 3,
           fontSize: 25,
-          margin: 15
+          borderColor: 'gray',
+          borderRadius: 5,
+          borderWidth: 1
         }}
           value={this.state.name}
-          onChangeText={({ text }) => this.setState({ name: text })}
+          onChangeText={({ text }) => this.setState({ name: text })
+
+          }
         />
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15, }}>
           <Image
             style={{ height: 26, width: 26, marginRight: 20 }}
             source={require('../../images/birthdayCake.png')}
           />
-          <Text onPress={() => this.props.navigation.navigate('ModalDate')}>1995-12-07</Text>
-          {/* <DatePickerIOS
-          style={{flex:1}}
-          date={this.state.chosenDate}
-          onDateChange={this.setDate}
-        /> */}
-          {/* <ModalDate/> */}
-          <DatePickerIOS
-                  style={{backgroundColor:'black',flex:1}}
-                  date={this.state.chosenDate}
-                  onDateChange={this.setDate} />
-
-          {/* <View> */}
-            {/* <TouchableOpacity onPress={this._showModal}>
-              <Text>Show Modal</Text>
-            </TouchableOpacity> */}
-            {/* <Modal style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-
-            }} isVisible={this.state.isModalVisible}>
-              <View style={{
-                width: width - 20,
-                height: height / 2,
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 5,
-              }} >
-                {/* <Text>Hello!
-
-            </Text> */}
-                <DatePickerIOS
-                  style={{backgroundColor:'black',flex:1}}
-                  date={this.state.chosenDate}
-                  onDateChange={this.setDate} />
-                <Button
-                  onPress={this._hideModal}
-                  title="Close modal"
-                >
-                </Button>
-              </View>
-            {/* </Modal> */} */}
-          {/* </View> */}
-
-
-
+          <Text onPress={this._showDateTimePicker}>{this.state.birthDay}</Text>
+          <View style={{ flex: 1 }}>
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+            />
+          </View>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
           <Image
@@ -179,6 +154,13 @@ class Profile extends Component {
             source={require('../../images/mail.png')}
           />
           <TextInput
+            style={{
+              width: width * 0.8,
+              borderColor: 'gray',
+              borderRadius: 5,
+              borderWidth: 1,
+              padding: 5
+            }}
             value={this.state.email}
             onChangeText={({ text }) => this.setState({ email: text })}
           />
@@ -192,28 +174,17 @@ class Profile extends Component {
             <RadioButton currentValue={this.state.value} value={0} onPress={this.handleOnPress}>
               <Text>Male</Text>
             </RadioButton>
-            <RadioButton
-              currentValue={this.state.value} value={1} onPress={this.handleOnPress}>
+
+            <RadioButton currentValue={this.state.value} value={1} onPress={this.handleOnPress}>
               <Text>Female</Text>
             </RadioButton>
+
           </View>
         </View>
       </View>
     );
   }
 }
-
-const StackModal = StackNavigator({
-  Profile: {
-    screen: Profile
-  },
-  ModalDate: {
-    screen: ModalDate,
-  }
-})
-
-export default StackModal;
-
 const styles = StyleSheet.create({
   container: {
   },
