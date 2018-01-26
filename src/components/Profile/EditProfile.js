@@ -19,6 +19,8 @@ import {
 import RadioButton from 'radio-button-react-native';
 const { width, height } = Dimensions.get('window');
 import { StackNavigator } from 'react-navigation';
+import { AsyncStorage } from 'react-native';
+import getInfo from './getInfo';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -87,19 +89,66 @@ export default class Profile extends Component {
       }
     })
   }
+  _editInfo = async () => {
+    var object = {
+      "name": this.state.name,
+      "birthDay": this.state.birthDay,
+      "email": this.state.email,
+      "gender": this.state.value,
+      "avatar": this.state.avartarSource
+    };
+    this.props.navigation.navigate('Popular')
+    try {
+      await AsyncStorage.setItem('@MyProfile', JSON.stringify(object));
+      console.log('sau');
+    } catch (error) {
+    }
+  }
+
+  componentDidMount() {
+    getInfo()
+      .then(myInfo => {
+        this.setState({
+          name: myInfo.name,
+          birthDay: myInfo.birthDay,
+          email: myInfo.email,
+          value: myInfo.gender,
+          avartarSource: myInfo.avatar
+        })
+      })
+      ;
+  }
+
   render() {
     return (
       <View style={{ backgroundColor: 'white', height: height }}>
-        <View style={{ marginTop: 20, padding: 10, 
+        <View style={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+        }}>
+          <Image
+            style={{
+              flex: 1,
+              width: null,
+              height: null,
+            }}
+            source={require('../../images/info.jpg')}
+          />
+        </View>
+        <View style={{
+          marginTop: 20, padding: 10,
           justifyContent: 'space-between',
-           flexDirection: 'row' }}>
+          flexDirection: 'row'
+        }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('')}
             style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 20 }}>CANCEL</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => { this.props.navigation.navigate('Popular') }}
+            onPress={this._editInfo}
             style={{ backgroundColor: '#4374fd', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 20 }}>DONE</Text>
           </TouchableOpacity>
@@ -120,9 +169,10 @@ export default class Profile extends Component {
         {/* <Text style={{alignSelf:'center',
           justifyContent:'center',}}>ahii</Text> */}
         <TextInput style={{
-          width:width*0.8,
-          alignSelf:'center',
-          justifyContent:'center',
+          width: width * 0.8,
+          alignSelf: 'center',
+          alignContent: 'center',
+          justifyContent: 'center',
           padding: 3,
           fontSize: 25,
           borderColor: 'gray',
@@ -130,7 +180,7 @@ export default class Profile extends Component {
           borderWidth: 1
         }}
           value={this.state.name}
-          onChangeText={({ text }) => this.setState({ name: text })
+          onChangeText={(text) => this.setState({ name: text })
 
           }
         />
@@ -162,7 +212,7 @@ export default class Profile extends Component {
               padding: 5
             }}
             value={this.state.email}
-            onChangeText={({ text }) => this.setState({ email: text })}
+            onChangeText={(text) => this.setState({ email: text })}
           />
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>

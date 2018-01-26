@@ -15,7 +15,6 @@ import {
   Button, TouchableOpacity, ScrollView, RefreshControl
 } from 'react-native';
 import FlatItem from './FlatItem';
-import FlatItemGrid from './FlatItemGrid';
 const { height, width } = Dimensions.get('window');
 import { connect } from "react-redux";
 import { fetchData } from '../../actions/actions';

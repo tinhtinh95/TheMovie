@@ -18,6 +18,7 @@ import {
 import { DrawerNavigator, DrawerItems } from 'react-navigation';
 import TabMain from './TabMain';
 import EditProfile from './Profile/EditProfile';
+import getInfo from './Profile/getInfo';
 
 const { height, width } = Dimensions.get('window');
 
@@ -34,6 +35,20 @@ const DrawerConfigure = DrawerNavigator({
     drawerWidth: width * 0.9,
     useNativeAnimations: true,
     contentComponent: (props) => (
+      getInfo()
+      .then(myInfo => {
+        console.log(myInfo.name)
+        
+        // this.setState({
+        //   name: myInfo.name,
+        //   birthDay: myInfo.birthDay,
+        //   email: myInfo.email,
+        //   value: myInfo.gender,
+        //   avartarSource: myInfo.avatar
+        // })
+      })
+      ,
+      
       <ScrollView style={styles.container}>
         <TouchableOpacity style={styles.avatar}>
           <Image
