@@ -12,14 +12,17 @@ import {
   Image,
   Dimensions,
   FlatList,
-  Button, TouchableOpacity
+  Button, TouchableOpacity, ScrollView, RefreshControl
 } from 'react-native';
 import FlatItem from './FlatItem';
-// import FlatItemGrid from './FlatItemGrid';
+import FlatItemGrid from './FlatItemGrid';
 const { height, width } = Dimensions.get('window');
 import { connect } from "react-redux";
 import { fetchData } from '../../actions/actions';
 import Header from '../Header/Header'
+
+
+const uri = "https://image.tmdb.org/t/p/w185";
 
 class Popular extends Component {
   constructor(props) {
@@ -28,8 +31,13 @@ class Popular extends Component {
       data: [],
       isRefresh: true,
       page: 1,
-      isGridList: false,
+      isGridList: true,
+      numColumns: 1
     }
+  }
+
+  _toggleGridList = () => {
+    this.setState({ isGridList: !this.state.isGridList });
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -37,8 +45,12 @@ class Popular extends Component {
     return { header }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchData("popular", this.state.page);
+    this.props.navigation.setParams({
+      toggleGridList: this._toggleGridList,
+    });
+
   }
 
   _onRefresh = (page) => {
@@ -47,21 +59,45 @@ class Popular extends Component {
   }
 
   render() {
+
     return (
-      <View style={styles.container}>
-        <FlatList
+      this.state.isGridList ?
+        <View style={styles.container}>
+          <FlatList
+            refreshing={false}
+            onRefresh={() => this._onRefresh(this.state.page)}
+            data={this.props.listPopular}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item }) =>
+              <FlatItem navigation={this.props.navigation} item={item} />}
+          /></View>
+        :
+        <ScrollView
+        
+        refreshControl={
+          <RefreshControl
           refreshing={false}
           onRefresh={() => this._onRefresh(this.state.page)}
-          initialNumToRender={10}
-          data={this.props.listPopular}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item }) =>
-            // this.state.isGridList ?
-              <FlatItem navigation={this.props.navigation} item={item} />
-              // : <FlatItemGrid navigation={this.props.navigation} item={item} />
-          }
-        ></FlatList>
-      </View>
+          />
+      }
+        >
+          <View style={styles.wrapperItems}>
+            {this.props.listPopular.map(e => (
+              <TouchableOpacity key={e.id}
+                style={styles.wrapperItem}
+                onPress={() => this.props.navigation.navigate('DetailMovie', { item: e })}
+              >
+                <View>
+                  <Image
+                    style={{ width: width / 2 - 20, height: height / 3 }}
+                    source={{ uri: `${uri}${e.poster_path}` }}
+                  />
+                  <Text style={styles.text}>{e.title}</Text>
+                </View>
+
+              </TouchableOpacity>))}
+          </View>
+        </ScrollView>
     );
   }
 }
@@ -81,18 +117,24 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
 
-  containerHeader: {
-
-    alignItems: 'center',
-    height: height * 0.1,
+  wrapperItems: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: 'rgb(90,100,174)',
+    flexWrap: 'wrap',
+    padding: 10,
   },
-  icon: {
-    margin: 10,
-    width: 26,
-    height: 26,
-    tintColor: 'white'
+  wrapperItem: {
+    width: width / 2 - 20,
+    shadowColor: "#2e272b",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    marginBottom: 10,
+    alignContent:'center'
   },
+  text:{
+    fontSize:17, 
+    fontWeight:'bold',
+     alignContent:'center',
+     alignSelf:'center'
+     }
 });

@@ -17,25 +17,54 @@ import {
 const { width, height } = Dimensions.get('window');
 
 export default class Header extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => { this.props.navigation.navigate('DrawerOpen') }}
-        >
-          <Image source={require('../../images/open.png')}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
-        <TouchableOpacity>
-          <Image source={require('../../images/grid.png')}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-      </View>
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGrid: true
+    }
+  }
 
-    );
+
+  _toggleGridList = () => {
+    this.setState({isGrid:!this.state.isGrid});
+    this.props.navigation.state.params.toggleGridList();
+    
+  }
+
+  render() {
+    if (this.props.navigation.state.params !== undefined) {
+      const {toggleGridList } = this.props.navigation.state.params;
+      return (
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => { this.props.navigation.navigate('DrawerOpen') }}
+          >
+            <Image source={require('../../images/open.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
+          <TouchableOpacity
+            onPress={this._toggleGridList}
+          >
+            {this.state.isGrid ?
+              <Image source={require('../../images/grid.png')}
+                style={styles.icon}
+              />
+              :
+              <Image source={require('../../images/nonGrid.png')}
+                style={styles.icon}
+              />}
+          </TouchableOpacity>
+        </View>
+
+      );
+    } else {
+      return (
+        <View></View>
+      )
+    }
+
   }
 }
 
