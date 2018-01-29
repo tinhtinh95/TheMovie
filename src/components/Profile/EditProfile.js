@@ -21,6 +21,7 @@ const { width, height } = Dimensions.get('window');
 import { StackNavigator } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 import getInfo from './getInfo';
+import saveInfo from './saveInfo';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -47,9 +48,10 @@ export default class Profile extends Component {
     this.state = {
       name: 'Tina',
       birthDay: '1995-07-12',
+
       email: 'nttinh995@gmail.com',
       value: 0,
-      avartarSource: null,
+      avartarSource: '',
       isDateTimePickerVisible: false,
     }
   }
@@ -77,19 +79,27 @@ export default class Profile extends Component {
       console.log('Res=', res);
       if (res.didCancel) {
         console.log('User canceled image picker');
+        // this.setState({
+        //   avartarSource: this.state.avartarSource
+        // });
+        console.log("load khi cancel", this.state.avartarSource);
       } else if (res.error) {
         console.log('ImagePicker Err ', res.error);
       } else if (res.customButton) {
         console.log('User tapped custom button: ', res.customButton);
       } else {
         let source = { uri: res.uri, crop: { left: 10, top: 50, width: 20, height: 40 } };
+        console.log(res.uri)
         this.setState({
           avartarSource: source
         });
+        console.log("load sau khi chon", this.state.avartarSource);
       }
     })
   }
   _editInfo = async () => {
+    console.log("load truoc edit", this.state.avartarSource);
+    // console.log("load:",this.state.avartarSource.source);
     var object = {
       "name": this.state.name,
       "birthDay": this.state.birthDay,
@@ -97,17 +107,17 @@ export default class Profile extends Component {
       "gender": this.state.value,
       "avatar": this.state.avartarSource
     };
-    this.props.navigation.navigate('Popular')
-    try {
-      await AsyncStorage.setItem('@MyProfile', JSON.stringify(object));
-      console.log('sau');
-    } catch (error) {
-    }
+    console.log("load sau edit", this.state.avartarSource);
+    this.props.navigation.navigate('Popular');
+    saveInfo(object);
   }
 
   componentDidMount() {
+    
+    console.log("load sau didmount", this.state.avartarSource);
     getInfo()
       .then(myInfo => {
+        // console.log('avatar: ',myInfo.avatar);
         this.setState({
           name: myInfo.name,
           birthDay: myInfo.birthDay,
@@ -121,7 +131,7 @@ export default class Profile extends Component {
 
   render() {
     return (
-      <View style={{ backgroundColor: 'white', height: height }}>
+      <View style={{ backgroundColor: 'white', height: height}}>
         <View style={{
           flex: 1,
           width: '100%',
@@ -143,7 +153,7 @@ export default class Profile extends Component {
           flexDirection: 'row'
         }}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('')}
+            onPress={() => this.props.navigation.navigate('Popular')}
             style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 20 }}>CANCEL</Text>
           </TouchableOpacity>
@@ -155,8 +165,8 @@ export default class Profile extends Component {
         </View>
         <TouchableOpacity
           onPress={this.show}
-          style={{ justifyContent: 'center', alignItems: 'center' }}>
-          {this.state.avartarSource == null ? <Image
+          style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+          {this.state.avartarSource === '' ? <Image
             style={{ height: 200, width: 200, borderRadius: 50 }}
             source={require('../../images/smile.png')}
           /> :
@@ -166,8 +176,6 @@ export default class Profile extends Component {
             />}
 
         </TouchableOpacity>
-        {/* <Text style={{alignSelf:'center',
-          justifyContent:'center',}}>ahii</Text> */}
         <TextInput style={{
           width: width * 0.8,
           alignSelf: 'center',
@@ -177,7 +185,8 @@ export default class Profile extends Component {
           fontSize: 25,
           borderColor: 'gray',
           borderRadius: 5,
-          borderWidth: 1
+          borderWidth: 1,
+          marginBottom: 20
         }}
           value={this.state.name}
           onChangeText={(text) => this.setState({ name: text })
@@ -189,9 +198,10 @@ export default class Profile extends Component {
             style={{ height: 26, width: 26, marginRight: 20 }}
             source={require('../../images/birthdayCake.png')}
           />
-          <Text onPress={this._showDateTimePicker}>{this.state.birthDay}</Text>
+          <Text style={{ fontSize: 17 }} onPress={this._showDateTimePicker}>{this.state.birthDay}</Text>
           <View style={{ flex: 1 }}>
             <DateTimePicker
+              date={new Date(this.state.birthDay)}
               isVisible={this.state.isDateTimePickerVisible}
               onConfirm={this._handleDatePicked}
               onCancel={this._hideDateTimePicker}
@@ -209,7 +219,8 @@ export default class Profile extends Component {
               borderColor: 'gray',
               borderRadius: 5,
               borderWidth: 1,
-              padding: 5
+              padding: 5,
+              fontSize: 17
             }}
             value={this.state.email}
             onChangeText={(text) => this.setState({ email: text })}
@@ -222,11 +233,11 @@ export default class Profile extends Component {
           />
           <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
             <RadioButton currentValue={this.state.value} value={0} onPress={this.handleOnPress}>
-              <Text>Male</Text>
+              <Text style={{ fontSize: 17 }} >Male</Text>
             </RadioButton>
 
             <RadioButton currentValue={this.state.value} value={1} onPress={this.handleOnPress}>
-              <Text>Female</Text>
+              <Text style={{ fontSize: 17 }} >Female</Text>
             </RadioButton>
 
           </View>

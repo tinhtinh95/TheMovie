@@ -5,6 +5,7 @@ const getInfo = async () => {
       const value = await AsyncStorage.getItem('@MyProfile');
       if (value !== null) {
         var myInfo = JSON.parse(value);
+        // console.log(myInfo.avatar.uri)
         return myInfo;
       } else {
         console.log('dont have data');
