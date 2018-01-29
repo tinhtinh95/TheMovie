@@ -39,10 +39,12 @@ class FlatItem extends Component {
     // console.log(this.state.listFavourite);
     var listFavourite=[];
     listFavourite = this.props.listFavourite.concat(item);
-    // console.log(this.props.listFavourite);
+    console.log('state:',this.props.listFavourite);
+    console.log('mang:',this.props.listFavourite);
     try {
       await AsyncStorage.setItem('@MyListFavourite',JSON.stringify(listFavourite));
       console.log('sau');
+      this.setState({favourite:1})
     } catch (error) {
       // Error saving data
     }
@@ -51,8 +53,8 @@ class FlatItem extends Component {
   
 
   render() {
-    const { item } = this.props;
-    // console.log(this.props.listFavourite);
+    const { listFavourite } = this.props;
+    alert(JSON.stringify(listFavourite));
     return (
       <TouchableOpacity 
       onPress={()=>this.props.navigation.navigate('DetailMovie', {item})}

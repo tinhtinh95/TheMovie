@@ -3607,6 +3607,10 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
+pjs@*:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/pjs/-/pjs-5.1.1.tgz#9dfc4673bb01deffd6915fb1dec75827aba42abf"
+
 pkg-dir@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
@@ -4005,9 +4009,9 @@ readable-stream@~1.1.8, readable-stream@~1.1.9:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-realm@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.2.5.tgz#c4a0b4d26abb7d4b763a0915bf75c0c7ce384a95"
+realm@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.2.6.tgz#c93ca07bdba12463efd17106e915283f88d9e824"
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"
@@ -4680,6 +4684,12 @@ through2@^2.0.0:
 through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+
+thunk@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/thunk/-/thunk-0.0.1.tgz#6575b00ba36ff4c6c5edf84f923212239a0a7c37"
+  dependencies:
+    pjs "*"
 
 time-stamp@^1.0.0:
   version "1.1.0"

@@ -17,14 +17,12 @@ import {
 } from 'react-native';
 // import Swipeout from 'react-native-swipeout';
 import ReminderItem from './ReminderItem';
-
-
+import Filter from './Filter';
+import { StackNavigator } from 'react-navigation';
 
 const { width, height } = Dimensions.get('window');
 
-
-
-export default class Settings extends Component {
+class Reminder extends Component {
 
   constructor(props) {
     super(props);
@@ -72,6 +70,14 @@ export default class Settings extends Component {
     );
   }
 }
+
+const StackConfigure=StackNavigator({
+  // Reminder:{screeen: Reminder},
+  Filter:{screen:Filter},
+})
+
+export default StackConfigure;
+
 const styles = StyleSheet.create({
   icon: {
     width: 30,

@@ -37,7 +37,7 @@ class Profile extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillUpdate() {
     getInfo()
       .then(myInfo => {
         this.setState({
@@ -51,7 +51,7 @@ class Profile extends React.Component {
       ;
   }
   render() {
-    // const {navigation} = this.props;
+    const {navigation} = this.props;
     // console.log(navigation.state)
     return (
       <ScrollView style={styles.container}>
@@ -175,8 +175,8 @@ const DrawerConfigure = DrawerNavigator({
             })
 
           }),
-        // <Profile navigation={navigation} />
-        <Text>sahi</Text>
+        <Profile navigation={navigation} />
+        // <Text>sahi</Text>
       )
   })
 
