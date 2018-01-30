@@ -15,13 +15,13 @@ import {
   Button
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
 
-class FlatItem extends Component {
+export default class FlatItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,36 +29,51 @@ class FlatItem extends Component {
       favourite: 0,
     }
   }
-
   setFavourite = async (item) => {
-    console.log('truoc')
-    // let listNew=[];
-    // listNew = this.state.listFavourite.concat(item );
-    // console.log(listNew)
-    // this.setState({ listFavourite: this.state.listFavourite.concat(item), favourite: 1 });
-    // console.log(this.state.listFavourite);
-    var listFavourite=[];
-    listFavourite = this.props.listFavourite.concat(item);
-    console.log('state:',this.props.listFavourite);
-    console.log('mang:',this.props.listFavourite);
+    item['favourite'] = true;
+    var listNew = [];
+    console.log(item)
+    listNew = this.state.listFavourite.concat(item);
+
+    console.log('listNew:', listNew);
     try {
-      await AsyncStorage.setItem('@MyListFavourite',JSON.stringify(listFavourite));
-      console.log('sau');
-      this.setState({favourite:1})
+      await this.setState({ listFavourite: listNew, favourite: 1 });
+      await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
+      console.log('da load du lieu');
+      console.log('state:', this.state.listFavourite);
     } catch (error) {
       // Error saving data
     }
   }
+  getFavourite = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@MyListFavourite');
+      if (value !== null) {
+        this.setState({ listFavourite: JSON.parse(value) });
+      } else {
+        console.log('dont have data');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
 
-  
+  // componentDidMount() {
+  //   this.getFavourite();
+  // }
+  // componentWillUpdate() {
+  //   this.getFavourite();
+  // }
 
   render() {
-    const { listFavourite } = this.props;
-    alert(JSON.stringify(listFavourite));
+    // const { listFavourite } = this.props;
+    // console.log(JSON.stringify(listFavourite));
+    const { item } = this.props;
     return (
-      <TouchableOpacity 
-      onPress={()=>this.props.navigation.navigate('DetailMovie', {item})}
-      style={styles.container}>
+      <TouchableOpacity
+        onPress={() => this.props.navigation.navigate('DetailMovie', { item })}
+        style={styles.container}>
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <TouchableOpacity
@@ -99,12 +114,12 @@ class FlatItem extends Component {
     );
   }
 }
-function mapStateToProps(state){
-  return{
-    listFavourite: state.listFavourite,
-  }
-}
-export default connect(mapStateToProps)(FlatItem);
+// function mapStateToProps(state){
+//   return{
+//     listFavourite: state.listFavourite,
+//   }
+// }
+// export default connect(mapStateToProps)(FlatItem);
 
 const styles = StyleSheet.create({
   container: {

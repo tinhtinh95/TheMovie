@@ -48,10 +48,9 @@ export default class Profile extends Component {
     this.state = {
       name: 'Tina',
       birthDay: '1995-07-12',
-
       email: 'nttinh995@gmail.com',
       value: 0,
-      avartarSource: '',
+      avartarSource: null ,
       isDateTimePickerVisible: false,
     }
   }
@@ -117,14 +116,16 @@ export default class Profile extends Component {
     console.log("load sau didmount", this.state.avartarSource);
     getInfo()
       .then(myInfo => {
-        // console.log('avatar: ',myInfo.avatar);
-        this.setState({
-          name: myInfo.name,
-          birthDay: myInfo.birthDay,
-          email: myInfo.email,
-          value: myInfo.gender,
-          avartarSource: myInfo.avatar
-        })
+        if(JSON.stringify(myInfo) != JSON.stringify([])){
+          this.setState({
+            name: myInfo.name,
+            birthDay: myInfo.birthDay,
+            email: myInfo.email,
+            value: myInfo.gender,
+            avartarSource: myInfo.avatar
+          })
+        }
+        
       })
       ;
   }
@@ -166,10 +167,12 @@ export default class Profile extends Component {
         <TouchableOpacity
           onPress={this.show}
           style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
-          {this.state.avartarSource === '' ? <Image
+          {this.state.avartarSource === null ? 
+          <Image
             style={{ height: 200, width: 200, borderRadius: 50 }}
             source={require('../../images/smile.png')}
-          /> :
+          /> 
+          :
             <Image
               style={{ height: 200, width: 200, borderRadius: 100 }}
               source={this.state.avartarSource}

@@ -75,8 +75,22 @@ const StackConfigure=StackNavigator({
   // Reminder:{screeen: Reminder},
   Filter:{screen:Filter},
 })
-
-export default StackConfigure;
+export default class Settings extends React.Component{
+  static navigationOptions = {
+    tabBarLabel: 'Settings',
+    tabBarIcon: ({ tintColor }) => (
+      <Image
+        source={require('../../images/setting.png')}
+        style={[styles.icon, { tintColor: tintColor }]}
+      />
+    ),
+  };
+  render(){
+    return(
+      <StackConfigure/>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   icon: {

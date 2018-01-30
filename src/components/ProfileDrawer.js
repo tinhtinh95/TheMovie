@@ -40,19 +40,20 @@ class Profile extends React.Component {
   componentWillUpdate() {
     getInfo()
       .then(myInfo => {
-        this.setState({
-          name: myInfo.name,
-          birthDay: myInfo.birthDay,
-          email: myInfo.email,
-          value: myInfo.gender,
-          avartarSource: myInfo.avatar
-        })
+        if(JSON.stringify(myInfo) != JSON.stringify([])){
+          this.setState({
+            name: myInfo.name,
+            birthDay: myInfo.birthDay,
+            email: myInfo.email,
+            value: myInfo.gender,
+            avartarSource: myInfo.avatar
+          })
+        }
       })
       ;
   }
   render() {
-    const {navigation} = this.props;
-    // console.log(navigation.state)
+    const { navigation } = this.props;
     return (
       <ScrollView style={styles.container}>
         <TouchableOpacity style={styles.avatar}>
@@ -62,10 +63,6 @@ class Profile extends React.Component {
               style={styles.avatarImage}
               source={require('../images/smile.png')}
             />
-            // <Image
-            //     style={{ height: 200, width: 200, borderRadius: 50 }}
-            //     source={require('../../images/smile.png')}
-            //   /> 
             :
             <Image
               style={{ height: 200, width: 200, borderRadius: 100 }}
@@ -74,14 +71,13 @@ class Profile extends React.Component {
 
 
         </TouchableOpacity>
-        {/* <Text style={styles.textName}>{this.props.navigation.state.params.myInfo}</Text> */}
-        {/* <Text style={styles.textName}>{navigation.state.params.myInfo}</Text> */}
+        <Text style={styles.textName}>{this.state.name}</Text>
         <View style={styles.infor}>
           <Image
             style={styles.imageInfor}
             source={require('../images/birthdayCake.png')}
           />
-          <Text style={styles.fontText}>{this.state.name}</Text>
+          <Text style={styles.fontText}>{this.state.birthDay}</Text>
         </View>
         <View style={styles.infor}>
           <Image
@@ -95,10 +91,10 @@ class Profile extends React.Component {
             style={styles.imageInfor}
             source={require('../images/male.png')}
           />
-          {this.state.value=== 0 ? <Text style={styles.fontText}>Male</Text> 
-        :
-        <Text style={styles.fontText}>Female</Text> 
-        }
+          {this.state.value === 0 ? <Text style={styles.fontText}>Male</Text>
+            :
+            <Text style={styles.fontText}>Female</Text>
+          }
         </View>
         <TouchableOpacity
           onPress={() => { navigation.navigate('EditProfile') }}
@@ -126,26 +122,6 @@ class Profile extends React.Component {
           <Text style={styles.txtEdit}>Show All</Text>
         </TouchableOpacity>
         <Text style={{ fontSize: 15, alignSelf: 'center' }}>CopyRight@Enclave 2017</Text>
-
-
-        {/* <DrawerItems
-        {...props}
-        getLabel={(scene) => (
-          <View style={{
-            backgroundColor: 'white',
-            borderWidth: 1,
-            borderColor: 'pink',
-            padding: 10,
-            margin: 10,
-            width: '90%',
-            borderRadius: 10,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <Text style={styles.buttonText}>{props.getLabel(scene)}</Text>
-          </View>
-        )}
-      /> */}
       </ScrollView>
     )
   }
@@ -165,19 +141,7 @@ const DrawerConfigure = DrawerNavigator({
     drawerBackgroundColor: '#b7ffef',
     drawerWidth: width * 0.9,
     useNativeAnimations: true,
-    contentComponent: ({ navigation }) =>
-      (
-        // console.log('navigation:', navigation),
-        getInfo()
-          .then(myInfo => {
-            navigation.setParams({
-              myInfo: "myInfo",
-            })
-
-          }),
-        <Profile navigation={navigation} />
-        // <Text>sahi</Text>
-      )
+    contentComponent: ({ navigation }) => <Profile navigation={navigation} />
   })
 
 export default DrawerConfigure;

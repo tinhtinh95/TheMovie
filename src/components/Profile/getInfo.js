@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 const getInfo = async () => {
     try {
+      // await AsyncStorage.clear();
       const value = await AsyncStorage.getItem('@MyProfile');
       if (value !== null) {
         var myInfo = JSON.parse(value);

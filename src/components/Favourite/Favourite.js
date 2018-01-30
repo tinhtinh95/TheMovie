@@ -18,7 +18,7 @@ import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 
 
-class Favourite extends Component {
+export default class Favourite extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,14 +29,9 @@ class Favourite extends Component {
   getFavourite = async () => {
     try {
       const value = await AsyncStorage.getItem('@MyListFavourite');
-      alert("getttt");
       if (value !== null) {
-        alert(JSON.stringify(value));
         console.log(JSON.parse(value));
         this.setState({ listFavourite: JSON.parse(value) });
-
-        // return JSON.parse(value);
-        // console.log(value)
       } else {
         console.log('dont have data');
         return [];
@@ -45,9 +40,14 @@ class Favourite extends Component {
       return [];
     }
   }
+
   // componentDidMount(){
-  //   this.getFavourite;
+  //   this.getFavourite();
   // }
+  // componentWillUpdate(){
+  //   this.getFavourite();
+  // }
+ 
 
   static navigationOptions = {
     tabBarLabel: 'Favourites',
@@ -62,13 +62,13 @@ class Favourite extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button title="click"
+        {/* <Button title="click"
           onPress={() => this.getFavourite()}
-        />
+        /> */}
         <FlatList
           //  refreshing={false}
           //  onRefresh={()=>this._onRefresh(this.state.page)}
-          data={this.props.listFavourite}
+          data={this.state.listFavourite}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => <FavouriteItem item={item} />
           }
@@ -77,13 +77,13 @@ class Favourite extends Component {
     );
   }
 }
-function mapStateToProps(state) {
-  return {
-    listFavourite: state.listFavourite,
-  }
-}
+// function mapStateToProps(state) {
+//   return {
+//     listFavourite: state.listFavourite,
+//   }
+// }
 
-export default connect(mapStateToProps)(Favourite);
+// export default connect(mapStateToProps)(Favourite);
 
 const styles = StyleSheet.create({
   container: {
