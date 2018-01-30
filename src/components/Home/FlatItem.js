@@ -32,15 +32,14 @@ export default class FlatItem extends Component {
   setFavourite = async (item) => {
     item['favourite'] = true;
     var listNew = [];
-    console.log(item)
+    console.log(item);
     listNew = this.state.listFavourite.concat(item);
-
+    console.log('state ban dau:',this.state.listFavourite)
     console.log('listNew:', listNew);
     try {
       await this.setState({ listFavourite: listNew, favourite: 1 });
       await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
-      console.log('da load du lieu');
-      console.log('state:', this.state.listFavourite);
+      console.log('state sau khi load', this.state.listFavourite);
     } catch (error) {
       // Error saving data
     }
@@ -62,9 +61,9 @@ export default class FlatItem extends Component {
   // componentDidMount() {
   //   this.getFavourite();
   // }
-  // componentWillUpdate() {
-  //   this.getFavourite();
-  // }
+  componentWillUpdate() {
+    this.getFavourite();
+  }
 
   render() {
     // const { listFavourite } = this.props;

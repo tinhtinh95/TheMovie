@@ -12,7 +12,7 @@ import {
   Image,
   Dimensions,
   FlatList,
-  Button, TouchableOpacity, ScrollView, RefreshControl
+  Button, TouchableOpacity, ScrollView, RefreshControl,AsyncStorage
 } from 'react-native';
 import FlatItem from './FlatItem';
 const { height, width } = Dimensions.get('window');
@@ -57,11 +57,27 @@ class Popular extends Component {
     this.props.fetchData("popular", this.state.page);
   }
 
+  getFavourite = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@MyListFavourite');
+      if (value !== null) {
+        this.setState({ listFavourite: JSON.parse(value) });
+        console.log('data: ', value);
+      } else {
+        console.log('dont have data');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+
   render() {
 
     return (
       this.state.isGridList ?
         <View style={styles.container}>
+        <Button title="click to see" onPress={() => this.getFavourite()}/>
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}
