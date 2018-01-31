@@ -32,14 +32,31 @@ export default class FlatItem extends Component {
   setFavourite = async (item) => {
     item['favourite'] = true;
     var listNew = [];
-    console.log(item);
-    listNew = this.state.listFavourite.concat(item);
-    console.log('state ban dau:',this.state.listFavourite)
-    console.log('listNew:', listNew);
+    await this.getFavourite()
+      .then(list => {
+        listNew = list
+      })
+      .catch(e => console.log(e))
+    var check = false;
+    if (JSON.stringify(listNew) === JSON.stringify([])) {
+      listNew = listNew.concat(item);
+    } else {
+      for (var i = 0; i < listNew.length; i++) {
+        if (listNew[i].id === item.id) {
+          check = false;
+          break;
+        } else {
+          check = true;
+        }
+      }
+      if (check) {
+        listNew = listNew.concat(item);
+      }
+    }
+    await console.log('listNew:', listNew);
+    await this.setState({ listFavourite: listNew });
     try {
-      await this.setState({ listFavourite: listNew, favourite: 1 });
       await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
-      console.log('state sau khi load', this.state.listFavourite);
     } catch (error) {
       // Error saving data
     }
@@ -47,8 +64,9 @@ export default class FlatItem extends Component {
   getFavourite = async () => {
     try {
       const value = await AsyncStorage.getItem('@MyListFavourite');
+      // await console.log('value: ', value);
       if (value !== null) {
-        this.setState({ listFavourite: JSON.parse(value) });
+        return JSON.parse(value);
       } else {
         console.log('dont have data');
         return [];
@@ -57,12 +75,11 @@ export default class FlatItem extends Component {
       return [];
     }
   }
-
-  // componentDidMount() {
-  //   this.getFavourite();
-  // }
-  componentWillUpdate() {
-    this.getFavourite();
+  componentDidMount() {
+    const { item } = this.props;
+    if (item.id) {
+      this.setState({ favourite: 1 })
+    }
   }
 
   render() {
@@ -75,17 +92,61 @@ export default class FlatItem extends Component {
         style={styles.container}>
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
-          <TouchableOpacity
-            onPress={() => this.setFavourite(item)}
-          >
-            {this.state.favourite === 0 ? <Image
-              style={styles.icon}
-              source={require('../../images/nonStar.png')}
-            /> : <Image
-                style={styles.icon}
-                source={require('../../images/fullStar.png')}
-              />}
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity onPress={() => this.setFavourite(item)}>
+              {this.state.favourite === 0
+                ?
+                <Image
+                  style={styles.icon}
+                  source={require('../../images/nonStar.png')}
+                />
+                :
+                <Image
+                  style={styles.icon}
+                  source={require('../../images/fullStar.png')}
+                />
+              }
+            </TouchableOpacity>
+            {/* {(JSON.stringify(this.state.listFavourite) !== JSON.stringify([])) ?
+              <TouchableOpacity
+                onPress={() => this.setFavourite(item)}
+              >
+                {
+                  item.favourite
+                    ?
+                    // console.log(item)
+                    // console.log('true')
+                    <Image
+                      style={styles.icon}
+                      source={require('../../images/fullStar.png')}
+                    />
+                    :
+                    // console.log('false')
+                    <Image
+                      style={styles.icon}
+                      source={require('../../images/nonStar.png')}
+                    />
+                }
+
+                <Image
+                  style={styles.icon}
+                  source={require('../../images/nonStar.png')}
+                />
+              </TouchableOpacity>
+              :
+
+              <TouchableOpacity
+                onPress={() => this.setFavourite(item)}
+              >
+                <Image
+                  style={styles.icon}
+                  source={require('../../images/nonStar.png')}
+                />
+              </TouchableOpacity>
+
+            } */}
+          </View>
+
         </View>
         <View style={styles.bellow}>
           <Image

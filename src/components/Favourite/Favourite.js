@@ -30,23 +30,24 @@ export default class Favourite extends Component {
     try {
       const value = await AsyncStorage.getItem('@MyListFavourite');
       if (value !== null) {
-        console.log(JSON.parse(value));
+        // console.log(JSON.parse(value));
         this.setState({ listFavourite: JSON.parse(value) });
       } else {
         console.log('dont have data');
-        return [];
+        this.setState({ listFavourite: JSON.parse(value) });
+        // return [];
       }
     } catch (error) {
       return [];
     }
   }
 
-  // componentDidMount(){
-  //   this.getFavourite();
-  // }
-  // componentWillUpdate(){
-  //   this.getFavourite();
-  // }
+  componentDidMount(){
+    this.getFavourite();
+  }
+  componentWillUpdate(){
+    this.getFavourite();
+  }
  
 
   static navigationOptions = {

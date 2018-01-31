@@ -71,13 +71,16 @@ class Popular extends Component {
       return [];
     }
   }
+  clearAsync=async()=>{
+    AsyncStorage.clear();
+  }
 
   render() {
 
     return (
       this.state.isGridList ?
         <View style={styles.container}>
-        <Button title="click to see" onPress={() => this.getFavourite()}/>
+        <Button title="click to see" onPress={() => this.clearAsync()}/>
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}
