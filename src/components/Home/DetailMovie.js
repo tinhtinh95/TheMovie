@@ -15,11 +15,44 @@ import {
   Button, ScrollView, FlatList, KeyboardAvoidingView
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
-
-
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
 
+var PushNotification = require('react-native-push-notification');
+
+class Push extends Component {
+  constructor(props) {
+    super(props);
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    this.state = {
+      seconds: 5,
+    };
+  }
+  componentDidMount() {
+    PushNotification.configure({
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+        notification.finish(PushNotificationIOS.FetchResult.NoData);
+      },
+      senderID: "YOUR GCM SENDER ID",
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
+  }
+  render() {
+    return (
+      null
+    )
+  }
+}
 export default class DetailMovie extends Component {
 
   constructor(props) {
@@ -30,25 +63,25 @@ export default class DetailMovie extends Component {
       listCast: []
     }
   }
-  
+
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     let header = (
       <View style={styles.containerHeader}>
         <TouchableOpacity
-        style={{flexDirection:'row',}}
-          onPress={() => { navigation.goBack()}}
+          style={{ flexDirection: 'row', }}
+          onPress={() => { navigation.goBack() }}
         >
           <Image source={require('../../images/stepBack.png')}
             style={styles.iconHeader}
           />
-          <Text style={[styles.titleHeader,{alignSelf:'center'}]}>Back</Text>
+          <Text style={[styles.titleHeader, { alignSelf: 'center' }]}>Back</Text>
         </TouchableOpacity>
-        
+
         <Text style={[styles.titleHeader,
-          {
-            alignItems:'center',alignContent:'center'
-          }]}>{params.item.title}</Text>
+        {
+          alignItems: 'center', alignContent: 'center'
+        }]}>{params.item.title}</Text>
         <Text></Text>
       </View>
     )
@@ -70,18 +103,23 @@ export default class DetailMovie extends Component {
         console.log(resJson.cast);
         this.setState({ listCast: resJson.cast })
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
+    AppState.addEventListener('change', this.handleAppStateChange);
   }
 
-  // listCast = (id) => {
-  //   fetch(`https://api.themoviedb.org/3/movie/${id}/credits`)
-  //     .then(res => res.json())
-  //     .then(resJson => {
-  //       console.log(resJson.cast);
-  //       this.setState({ listCast: resJson.cast })
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+  handleAppStateChange(appState) {
+    if (appState === 'background') {
+      let date = new Date(Date.now() + (this.state.seconds * 1000));
+      console.log(date)
+      PushNotification.localNotificationSchedule({
+        message: "My Notification Message",
+        date,
+      });
+    }
+  }
 
   render() {
     const { params } = this.props.navigation.state;
@@ -148,6 +186,52 @@ export default class DetailMovie extends Component {
     );
   }
 }
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    this.state = {
+      seconds: 5,
+    };
+  }
+  componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange);
+  }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+  handleAppStateChange(appState) {
+    if (appState === 'background') {
+      let date = new Date(Date.now() + (this.state.seconds * 1000));
+      console.log(date)
+      PushNotification.localNotificationSchedule({
+        message: "My Notification Message",
+        date,
+      });
+    }
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          Choose your notification time in seconds.
+          </Text>
+        <Picker
+          style={styles.picker}
+          selectedValue={this.state.seconds}
+          onValueChange={(seconds) => this.setState({ seconds })}
+        >
+          <Picker.Item label="5" value={5} />
+          <Picker.Item label="10" value={10} />
+          <Picker.Item label="15" value={15} />
+        </Picker>
+        <Push />
+      </View>
+    );
+  }
+}
+
 
 
 

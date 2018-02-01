@@ -11,7 +11,9 @@ import {
   View,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
+  Alert
 } from 'react-native';
 
 
@@ -19,6 +21,55 @@ const { height, width } = Dimensions.get('window');
 const uri = "http://image.tmdb.org/t/p/w185";
 
 export default class FlatItem extends Component {
+  getFavourite = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@MyListFavourite');
+      if (value !== null) {
+        return JSON.parse(value);
+      } else {
+        console.log('dont have data');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+  removeFavourite = async () => {
+    const { item } = this.props;
+    var listNew = []
+    await this.getFavourite()
+      .then(list => {
+        console.log(list)
+        if (item.favourite) {
+          console.log(item.favourite)
+          list = list.filter(
+            function (e) {
+              return e.id !== item.id;
+            })
+          listNew = list;
+        }
+      })
+    await console.log(listNew);
+    await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
+  }
+  AlertRemoveFavourite = () => {
+    Alert.alert(
+      'Warning',
+      'Do you want to delete this favourite film',
+      [
+        {
+          text: 'Cancel', onPress: () => console.log('Cancel')
+          , style: 'cancel'
+        },
+        {
+          text: 'OK', onPress: () => {
+            this.removeFavourite();
+          }
+        },
+      ],
+      { cancelable: false }
+    )
+  }
   render() {
     const { item } = this.props;
     return (
@@ -26,11 +77,11 @@ export default class FlatItem extends Component {
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <TouchableOpacity
-            // onPress={}
+            onPress={() => this.AlertRemoveFavourite()}
           >
             <Image
               style={styles.icon}
-              source={require('../../images/nonStar.png')}
+              source={require('../../images/fullStar.png')}
             />
           </TouchableOpacity>
         </View>

@@ -71,12 +71,11 @@ class Popular extends Component {
       return [];
     }
   }
+
   clearAsync=async()=>{
     AsyncStorage.clear();
   }
-
   render() {
-
     return (
       this.state.isGridList ?
         <View style={styles.container}>

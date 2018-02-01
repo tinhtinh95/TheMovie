@@ -16,14 +16,22 @@ import {
 import FavouriteItem from './FavouriteItem';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
+import DetailMovie from '../Home/DetailMovie';
+import Header from '../Header/Header';
+import {StackNavigator} from 'react-navigation';
 
 
-export default class Favourite extends Component {
+class Favourite extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listFavourite: []
     }
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    let header = (<Header navigation={navigation} titleHeader={'Favourite'} />)
+    return { header }
   }
 
   getFavourite = async () => {
@@ -78,13 +86,18 @@ export default class Favourite extends Component {
     );
   }
 }
-// function mapStateToProps(state) {
-//   return {
-//     listFavourite: state.listFavourite,
-//   }
-// }
+const StackConfigure = StackNavigator({
+  Favourite: {
+    screen: Favourite ,
+  },
+  DetailMovie: {
+    screen: DetailMovie,
+  }
+}, {
 
-// export default connect(mapStateToProps)(Favourite);
+  })
+
+ export default StackConfigure;
 
 const styles = StyleSheet.create({
   container: {

@@ -12,7 +12,8 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
@@ -29,36 +30,77 @@ export default class FlatItem extends Component {
       favourite: 0,
     }
   }
-  setFavourite = async (item) => {
-    item['favourite'] = true;
-    var listNew = [];
+
+  removeFavourite = async () => {
+    const { item } = this.props;
+    var listNew = []
     await this.getFavourite()
       .then(list => {
-        listNew = list
+        console.log(list)
+        if (item.favourite) {
+          console.log(item.favourite)
+          list = list.filter(
+            function (e) {
+              return e.id !== item.id;
+            })
+          listNew = list;
+        }
       })
-      .catch(e => console.log(e))
-    var check = false;
-    if (JSON.stringify(listNew) === JSON.stringify([])) {
-      listNew = listNew.concat(item);
+    await console.log(listNew);
+    await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
+  }
+
+  setFavourite = async (item) => {
+    if (item.favourite) {
+      Alert.alert(
+        'Warning',
+        'Do you want to delete this favourite film',
+        [
+          {
+            text: 'Cancel', onPress: () => console.log('Cancel')
+            , style: 'cancel'
+          },
+          {
+            text: 'OK', onPress: () => {
+              this.removeFavourite();
+              this.setState({ favourite: 0 })
+            }
+          },
+        ],
+        { cancelable: false }
+      )
     } else {
-      for (var i = 0; i < listNew.length; i++) {
-        if (listNew[i].id === item.id) {
-          check = false;
-          break;
-        } else {
-          check = true;
+      item['favourite'] = true;
+      var listNew = [];
+      await this.getFavourite()
+        .then(list => {
+          listNew = list
+        })
+        .catch(e => console.log(e))
+      var check = false;
+      if (JSON.stringify(listNew) === JSON.stringify([])) {
+        listNew = listNew.concat(item);
+      } else {
+        for (var i = 0; i < listNew.length; i++) {
+          if (listNew[i].id === item.id) {
+            check = false;
+            break;
+          } else {
+            check = true;
+          }
+        }
+        if (check) {
+          listNew = listNew.concat(item);
         }
       }
-      if (check) {
-        listNew = listNew.concat(item);
+      await console.log('listNew:', listNew);
+      await this.setState({ listFavourite: listNew });
+      try {
+        await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
+      } catch (error) {
+        // Error saving data
       }
-    }
-    await console.log('listNew:', listNew);
-    await this.setState({ listFavourite: listNew });
-    try {
-      await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
-    } catch (error) {
-      // Error saving data
+      this.checkFavourite();
     }
   }
   getFavourite = async () => {
@@ -76,8 +118,27 @@ export default class FlatItem extends Component {
     }
   }
   componentDidMount() {
+    this.checkFavourite();
+  }
+  
+  checkFavourite = () => {
     const { item } = this.props;
-    if (item.id) {
+    var check = false;
+    this.getFavourite()
+      .then(list => {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          this.setState({ favourite: 1 })
+        }
+      })
+    if (item.favourite) {
       this.setState({ favourite: 1 })
     }
   }
@@ -107,44 +168,6 @@ export default class FlatItem extends Component {
                 />
               }
             </TouchableOpacity>
-            {/* {(JSON.stringify(this.state.listFavourite) !== JSON.stringify([])) ?
-              <TouchableOpacity
-                onPress={() => this.setFavourite(item)}
-              >
-                {
-                  item.favourite
-                    ?
-                    // console.log(item)
-                    // console.log('true')
-                    <Image
-                      style={styles.icon}
-                      source={require('../../images/fullStar.png')}
-                    />
-                    :
-                    // console.log('false')
-                    <Image
-                      style={styles.icon}
-                      source={require('../../images/nonStar.png')}
-                    />
-                }
-
-                <Image
-                  style={styles.icon}
-                  source={require('../../images/nonStar.png')}
-                />
-              </TouchableOpacity>
-              :
-
-              <TouchableOpacity
-                onPress={() => this.setFavourite(item)}
-              >
-                <Image
-                  style={styles.icon}
-                  source={require('../../images/nonStar.png')}
-                />
-              </TouchableOpacity>
-
-            } */}
           </View>
 
         </View>

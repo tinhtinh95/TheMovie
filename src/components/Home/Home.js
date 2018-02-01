@@ -26,7 +26,6 @@ const StackConfigure = StackNavigator({
   },
   DetailMovie: {
     screen: DetailMovie,
-    header:<Text>ahihi</Text>
   }
 }, {
 
