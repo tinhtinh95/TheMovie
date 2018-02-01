@@ -121,6 +121,7 @@ export default class FlatItem extends Component {
     this.checkFavourite();
   }
   
+  
   checkFavourite = () => {
     const { item } = this.props;
     var check = false;
@@ -144,8 +145,6 @@ export default class FlatItem extends Component {
   }
 
   render() {
-    // const { listFavourite } = this.props;
-    // console.log(JSON.stringify(listFavourite));
     const { item } = this.props;
     return (
       <TouchableOpacity
@@ -155,7 +154,7 @@ export default class FlatItem extends Component {
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <View>
             <TouchableOpacity onPress={() => this.setFavourite(item)}>
-              {this.state.favourite === 0
+              {item.favourite
                 ?
                 <Image
                   style={styles.icon}

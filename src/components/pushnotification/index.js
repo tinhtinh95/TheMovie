@@ -85,11 +85,7 @@ const styles = StyleSheet.create({
   export default class App extends Component {
     constructor(props) {
       super(props);
-  
       this.handleAppStateChange = this.handleAppStateChange.bind(this);
-      this.state = {
-        seconds: 5,
-      };
     }
   
     componentDidMount() {
@@ -102,7 +98,7 @@ const styles = StyleSheet.create({
   
     handleAppStateChange(appState) {
       if (appState === 'background') {
-        let date = new Date(Date.now() + (this.state.seconds * 1000));
+        let date = new Date(Date.now() + (5 * 1000));
         console.log(date)
   
         // if (Platform.OS === 'ios') {
@@ -123,15 +119,15 @@ const styles = StyleSheet.create({
           <Text style={styles.welcome}>
             Choose your notification time in seconds.
           </Text>
-          <Picker
+          {/* <Picker
             style={styles.picker}
-            selectedValue={this.state.seconds}
-            onValueChange={(seconds) => this.setState({ seconds })}
+            selectedValue={5}
+            // onValueChange={(seconds) => this.setState({ seconds })}
           >
             <Picker.Item label="5" value={5} />
             <Picker.Item label="10" value={10} />
             <Picker.Item label="15" value={15} />
-          </Picker>
+          </Picker> */}
           <Push />
         </View>
       );

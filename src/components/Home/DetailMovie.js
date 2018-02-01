@@ -11,8 +11,8 @@ import {
   View,
   Image,
   Dimensions,
-  TouchableOpacity,
-  Button, ScrollView, FlatList, KeyboardAvoidingView
+  TouchableOpacity, AppState,
+  Button, ScrollView, FlatList, KeyboardAvoidingView, PushNotificationIOS
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
@@ -21,13 +21,6 @@ const uri = "https://image.tmdb.org/t/p/w185";
 var PushNotification = require('react-native-push-notification');
 
 class Push extends Component {
-  constructor(props) {
-    super(props);
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
-    this.state = {
-      seconds: 5,
-    };
-  }
   componentDidMount() {
     PushNotification.configure({
       onRegister: function (token) {
@@ -54,16 +47,15 @@ class Push extends Component {
   }
 }
 export default class DetailMovie extends Component {
-
   constructor(props) {
     super(props);
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.state = {
       listFavourite: [],
       favourite: 0,
-      listCast: []
+      listCast: [],
     }
   }
-
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     let header = (
@@ -87,14 +79,8 @@ export default class DetailMovie extends Component {
     )
     return { header }
   }
-
-  // static navigationOptions = {
-  //   // title: 'DetailMovie',
-
-  // }
-
-
   componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange);
     const { params } = this.props.navigation.state;
     console.log('params: ', params.item.id);
     fetch(`https://api.themoviedb.org/3/movie/${params.item.id}/credits?api_key=0267c13d8c7d1dcddb40001ba6372235`)
@@ -104,15 +90,16 @@ export default class DetailMovie extends Component {
         this.setState({ listCast: resJson.cast })
       })
       .catch(err => console.log(err));
-    AppState.addEventListener('change', this.handleAppStateChange);
   }
-
+  // componentDidMount() {
+  //   AppState.addEventListener('change', this.handleAppStateChange);
+  // }
   componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
   handleAppStateChange(appState) {
     if (appState === 'background') {
-      let date = new Date(Date.now() + (this.state.seconds * 1000));
+      let date = new Date(Date.now() + (10 * 1000));
       console.log(date)
       PushNotification.localNotificationSchedule({
         message: "My Notification Message",
@@ -120,11 +107,11 @@ export default class DetailMovie extends Component {
       });
     }
   }
-
   render() {
     const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
+      <Push />
         <View style={styles.above}>
           <TouchableOpacity>
             <Image
@@ -187,50 +174,50 @@ export default class DetailMovie extends Component {
   }
 }
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
-    this.state = {
-      seconds: 5,
-    };
-  }
-  componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
-  }
-  componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
-  }
-  handleAppStateChange(appState) {
-    if (appState === 'background') {
-      let date = new Date(Date.now() + (this.state.seconds * 1000));
-      console.log(date)
-      PushNotification.localNotificationSchedule({
-        message: "My Notification Message",
-        date,
-      });
-    }
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Choose your notification time in seconds.
-          </Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={this.state.seconds}
-          onValueChange={(seconds) => this.setState({ seconds })}
-        >
-          <Picker.Item label="5" value={5} />
-          <Picker.Item label="10" value={10} />
-          <Picker.Item label="15" value={15} />
-        </Picker>
-        <Push />
-      </View>
-    );
-  }
-}
+// class App extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleAppStateChange = this.handleAppStateChange.bind(this);
+//     this.state = {
+//       seconds: 5,
+//     };
+//   }
+//   componentDidMount() {
+//     AppState.addEventListener('change', this.handleAppStateChange);
+//   }
+//   componentWillUnmount() {
+//     AppState.removeEventListener('change', this.handleAppStateChange);
+//   }
+//   handleAppStateChange(appState) {
+//     if (appState === 'background') {
+//       let date = new Date(Date.now() + (this.state.seconds * 1000));
+//       console.log(date)
+//       PushNotification.localNotificationSchedule({
+//         message: "My Notification Message",
+//         date,
+//       });
+//     }
+//   }
+//   render() {
+//     return (
+//       <View style={styles.container}>
+//         <Text style={styles.welcome}>
+//           Choose your notification time in seconds.
+//           </Text>
+//         <Picker
+//           style={styles.picker}
+//           selectedValue={this.state.seconds}
+//           onValueChange={(seconds) => this.setState({ seconds })}
+//         >
+//           <Picker.Item label="5" value={5} />
+//           <Picker.Item label="10" value={10} />
+//           <Picker.Item label="15" value={15} />
+//         </Picker>
+//         <Push />
+//       </View>
+//     );
+//   }
+// }
 
 
 
