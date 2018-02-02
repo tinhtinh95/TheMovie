@@ -1,1 +1,2 @@
 export const GET_POPULAR="GET_POPULAR";
+export const ADD_FAVOURITE="ADD_FAVOURITE";

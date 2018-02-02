@@ -8,14 +8,14 @@ function getPopular(data) {
 
     }
 }
-export function fetchData(name,page) {
+export function fetchData(name, page) {
     return (dispatch) => {
-        API.getList(name,page).then((data) => {
+        API.getList(name, page).then((data) => {
             if (name === 'popular') {
                 // alert(page)
                 dispatch(getPopular(data));
-            // } else if (name === 'product') {
-            //     dispatch(getDataProduct(data));
+                // } else if (name === 'product') {
+                //     dispatch(getDataProduct(data));
             }
 
         })
@@ -23,3 +23,10 @@ export function fetchData(name,page) {
     }
 
 }
+// export function addFavourite(data) {
+//     return {
+//         type: types.ADD_FAVOURITE,
+//         payload: data,
+
+//     }
+// }

@@ -17,6 +17,7 @@ import {
 import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
+import { AlertRemoveFavourite} from '../../actions/favourite';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -113,7 +114,9 @@ export default class DetailMovie extends Component {
       <View style={styles.container}>
       <Push />
         <View style={styles.above}>
-          <TouchableOpacity>
+          <TouchableOpacity
+          
+          >
             <Image
               style={styles.icon}
               source={require('../../images/nonStar.png')} />

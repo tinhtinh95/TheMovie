@@ -57,21 +57,6 @@ class Popular extends Component {
     this.props.fetchData("popular", this.state.page);
   }
 
-  getFavourite = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@MyListFavourite');
-      if (value !== null) {
-        this.setState({ listFavourite: JSON.parse(value) });
-        console.log('data: ', value);
-      } else {
-        console.log('dont have data');
-        return [];
-      }
-    } catch (error) {
-      return [];
-    }
-  }
-
   clearAsync=async()=>{
     AsyncStorage.clear();
   }
