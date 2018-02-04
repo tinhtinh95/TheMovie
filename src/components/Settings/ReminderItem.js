@@ -17,6 +17,7 @@ import {
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import Swipeout from 'react-native-swipeout';
+import { deleteReminder } from '../../databases/Schemas';
 
 
 const { height, width } = Dimensions.get('window');
@@ -55,7 +56,9 @@ export default class ReminderItem extends Component {
                 {
                   text: 'YES', onPress: () => {
                     console.log('Cancel Pressed');
-                    this.props.imageDemo.splice(this.props.index,1);
+                    deleteReminder(deletingRow).then().catch(error => {
+                      alert(`Failed to delete Reminder with id = ${deletingRow}, error=${error}`);
+                    })
                     this.props.parentFlatList.refreshFlatList(deletingRow)
                   }
 
@@ -71,6 +74,7 @@ export default class ReminderItem extends Component {
       sectionId: 1
     };
     const { item } = this.props;
+    var date = item.time_reminder.getFullYear() + "-" + item.time_reminder.getMonth() + 1 + "-" + item.time_reminder.getDate();
     return (
       <Swipeout style={{ backgroundColor: 'white' }} {...swipeoutSetting} >
         <View style={{
@@ -83,11 +87,11 @@ export default class ReminderItem extends Component {
         }}>
           <Image
             style={{ marginRight: 10, height: height / 6, width: width / 3 }}
-            source={{ uri: 'https://image.tmdb.org/t/p/w185/5CGjlz2vyBhW5xHW4eNOZIdgzYq.jpg' }}
+            source={{ uri: `${uri}${item.poster_path}` }}
           />
           <View style={{}}>
-            <Text style={{}}>Overview:</Text>
-            <Text style={{ fontSize: 17 }}>...</Text>
+            <Text style={{}}>{item.title}</Text>
+            <Text style={{ fontSize: 17 }}>{date}</Text>
           </View>
           <Image
             style={{ tintColor: 'gray' }}

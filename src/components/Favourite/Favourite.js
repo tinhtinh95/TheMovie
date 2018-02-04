@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -18,15 +12,20 @@ import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import DetailMovie from '../Home/DetailMovie';
 import Header from '../Header/Header';
-import {StackNavigator} from 'react-navigation';
-
+import { StackNavigator } from 'react-navigation';
+import { getFavouriteList } from './../../databases/Schemas';
+import realm from './../../databases/Schemas';
 
 class Favourite extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listFavourite: []
-    }
+    },
+    this.reloadData();
+        realm.addListener('change', () => {
+            this.reloadData();
+        });
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -34,29 +33,16 @@ class Favourite extends Component {
     return { header }
   }
 
-  getFavourite = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@MyListFavourite');
-      if (value !== null) {
-        // console.log(JSON.parse(value));
-        this.setState({ listFavourite: JSON.parse(value) });
-      } else {
-        console.log('dont have data');
-        this.setState({ listFavourite: JSON.parse(value) });
-        // return [];
-      }
-    } catch (error) {
-      return [];
-    }
+  reloadData=()=> {
+    getFavouriteList()
+      .then(listFavourite => {
+        this.setState({ listFavourite})
+      })
+      .catch(err => {
+        this.setState({ listFavourite:[]})
+        alert(`Error${err}`)
+      })
   }
-
-  componentDidMount(){
-    this.getFavourite();
-  }
-  componentWillUpdate(){
-    this.getFavourite();
-  }
- 
 
   static navigationOptions = {
     tabBarLabel: 'Favourites',
@@ -88,7 +74,7 @@ class Favourite extends Component {
 }
 const StackConfigure = StackNavigator({
   Favourite: {
-    screen: Favourite ,
+    screen: Favourite,
   },
   DetailMovie: {
     screen: DetailMovie,
@@ -97,7 +83,7 @@ const StackConfigure = StackNavigator({
 
   })
 
- export default StackConfigure;
+export default StackConfigure;
 
 const styles = StyleSheet.create({
   container: {

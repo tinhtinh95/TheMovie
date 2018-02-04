@@ -18,7 +18,8 @@ import FlatItem from './FlatItem';
 const { height, width } = Dimensions.get('window');
 import { connect } from "react-redux";
 import { fetchData } from '../../actions/actions';
-import Header from '../Header/Header'
+import Header from '../Header/Header';
+import { deleteAllFavourites } from '../../databases/Schemas';
 
 
 const uri = "https://image.tmdb.org/t/p/w185";
@@ -57,14 +58,12 @@ class Popular extends Component {
     this.props.fetchData("popular", this.state.page);
   }
 
-  clearAsync=async()=>{
-    AsyncStorage.clear();
-  }
+
   render() {
     return (
       this.state.isGridList ?
         <View style={styles.container}>
-        <Button title="click to see" onPress={() => this.clearAsync()}/>
+         <Button title="click to see" onPress={() => deleteAllFavourites().then().catch(e => alert(e))} />
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}

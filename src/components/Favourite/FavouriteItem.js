@@ -15,12 +15,35 @@ import {
   AsyncStorage,
   Alert
 } from 'react-native';
-import {getFavourite, removeFavourite,AlertRemoveFavourite} from '../../actions/favourite';
+// import { AlertRemoveFavourite } from '../../actions/favourite';
+import { deleteFavourite } from './../../databases/Schemas';
 
 const { height, width } = Dimensions.get('window');
 const uri = "http://image.tmdb.org/t/p/w185";
 
 export default class FlatItem extends Component {
+
+  AlertRemoveFavourite = (item) => {
+    Alert.alert(
+      'Warning',
+      'Do you want to delete this favourite film',
+      [
+        {
+          text: 'Cancel', onPress: () => console.log('Cancel')
+          , style: 'cancel'
+        },
+        {
+          text: 'OK', onPress: () => {
+            deleteFavourite(item.id).then().catch(error => {
+              alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+            })
+          }
+        },
+      ],
+      { cancelable: false }
+    )
+  }
+
   render() {
     const { item } = this.props;
     return (
@@ -28,7 +51,7 @@ export default class FlatItem extends Component {
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <TouchableOpacity
-            onPress={() => AlertRemoveFavourite(item)}
+            onPress={() => this.AlertRemoveFavourite(item)}
           >
             <Image
               style={styles.icon}
@@ -104,3 +127,8 @@ const styles = StyleSheet.create({
   }
 
 });
+
+
+
+
+

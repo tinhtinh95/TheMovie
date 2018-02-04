@@ -17,7 +17,8 @@ import {
 import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
-import { AlertRemoveFavourite} from '../../actions/favourite';
+import { AlertRemoveFavourite } from '../../actions/favourite';
+import { insertNewReminder } from './../../databases/Schemas';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -108,14 +109,66 @@ export default class DetailMovie extends Component {
       });
     }
   }
+
+  setReminder = (item) => {
+    // var check = false;
+    // getFavouriteList()
+    //   .then(list => {
+    //     for (var i = 0; i < list.length; i++) {
+    //       if (list[i].id === item.id) {
+    //         check = true;
+    //         break;
+    //       } else {
+    //         check = false;
+    //       }
+    //     }
+    //     if (check) {
+    //       this.AlertRemoveFavourite(item);
+    //     } else {
+    //       const newFavourite = {
+    //         id: item.id,
+    //         title: item.title,
+    //         // vote_average: item.vote_average,
+    //         // overview: item.overview,
+    //         // release_date: item.release_date,
+    //       };
+    //       insertNewFavourite(newFavourite).then(
+    //       ).catch((error) => {
+    //         alert(`Insert new Favourite  error ${error}`);
+    //       })
+    //       this.setState({ favourite: 1 })
+
+    //     }
+    //   })
+    //   .catch(err => console.log(err))
+
+    const newReminder = {
+      id: item.id,
+      title: item.title,
+      year_release: item.release_date,
+      vote_average: item.vote_average,
+      time_reminder:new Date(),
+      poster_path: item.poster_path,
+      // vote_average: item.vote_average,
+      // overview: item.overview,
+      // release_date: item.release_date,
+    };
+    insertNewReminder(newReminder).then(
+    ).catch((error) => {
+      alert(`Insert new Reminder  error ${error}`);
+    })
+
+  }
+
+
   render() {
     const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
-      <Push />
+        <Push />
         <View style={styles.above}>
           <TouchableOpacity
-          
+
           >
             <Image
               style={styles.icon}
@@ -138,15 +191,17 @@ export default class DetailMovie extends Component {
               source={{ uri: `${uri}${params.item.poster_path}` }}
             >
             </Image>
-            <TouchableOpacity style={{
-              borderRadius: 5,
-              backgroundColor: '#b00060',
-              padding: 5,
-              width: width * 0.37,
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'center'
-            }}>
+            <TouchableOpacity
+              onPress={() =>this.setReminder(params.item)}
+              style={{
+                borderRadius: 5,
+                backgroundColor: '#b00060',
+                padding: 5,
+                width: width * 0.37,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center'
+              }}>
               <Text style={[styles.text, { color: 'white' }]}>REMINDER</Text>
             </TouchableOpacity>
           </View>
@@ -176,54 +231,6 @@ export default class DetailMovie extends Component {
     );
   }
 }
-
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.handleAppStateChange = this.handleAppStateChange.bind(this);
-//     this.state = {
-//       seconds: 5,
-//     };
-//   }
-//   componentDidMount() {
-//     AppState.addEventListener('change', this.handleAppStateChange);
-//   }
-//   componentWillUnmount() {
-//     AppState.removeEventListener('change', this.handleAppStateChange);
-//   }
-//   handleAppStateChange(appState) {
-//     if (appState === 'background') {
-//       let date = new Date(Date.now() + (this.state.seconds * 1000));
-//       console.log(date)
-//       PushNotification.localNotificationSchedule({
-//         message: "My Notification Message",
-//         date,
-//       });
-//     }
-//   }
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text style={styles.welcome}>
-//           Choose your notification time in seconds.
-//           </Text>
-//         <Picker
-//           style={styles.picker}
-//           selectedValue={this.state.seconds}
-//           onValueChange={(seconds) => this.setState({ seconds })}
-//         >
-//           <Picker.Item label="5" value={5} />
-//           <Picker.Item label="10" value={10} />
-//           <Picker.Item label="15" value={15} />
-//         </Picker>
-//         <Push />
-//       </View>
-//     );
-//   }
-// }
-
-
-
 
 const styles = StyleSheet.create({
   containerHeader: {

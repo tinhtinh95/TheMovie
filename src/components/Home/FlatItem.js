@@ -1,8 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+
 
 import React, { Component } from 'react';
 import {
@@ -17,8 +13,9 @@ import {
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import { getFavourite, removeFavourite, AlertRemoveFavourite } from '../../actions/favourite';
-import { toggleFavourite } from '../../actions/actions';
+// import { AlertRemoveFavourite } from '../../actions/favourite';
+import { insertNewFavourite, getFavouriteList,deleteFavourite } from './../../databases/Schemas';
+import realm from './../../databases/Schemas';
 
 
 const { height, width } = Dimensions.get('window');
@@ -32,49 +29,59 @@ class FlatItem extends Component {
       favourite: 0,
       item: {}
     }
+    this.reloadData();
+    realm.addListener('change', () => {
+        this.reloadData();
+    });
   }
-  setFavourite = async (item) => {
-    item['favourite'] = true;
-    var listNew = [];
-    await getFavourite()
+  reloadData=()=> {
+    getFavouriteList()
       .then(list => {
-        listNew = list
-      })
-      .catch(e => console.log(e))
-    var check = false;
-    if (JSON.stringify(listNew) === JSON.stringify([])) {
-      listNew = listNew.concat(item);
-    } else {
-      for (var i = 0; i < listNew.length; i++) {
-        if (listNew[i].id === item.id) {
-          check = false;
-          break;
-        } else {
-          check = true;
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
         }
-      }
-      if (check) {
-        listNew = listNew.concat(item);
-      }
-    }
-    await console.log('listNew:', listNew);
-    await this.setState({ listFavourite: listNew, favourite: 1 });
-    try {
-      await AsyncStorage.setItem('@MyListFavourite', JSON.stringify(listNew));
-    } catch (error) {
-      // Error saving data
-    }
-    this.checkFavourite();
+        if(check){
+          this.setState({favourite:1})
+        }else{
+          this.setState({favourite:0})
+        }
+      })
+      .catch(err=>console.log(err));
   }
-  componentDidMount() {
-    this.checkFavourite();
+  componentDidMount(){
     const { item } = this.props;
-    this.setState({ item: item })
+    this.setState({ item: item });
   }
-  checkFavourite = () => {
-    const { item } = this.props;
+  AlertRemoveFavourite = (item) => {
+    Alert.alert(
+      'Warning',
+      'Do you want to delete this favourite film',
+      [
+        {
+          text: 'Cancel', onPress: () => console.log('Cancel')
+          , style: 'cancel'
+        },
+        {
+          text: 'OK', onPress: () => {
+            deleteFavourite(item.id).then().catch(error => {
+              alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+            });
+            this.setState({ favourite: 0 })
+          }
+        },
+      ],
+      { cancelable: false }
+    )
+  }
+
+  setFavourite = (item) => {
     var check = false;
-    getFavourite()
+    getFavouriteList()
       .then(list => {
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === item.id) {
@@ -85,15 +92,29 @@ class FlatItem extends Component {
           }
         }
         if (check) {
+          this.AlertRemoveFavourite(item);
+        } else {
+          const newFavourite = {
+            id: item.id,
+            title: item.title,
+            // vote_average: item.vote_average,
+            // overview: item.overview,
+            // release_date: item.release_date,
+          };
+          insertNewFavourite(newFavourite).then(
+          ).catch((error) => {
+            alert(`Insert new Favourite  error ${error}`);
+          })
           this.setState({ favourite: 1 })
+
         }
       })
-    // if (item.favourite) {
-    //   this.setState({ favourite: 1 })
-    // }
+      .catch(err => console.log(err))
   }
+
+
   render() {
-    const { item } = this.state;
+    const { item, favourite } = this.state;
     return (
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate('DetailMovie', { item })}
@@ -101,25 +122,24 @@ class FlatItem extends Component {
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <View>
-            {this.state.favourite === 0
-              ?
-              <TouchableOpacity
-                onPress={() => this.setFavourite(item)}
-              >
+
+            <TouchableOpacity
+              onPress={() =>  this.setFavourite(item)}
+            >
+              {favourite === 0
+                ?
                 <Image
                   style={styles.icon}
                   source={require('../../images/nonStar.png')}
-                /></TouchableOpacity>
-              :
-              <TouchableOpacity
-                onPress={() => { AlertRemoveFavourite(item), this.setState({ favourite: 0 }) }}
-              >
+                />
+                :
                 <Image
                   style={styles.icon}
                   source={require('../../images/fullStar.png')}
                 />
-              </TouchableOpacity>
-            }
+              }
+            </TouchableOpacity>
+
           </View>
 
         </View>
@@ -149,12 +169,8 @@ class FlatItem extends Component {
     );
   }
 }
-function mapStateToProps(state) {
-  return {
-    isFavourite: state.isFavourite,
-  }
-}
-export default connect(mapStateToProps)(FlatItem);
+
+export default FlatItem;
 
 const styles = StyleSheet.create({
   container: {
