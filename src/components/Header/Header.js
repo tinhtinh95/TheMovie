@@ -11,7 +11,8 @@ import {
   View,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Picker
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -26,14 +27,14 @@ export default class Header extends Component {
 
 
   _toggleGridList = () => {
-    this.setState({isGrid:!this.state.isGrid});
+    this.setState({ isGrid: !this.state.isGrid });
     this.props.navigation.state.params.toggleGridList();
-    
+
   }
 
   render() {
     if (this.props.navigation.state.params !== undefined) {
-      const {toggleGridList } = this.props.navigation.state.params;
+      const { toggleGridList } = this.props.navigation.state.params;
       return (
         <View style={styles.container}>
           <TouchableOpacity
@@ -44,6 +45,16 @@ export default class Header extends Component {
             />
           </TouchableOpacity>
           <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
+          <View styele={{flex:1}}>
+            <Picker
+              style={styles.picker}
+              selectedValue={5}
+            >
+              <Picker.Item label="5" value={5} />
+              <Picker.Item label="10" value={10} />
+              <Picker.Item label="15" value={15} />
+            </Picker>
+          </View>
           <TouchableOpacity
             onPress={this._toggleGridList}
           >
