@@ -17,8 +17,8 @@ import {
 import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
-import { AlertRemoveFavourite } from '../../actions/favourite';
-import { insertNewReminder } from './../../databases/Schemas';
+import { insertNewReminder, getReminderList } from './../../databases/Schemas';
+import { AlertRemoveReminder } from '../../actions/model';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -111,53 +111,36 @@ export default class DetailMovie extends Component {
   }
 
   setReminder = (item) => {
-    // var check = false;
-    // getFavouriteList()
-    //   .then(list => {
-    //     for (var i = 0; i < list.length; i++) {
-    //       if (list[i].id === item.id) {
-    //         check = true;
-    //         break;
-    //       } else {
-    //         check = false;
-    //       }
-    //     }
-    //     if (check) {
-    //       this.AlertRemoveFavourite(item);
-    //     } else {
-    //       const newFavourite = {
-    //         id: item.id,
-    //         title: item.title,
-    //         // vote_average: item.vote_average,
-    //         // overview: item.overview,
-    //         // release_date: item.release_date,
-    //       };
-    //       insertNewFavourite(newFavourite).then(
-    //       ).catch((error) => {
-    //         alert(`Insert new Favourite  error ${error}`);
-    //       })
-    //       this.setState({ favourite: 1 })
-
-    //     }
-    //   })
-    //   .catch(err => console.log(err))
-
-    const newReminder = {
-      id: item.id,
-      title: item.title,
-      year_release: item.release_date,
-      vote_average: item.vote_average,
-      time_reminder:new Date(),
-      poster_path: item.poster_path,
-      // vote_average: item.vote_average,
-      // overview: item.overview,
-      // release_date: item.release_date,
-    };
-    insertNewReminder(newReminder).then(
-    ).catch((error) => {
-      alert(`Insert new Reminder  error ${error}`);
-    })
-
+    var check = false;
+    getReminderList()
+      .then(list => {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          AlertRemoveReminder(item.id);
+        } else {
+          const newReminder = {
+            id: item.id,
+            title: item.title,
+            year_release: item.release_date,
+            vote_average: item.vote_average,
+            time_reminder:new Date(),
+            poster: item.poster_path,
+          };
+          insertNewReminder(newReminder).then(
+          ).catch((error) => {
+            alert(`Insert new Reminder  error ${error}`);
+          })
+          AppState.addEventListener('change', this.handleAppStateChange);
+        }
+      })
+      .catch(err => console.log(err))
   }
 
 

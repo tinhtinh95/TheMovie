@@ -87,7 +87,7 @@ export default class ReminderItem extends Component {
         }}>
           <Image
             style={{ marginRight: 10, height: height / 6, width: width / 3 }}
-            source={{ uri: `${uri}${item.poster_path}` }}
+            source={{ uri: `${uri}${item.poster}` }}
           />
           <View style={{}}>
             <Text style={{}}>{item.title}</Text>

@@ -8,9 +8,9 @@ export const Favourite = {
     properties: {
         id: 'int',    // primary key
         title: { type: 'string', indexed: true },
-        vote_average: 'int',
-        overview:{ type: 'string', indexed: true },
-        release_date:{ type: 'string', indexed: true },
+        // vote_average: 'int',
+        // overview:{ type: 'string', indexed: true },
+        // release_date:{ type: 'string', indexed: true },
         // vote_count: 'int',
         // video: {type:'bool', default:false},
         // popularity:'float',
@@ -32,7 +32,7 @@ export const Reminder = {
         year_release: {type:'string', indexed:true},
         vote_average: 'int',
         time_reminder:{type:'date', optional:true},
-        poster_path:{type:'string', indexed:true},
+        // poster:{type:'string', indexed:true},
         // overview:{ type: 'string', indexed: true },
         // release_date:{ type: 'string', indexed: true },
         // vote_count: 'int',
