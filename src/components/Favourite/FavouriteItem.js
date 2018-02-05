@@ -15,11 +15,9 @@ import {
   AsyncStorage,
   Alert
 } from 'react-native';
-// import { AlertRemoveFavourite } from '../../actions/favourite';
 import { deleteFavourite } from './../../databases/Schemas';
-
 const { height, width } = Dimensions.get('window');
-const uri = "http://image.tmdb.org/t/p/w185";
+const uri = "https://image.tmdb.org/t/p/w185";
 
 export default class FlatItem extends Component {
 
@@ -43,9 +41,9 @@ export default class FlatItem extends Component {
       { cancelable: false }
     )
   }
-
   render() {
     const { item } = this.props;
+    console.log('favourite', item.poster_path);
     return (
       <View style={styles.container}>
         <View style={styles.above}>

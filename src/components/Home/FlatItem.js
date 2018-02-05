@@ -35,6 +35,7 @@ class FlatItem extends Component {
     });
   }
   reloadData=()=> {
+    const { item } = this.props;
     getFavouriteList()
       .then(list => {
         for (var i = 0; i < list.length; i++) {
@@ -97,24 +98,24 @@ class FlatItem extends Component {
           const newFavourite = {
             id: item.id,
             title: item.title,
-            // vote_average: item.vote_average,
-            // overview: item.overview,
-            // release_date: item.release_date,
+            vote_average: item.vote_average,
+            overview: item.overview,
+            release_date: item.release_date,
+            poster_path: item.poster_path,
           };
           insertNewFavourite(newFavourite).then(
           ).catch((error) => {
             alert(`Insert new Favourite  error ${error}`);
           })
           this.setState({ favourite: 1 })
-
         }
       })
       .catch(err => console.log(err))
   }
-
-
   render() {
-    const { item, favourite } = this.state;
+    const {favourite } = this.state;
+    const {item} =this.props
+    console.log(item.poster_path)
     return (
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate('DetailMovie', { item })}
@@ -122,7 +123,6 @@ class FlatItem extends Component {
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <View>
-
             <TouchableOpacity
               onPress={() =>  this.setFavourite(item)}
             >
@@ -139,9 +139,7 @@ class FlatItem extends Component {
                 />
               }
             </TouchableOpacity>
-
           </View>
-
         </View>
         <View style={styles.bellow}>
           <Image
@@ -161,9 +159,7 @@ class FlatItem extends Component {
               <Text style={styles.textRed}>Overview:</Text>
               <Text numberOfLines={3} style={{ fontSize: 17 }}>{item.overview}</Text>
             </View>
-
           </View>
-
         </View>
       </TouchableOpacity>
     );
