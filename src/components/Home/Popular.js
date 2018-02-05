@@ -12,7 +12,7 @@ import {
   Image,
   Dimensions,
   FlatList,
-  Button, TouchableOpacity, ScrollView, RefreshControl,AsyncStorage
+  Button, TouchableOpacity, ScrollView, RefreshControl, AsyncStorage
 } from 'react-native';
 import FlatItem from './FlatItem';
 const { height, width } = Dimensions.get('window');
@@ -32,8 +32,10 @@ class Popular extends Component {
       isRefresh: true,
       page: 1,
       isGridList: true,
-      numColumns: 1
+      numColumns: 1,
+      name: 'popular'
     }
+   
   }
 
   _toggleGridList = () => {
@@ -45,8 +47,18 @@ class Popular extends Component {
     return { header }
   }
 
-  componentWillMount() {
-    this.props.fetchData("popular", this.state.page);
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
+    console.log(this.state.name)
+    if (params !== undefined) {
+      console.log(params)
+      this.setState({name:params.name})
+      this.props.fetchData(params.name, this.state.page);
+    }else{
+      console.log('k co')
+      this.props.fetchData(this.state.name, this.state.page);
+    }
+    console.log(this.state.name)
     this.props.navigation.setParams({
       toggleGridList: this._toggleGridList,
     });
@@ -60,12 +72,12 @@ class Popular extends Component {
 
 
   render() {
-    const {params}=this.props.navigation.state;
-    console.log(params);
+    // console.log('params', params.name);
+    // {params==='Popular' ? console.log('ahihi'): console.log('bibi')} 
     return (
       this.state.isGridList ?
         <View style={styles.container}>
-         <Button title="click to see" onPress={() => deleteAllFavourites().then().catch(e => alert(e))} />
+          <Button title="click to see" onPress={() => deleteAllFavourites().then().catch(e => alert(e))} />
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}
@@ -76,13 +88,13 @@ class Popular extends Component {
           /></View>
         :
         <ScrollView
-        
-        refreshControl={
-          <RefreshControl
-          refreshing={false}
-          onRefresh={() => this._onRefresh(this.state.page)}
-          />
-      }
+
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => this._onRefresh(this.state.page)}
+            />
+          }
         >
           <View style={styles.wrapperItems}>
             {this.props.listPopular.map(e => (
@@ -132,12 +144,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.2,
     marginBottom: 10,
-    alignContent:'center'
+    alignContent: 'center'
   },
-  text:{
-    fontSize:17, 
-    fontWeight:'bold',
-     alignContent:'center',
-     alignSelf:'center'
-     }
+  text: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    alignContent: 'center',
+    alignSelf: 'center'
+  }
 });

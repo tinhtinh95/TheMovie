@@ -16,6 +16,11 @@ const reducer = (state = defaultState, action) => {
                 ...state,
                 movies: action.payload
             }
+        case types.GET_TOP_RATED:
+            return {
+                ...state,
+                movies: action.payload
+            }
         //  case types.ADD_FAVOURITE:{
         //      return{
         //          ...state,

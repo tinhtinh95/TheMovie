@@ -17,8 +17,9 @@ import {
 import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
-import { insertNewReminder, getReminderList } from './../../databases/Schemas';
-import { AlertRemoveReminder } from '../../actions/model';
+import { AlertRemoveReminder,AlertRemoveFavourite } from '../../actions/model';
+import { insertNewFavourite, getFavouriteList,deleteFavourite } from './../../databases/Schemas';
+import realm from './../../databases/Schemas';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -84,7 +85,7 @@ export default class DetailMovie extends Component {
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
     const { params } = this.props.navigation.state;
-    console.log('params: ', params.item.id);
+    // console.log('params: ', params.item.id);
     fetch(`https://api.themoviedb.org/3/movie/${params.item.id}/credits?api_key=0267c13d8c7d1dcddb40001ba6372235`)
       .then(res => res.json())
       .then(resJson => {
@@ -102,7 +103,7 @@ export default class DetailMovie extends Component {
   handleAppStateChange(appState) {
     if (appState === 'background') {
       let date = new Date(Date.now() + (10 * 1000));
-      console.log(date)
+      // console.log(date)
       PushNotification.localNotificationSchedule({
         message: "My Notification Message",
         date,
@@ -133,12 +134,44 @@ export default class DetailMovie extends Component {
             time_reminder:new Date(new Date() + 15*1000),
             poster_path: item.poster_path,
           };
-          console.log(newReminder)
+          // console.log(newReminder)
           insertNewReminder(newReminder).then(
           ).catch((error) => {
             alert(`Insert new Reminder  error ${error}`);
           })
           AppState.addEventListener('change', this.handleAppStateChange);
+        }
+      })
+      .catch(err => console.log(err))
+  }
+  setFavourite = (item) => {
+    var check = false;
+    getFavouriteList()
+      .then(list => {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          AlertRemoveFavourite(item.id);
+        } else {
+          const newFavourite = {
+            id: item.id,
+            title: item.title,
+            vote_average: item.vote_average,
+            overview: item.overview,
+            release_date: item.release_date,
+            poster_path: item.poster_path,
+          };
+          insertNewFavourite(newFavourite).then(
+          ).catch((error) => {
+            alert(`Insert new Favourite  error ${error}`);
+          })
+          // this.setState({ favourite: 1 })
         }
       })
       .catch(err => console.log(err))
@@ -149,8 +182,7 @@ export default class DetailMovie extends Component {
       <View style={styles.container}>
         <Push />
         <View style={styles.above}>
-          <TouchableOpacity
-
+          <TouchableOpacity onPress={() =>this.setFavourite(params.item)}
           >
             <Image
               style={styles.icon}

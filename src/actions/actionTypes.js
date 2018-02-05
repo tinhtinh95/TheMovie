@@ -1,2 +1,3 @@
 export const GET_POPULAR="GET_POPULAR";
+export const GET_TOP_RATED="GET_TOP_RATED";
 export const ADD_FAVOURITE="ADD_FAVOURITE";
