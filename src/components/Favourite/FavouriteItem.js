@@ -43,7 +43,6 @@ export default class FlatItem extends Component {
   }
   render() {
     const { item } = this.props;
-    console.log('favourite', item.poster_path);
     return (
       <View style={styles.container}>
         <View style={styles.above}>

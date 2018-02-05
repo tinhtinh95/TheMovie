@@ -115,7 +115,6 @@ class FlatItem extends Component {
   render() {
     const {favourite } = this.state;
     const {item} =this.props
-    console.log(item.poster_path)
     return (
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate('DetailMovie', { item })}

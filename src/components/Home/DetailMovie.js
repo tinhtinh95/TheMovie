@@ -131,7 +131,7 @@ export default class DetailMovie extends Component {
             year_release: item.release_date,
             vote_average: item.vote_average,
             time_reminder:new Date(),
-            poster: item.poster_path,
+            poster_path: item.poster_path,
           };
           insertNewReminder(newReminder).then(
           ).catch((error) => {
