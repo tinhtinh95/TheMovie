@@ -45,16 +45,6 @@ export default class Header extends Component {
             />
           </TouchableOpacity>
           <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
-          <View styele={{flex:1}}>
-            <Picker
-              style={styles.picker}
-              selectedValue={5}
-            >
-              <Picker.Item label="5" value={5} />
-              <Picker.Item label="10" value={10} />
-              <Picker.Item label="15" value={15} />
-            </Picker>
-          </View>
           <TouchableOpacity
             onPress={this._toggleGridList}
           >

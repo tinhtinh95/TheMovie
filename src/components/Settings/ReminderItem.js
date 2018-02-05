@@ -44,7 +44,7 @@ export default class ReminderItem extends Component {
       right: [
         {
           onPress: () => {
-            const deletingRow=this.state.activeRowKey;
+            const deletingRow = this.state.activeRowKey;
             Alert.alert(
               'Notification',
               'Do you want to delete?',
@@ -61,7 +61,6 @@ export default class ReminderItem extends Component {
                     })
                     this.props.parentFlatList.refreshFlatList(deletingRow)
                   }
-
                 },
               ],
               { cancelable: false }
@@ -74,30 +73,48 @@ export default class ReminderItem extends Component {
       sectionId: 1
     };
     const { item } = this.props;
-    var date = item.time_reminder.getFullYear() + "-" + item.time_reminder.getMonth() + 1 + "-" + item.time_reminder.getDate();
+    var date = item.time_reminder.getFullYear() + "-" +
+      item.time_reminder.getMonth() + 1 + "-" +
+      item.time_reminder.getDate() + " "
+      + item.time_reminder.getHours() + ":" + item.time_reminder.getMinutes();
+    console.log('reminder', item);
+    console.log(date);
     return (
       <Swipeout style={{ backgroundColor: 'white' }} {...swipeoutSetting} >
         <View style={{
           flexDirection: 'row',
-          padding: 10,
+          paddingTop: 8,
+          paddingBottom: 8,
           borderBottomWidth: 1,
           borderBottomColor: 'pink',
-          justifyContent: 'space-around',
+          justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          <Image
-            style={{ marginRight: 10, height: height / 6, width: width / 3 }}
-            source={{ uri: `${uri}${item.poster}` }}
-          />
-          <View style={{}}>
-            <Text style={{}}>{item.title}</Text>
-            <Text style={{ fontSize: 17 }}>{date}</Text>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+             width:width*0.5,
+             alignItems:'center'
+          }}>
+            <Image
+              style={{ marginRight: 10, height: height / 6, width: width / 3 }}
+              source={{ uri: `${uri}${item.poster_path}` }}
+            />
+            <View>
+              <Text numberOfLines={1} style={{ fontSize: 17, marginBottom: 20 }}>{item.title} - {item.year_release} - {item.vote_average}/10</Text>
+              <Text style={{ fontSize: 17 }}>{date}</Text>
+            </View>
           </View>
-          <Image
-            style={{ tintColor: 'gray' }}
-            source={require('../../images/stepBack.png')}
-          />
-
+          <View>
+            <TouchableOpacity
+            onPress={()=>{this.swipeoutSetting}}
+            >
+              <Image
+                style={{ tintColor: 'gray', height: 50, width: 50 }}
+                source={require('../../images/stepBack.png')}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </Swipeout>
     );

@@ -117,7 +117,7 @@ class Profile extends React.Component {
           <Text style={{ fontSize: 20 }}>Reminder List:</Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Setting')}
+          onPress={() => navigation.navigate('Reminder')}
           style={styles.btnShowAll}>
           <Text style={styles.txtEdit}>Show All</Text>
         </TouchableOpacity>

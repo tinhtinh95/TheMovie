@@ -60,6 +60,8 @@ class Popular extends Component {
 
 
   render() {
+    const {params}=this.props.navigation.state;
+    console.log(params);
     return (
       this.state.isGridList ?
         <View style={styles.container}>

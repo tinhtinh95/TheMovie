@@ -63,7 +63,9 @@ export default class Profile extends Component {
     this._hideDateTimePicker();
     currentDate = new Date();
     if (date < currentDate) {
-      var dn = date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDate();
+      var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
+      date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
+      
       this.setState({ birthDay: dn })
     } else {
       Alert.alert("Invalid");

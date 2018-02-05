@@ -18,11 +18,9 @@ import Header from '../Header/Header';
 
 const { width, height } = Dimensions.get('window');
 
-const StackConfigure = StackNavigator({
+const Home = StackNavigator({
   Popular: {
     screen: Popular ,
-    
-  
   },
   DetailMovie: {
     screen: DetailMovie,
@@ -30,27 +28,7 @@ const StackConfigure = StackNavigator({
 }, {
 
   })
-
- export default StackConfigure;
-
-// export default class Home extends Component {
-//   static navigationOptions = {
-//     tabBarLabel: 'Movies',
-//     tabBarIcon: ({ tintColor }) => (
-//       <Image
-//         source={require('../../images/home.png')}
-//         style={[styles.icon, { tintColor: tintColor }]}
-//       />
-//     ),
-//   };
-
-//   render() {
-//     return (
-//       // <Button title="ahihi" onPress={()=>this.props.navigation.navigate('DrawerOpen')}></Button>
-//       <StackConfigure navgation1={this.props.navigation}/>
-//     );
-//   }
-// }
+ export default Home;
 
 const styles = StyleSheet.create({
   container: {

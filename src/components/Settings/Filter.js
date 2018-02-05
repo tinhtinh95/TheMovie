@@ -13,28 +13,32 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
-
-
 export default class Filter extends Component {
-
     render() {
-
         return (
             <View style={{ padding: 10 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 18, backgroundColor: 'gray' }}> Fitlter</Text>
-                <View style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
+                <TouchableOpacity 
+                onPress={()=>this.props.navigation.navigate('Home', {name:'Popular'})}
+                style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <Text style={{ fontSize: 18 }}>Popular Movies</Text>
-                </View>
-                <View style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
+                </TouchableOpacity>
+                <TouchableOpacity 
+                onPress={()=>this.props.navigation.navigate('Home', {name:'TopRate'})}
+                style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <Text style={{ fontSize: 18 }}>Top Rated Movies</Text>
-                </View>
-                <View style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
+                </TouchableOpacity>
+                <TouchableOpacity 
+                onPress={()=>this.props.navigation.navigate('Home', {name:'Popular'})}
+                style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <Text style={{ fontSize: 18 }}>Upcoming Movies</Text>
-                </View>
-                <View style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1, flexDirection:'row' }} >
+                </TouchableOpacity>
+                <TouchableOpacity 
+                onPress={()=>this.props.navigation.navigate('Home', {name:'Popular'})}
+                style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1, flexDirection: 'row' }} >
                     <Text style={{ fontSize: 18 }}>NowPlaying Movies</Text>
-                    <Image/>
-                </View>
+                    <Image />
+                </TouchableOpacity>
                 <View style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <View>
                         <Text style={{ fontSize: 18 }}>Movie with rate from: </Text>

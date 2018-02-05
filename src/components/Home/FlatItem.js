@@ -35,6 +35,7 @@ class FlatItem extends Component {
     });
   }
   reloadData=()=> {
+    var check=false;
     const { item } = this.props;
     getFavouriteList()
       .then(list => {

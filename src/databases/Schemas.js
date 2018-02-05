@@ -2,7 +2,7 @@ import Realm from 'realm';
 export const FAVOURITE = "Favourite";
 export const REMINDER = "Reminder";
 
-export const Favourite = {
+export const  Favourite= {
     name: FAVOURITE,
     primaryKey: 'id',
     properties: {
@@ -20,17 +20,18 @@ export const Reminder = {
     properties: {
         id: 'int',    // primary key
         title: 'string',
-        year_release: 'string',
+        year_release: 'int',
         vote_average: 'int',
         time_reminder: { type: 'date', optional: true },
         poster_path: 'string',
+        id_user:{type:'int', default:0}
     }
 };
 
 const databaseOptions = {
     path: 'Favourite.realm',
     schema: [Favourite, Reminder],
-    schemaVersion: 3,
+    schemaVersion: 4,
     // migration: function(oldRealm, newRealm) {
     //   newRealm.deleteAll();  
     // }

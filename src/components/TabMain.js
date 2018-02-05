@@ -37,6 +37,15 @@ const TabMain = TabNavigator({
   },
   Setting: {
     screen: Setting,
+    navigationOptions: {
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('../images/setting.png')}
+          style={[styles.icon, { tintColor: tintColor }]}
+        />
+      ),
+    }
   },
   About: {
     screen: About,
@@ -61,7 +70,7 @@ export default TabMain;
 // <TabConfigure />
 // // {/* <Button title="ahihi" onPress={()=>this.props.navigation.navigate('DrawerOpen')}></Button> */}
 //       // </View>
-        
+
 //     ); 
 //   }
 // }

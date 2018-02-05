@@ -128,11 +128,12 @@ export default class DetailMovie extends Component {
           const newReminder = {
             id: item.id,
             title: item.title,
-            year_release: item.release_date,
+            year_release: new Date (item.release_date).getFullYear(),
             vote_average: item.vote_average,
-            time_reminder:new Date(),
+            time_reminder:new Date(new Date() + 15*1000),
             poster_path: item.poster_path,
           };
+          console.log(newReminder)
           insertNewReminder(newReminder).then(
           ).catch((error) => {
             alert(`Insert new Reminder  error ${error}`);
@@ -142,8 +143,6 @@ export default class DetailMovie extends Component {
       })
       .catch(err => console.log(err))
   }
-
-
   render() {
     const { params } = this.props.navigation.state;
     return (

@@ -1,5 +1,6 @@
 import { deleteAllFavourites } from "../databases/Schemas";
 import { deleteReminder } from './../databases/Schemas';
+import {Alert} from 'react-native';
 
 export const AlertRemoveFavourite = (item) => {
     Alert.alert(
