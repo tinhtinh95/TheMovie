@@ -5,7 +5,9 @@ import {
   Image,
   View,
   Button,
-  FlatList
+  FlatList,
+  TextInput,
+  Dimensions
 } from 'react-native';
 import FavouriteItem from './FavouriteItem';
 import { AsyncStorage } from 'react-native';
@@ -15,17 +17,21 @@ import Header from '../Header/Header';
 import { StackNavigator } from 'react-navigation';
 import { getFavouriteList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
+import SearchBar from 'react-native-search-bar'
+
+const {width, height} =Dimensions.get('window');
 
 class Favourite extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      textSearch:'',
       listFavourite: []
     },
-    this.reloadData();
-        realm.addListener('change', () => {
-            this.reloadData();
-        });
+      this.reloadData();
+    realm.addListener('change', () => {
+      this.reloadData();
+    });
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -33,13 +39,13 @@ class Favourite extends Component {
     return { header }
   }
 
-  reloadData=()=> {
+  reloadData = () => {
     getFavouriteList()
       .then(listFavourite => {
-        this.setState({ listFavourite})
+        this.setState({ listFavourite })
       })
       .catch(err => {
-        this.setState({ listFavourite:[]})
+        this.setState({ listFavourite: [] })
         alert(`Error${err}`)
       })
   }
@@ -57,9 +63,17 @@ class Favourite extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <Button title="click"
-          onPress={() => this.getFavourite()}
-        /> */}
+        {/* <View style={{ height: 40 }}> */}
+        <SearchBar
+          style={{ height: 40, backgroundColor: 'pink', width:width }}
+          ref='searchBar'
+          placeholder='Search'
+          value={this.state.textSearch}
+          onChangeText={(text) => {this.setState({textSearch:text}) }}
+          onSearchButtonPress={() => { }}
+          onCancelButtonPress={() => { }}
+        />
+        {/* </View> */}
         <FlatList
           //  refreshing={false}
           //  onRefresh={()=>this._onRefresh(this.state.page)}
