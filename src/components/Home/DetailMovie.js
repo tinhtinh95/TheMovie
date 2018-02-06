@@ -20,6 +20,7 @@ const uri = "https://image.tmdb.org/t/p/w185";
 import { AlertRemoveReminder,AlertRemoveFavourite } from '../../actions/model';
 import { insertNewFavourite, getFavouriteList,deleteFavourite } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -54,11 +55,35 @@ export default class DetailMovie extends Component {
     super(props);
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.state = {
+      isDateTimePickerVisible: false,
       listFavourite: [],
       favourite: 0,
       listCast: [],
     }
   }
+    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+  
+    _handleDatePicked = (date) => {
+      console.log('A date has been picked: ', date);
+      this._hideDateTimePicker();
+    };
+
+    // _handleDatePicked = (date) => {
+    //   this._hideDateTimePicker();
+    //   currentDate = new Date();
+    //   if (date < currentDate) {
+    //     var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
+    //     date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
+        
+    //     this.setState({ birthDay: dn })
+    //   } else {
+    //     Alert.alert("Invalid");
+    //     this._showDateTimePicker();
+    //   }
+    // };}
+
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     let header = (
@@ -206,7 +231,10 @@ export default class DetailMovie extends Component {
             >
             </Image>
             <TouchableOpacity
-              onPress={() =>this.setReminder(params.item)}
+              onPress={() =>
+               this._showDateTimePicker
+                //this.setReminder(params.item)
+              }
               style={{
                 borderRadius: 5,
                 backgroundColor: '#b00060',
@@ -218,6 +246,13 @@ export default class DetailMovie extends Component {
               }}>
               <Text style={[styles.text, { color: 'white' }]}>REMINDER</Text>
             </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+            />
+          </View>
           </View>
           <ScrollView>
             <Text style={styles.textRed}>Overview:</Text>

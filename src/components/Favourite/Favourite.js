@@ -17,7 +17,8 @@ import Header from '../Header/Header';
 import { StackNavigator } from 'react-navigation';
 import { getFavouriteList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
-import SearchBar from 'react-native-search-bar'
+import Search from 'react-native-search-box';
+// import SearchBar from 'react-native-search-bar'
 
 const {width, height} =Dimensions.get('window');
 
@@ -64,7 +65,7 @@ class Favourite extends Component {
     return (
       <View style={styles.container}>
         {/* <View style={{ height: 40 }}> */}
-        <SearchBar
+        {/* <SearchBar
           style={{ height: 40, backgroundColor: 'pink', width:width }}
           ref='searchBar'
           placeholder='Search'
@@ -72,6 +73,13 @@ class Favourite extends Component {
           onChangeText={(text) => {this.setState({textSearch:text}) }}
           onSearchButtonPress={() => { }}
           onCancelButtonPress={() => { }}
+        /> */}
+        <Search
+          ref="search_box"
+          /**
+          * There many props that can customizable
+          * Please scroll down to Props section
+          */
         />
         {/* </View> */}
         <FlatList
