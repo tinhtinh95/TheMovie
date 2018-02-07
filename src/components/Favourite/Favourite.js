@@ -18,17 +18,19 @@ import { StackNavigator } from 'react-navigation';
 import { getFavouriteList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import Search from 'react-native-search-box';
-// import SearchBar from 'react-native-search-bar'
+import SearchBar from 'react-native-search-bar'
 
-const {width, height} =Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 class Favourite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textSearch:'',
-      listFavourite: []
+      textSearch: '',
+      listFavourite: [],
+      copyListFavourite: [],
     },
+
       this.reloadData();
     realm.addListener('change', () => {
       this.reloadData();
@@ -43,7 +45,7 @@ class Favourite extends Component {
   reloadData = () => {
     getFavouriteList()
       .then(listFavourite => {
-        this.setState({ listFavourite })
+        this.setState({ listFavourite, copyListFavourite: listFavourite })
       })
       .catch(err => {
         this.setState({ listFavourite: [] })
@@ -64,24 +66,32 @@ class Favourite extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <View style={{ height: 40 }}> */}
-        {/* <SearchBar
-          style={{ height: 40, backgroundColor: 'pink', width:width }}
-          ref='searchBar'
-          placeholder='Search'
-          value={this.state.textSearch}
-          onChangeText={(text) => {this.setState({textSearch:text}) }}
-          onSearchButtonPress={() => { }}
-          onCancelButtonPress={() => { }}
-        /> */}
-        <Search
-          ref="search_box"
-          /**
-          * There many props that can customizable
-          * Please scroll down to Props section
-          */
-        />
-        {/* </View> */}
+        <View style={{ width: width }}>
+          <Search
+            backgroundColor='lightblue'
+            ref="search_box"
+            onChangeText={(text) => {
+              listFavourite = this.state.copyListFavourite.filter(e =>
+                (e.title.toUpperCase().indexOf(text.toUpperCase()) != -1)
+              )
+              this.setState({
+                listFavourite
+              })
+            }}
+            onCancel={() => {
+              listFavourite = this.state.copyListFavourite;
+              this.setState({
+                listFavourite
+              })
+            }}
+            onDelete={() => {
+             listFavourite = this.state.copyListFavourite;
+              this.setState({
+                listFavourite
+              })
+          }}
+          />
+        </View>
         <FlatList
           //  refreshing={false}
           //  onRefresh={()=>this._onRefresh(this.state.page)}
