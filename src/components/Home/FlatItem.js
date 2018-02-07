@@ -138,7 +138,7 @@ class FlatItem extends Component {
                   source={require('../../images/fullStar.png')}
                 />
               }
-            </TouchableOpacity>
+            </TouchableOpacity> 
           </View>
         </View>
         <View style={styles.bellow}>

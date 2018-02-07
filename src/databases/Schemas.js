@@ -58,7 +58,7 @@ export const deleteFavourite = favouriteId => new Promise((resolve, reject) => {
         realm.write(() => {
             let objDel = realm.objectForPrimaryKey(FAVOURITE, favouriteId);
             realm.delete(objDel);
-            resolve();
+            resolve('thanhcong');
         });
     }).catch((error) => reject(error));;
 });

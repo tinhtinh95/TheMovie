@@ -11,14 +11,14 @@ import {
   View,
   Image,
   Dimensions,
-  TouchableOpacity, AppState,
+  TouchableOpacity, AppState, Alert,
   Button, ScrollView, FlatList, KeyboardAvoidingView, PushNotificationIOS
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
-import { AlertRemoveReminder,AlertRemoveFavourite } from '../../actions/model';
-import { insertNewFavourite, getFavouriteList,deleteFavourite } from './../../databases/Schemas';
+import { AlertRemoveReminder, AlertRemoveFavourite } from '../../actions/model';
+import { insertNewFavourite, getFavouriteList, deleteFavourite } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
@@ -61,28 +61,28 @@ export default class DetailMovie extends Component {
       listCast: [],
     }
   }
-    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
-    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-  
-    _handleDatePicked = (date) => {
-      console.log('A date has been picked: ', date);
-      this._hideDateTimePicker();
-    };
+  _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
-    // _handleDatePicked = (date) => {
-    //   this._hideDateTimePicker();
-    //   currentDate = new Date();
-    //   if (date < currentDate) {
-    //     var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
-    //     date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
-        
-    //     this.setState({ birthDay: dn })
-    //   } else {
-    //     Alert.alert("Invalid");
-    //     this._showDateTimePicker();
-    //   }
-    // };}
+  _handleDatePicked = (date) => {
+    console.log('A date has been picked: ', date);
+    this._hideDateTimePicker();
+  };
+
+  // _handleDatePicked = (date) => {
+  //   this._hideDateTimePicker();
+  //   currentDate = new Date();
+  //   if (date < currentDate) {
+  //     var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
+  //     date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
+
+  //     this.setState({ birthDay: dn })
+  //   } else {
+  //     Alert.alert("Invalid");
+  //     this._showDateTimePicker();
+  //   }
+  // };}
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
@@ -118,6 +118,25 @@ export default class DetailMovie extends Component {
         this.setState({ listCast: resJson.cast })
       })
       .catch(err => console.log(err));
+
+    getFavouriteList()
+      .then(list => {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === params.item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          this.setState({ favourite: 1 })
+        } else {
+          this.setState({ favourite: 0 })
+        }
+      })
+      .catch(err => console.log(err));
+
   }
   // componentDidMount() {
   //   AppState.addEventListener('change', this.handleAppStateChange);
@@ -149,14 +168,14 @@ export default class DetailMovie extends Component {
           }
         }
         if (check) {
-          AlertRemoveReminder(item.id);
+          this.AlertRemoveReminder(item.id);
         } else {
           const newReminder = {
             id: item.id,
             title: item.title,
-            year_release: new Date (item.release_date).getFullYear(),
+            year_release: new Date(item.release_date).getFullYear(),
             vote_average: item.vote_average,
-            time_reminder:new Date(new Date() + 15*1000),
+            time_reminder: new Date(new Date() + 15 * 1000),
             poster_path: item.poster_path,
           };
           // console.log(newReminder)
@@ -169,10 +188,35 @@ export default class DetailMovie extends Component {
       })
       .catch(err => console.log(err))
   }
+
+  AlertRemoveFavourite = (item) => {
+    Alert.alert(
+      'Warning',
+      'Do you want to delete this favourite film',
+      [
+        {
+          text: 'Cancel', onPress: () => {
+            console.log('Cancel');
+          }
+          , style: 'cancel',
+        },
+        {
+          text: 'OK', onPress: () => {
+            deleteFavourite(item.id).then().catch(error => {
+              alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+            });
+            this.setState({ favourite: 0 })
+          }
+        },
+      ],
+      { cancelable: false }
+    )
+  }
+
   setFavourite = (item) => {
     var check = false;
     getFavouriteList()
-      .then(list => {
+      .then(async (list) => {
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === item.id) {
             check = true;
@@ -182,7 +226,7 @@ export default class DetailMovie extends Component {
           }
         }
         if (check) {
-          AlertRemoveFavourite(item.id);
+          this.AlertRemoveFavourite(item);
         } else {
           const newFavourite = {
             id: item.id,
@@ -196,22 +240,39 @@ export default class DetailMovie extends Component {
           ).catch((error) => {
             alert(`Insert new Favourite  error ${error}`);
           })
-          // this.setState({ favourite: 1 })
+          this.setState({ favourite: 1 })
         }
       })
       .catch(err => console.log(err))
   }
   render() {
     const { params } = this.props.navigation.state;
+    const { favourite } = this.state;
     return (
       <View style={styles.container}>
         <Push />
         <View style={styles.above}>
-          <TouchableOpacity onPress={() =>this.setFavourite(params.item)}
+          {/* <TouchableOpacity onPress={() =>this.setFavourite(params.item)}
           >
             <Image
               style={styles.icon}
               source={require('../../images/nonStar.png')} />
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            onPress={() => this.setFavourite(params.item)}
+          >
+            {favourite === 0
+              ?
+              <Image
+                style={styles.icon}
+                source={require('../../images/nonStar.png')}
+              />
+              :
+              <Image
+                style={styles.icon}
+                source={require('../../images/fullStar.png')}
+              />
+            }
           </TouchableOpacity>
           <View style={{ paddingTop: 10 }}>
             <View style={styles.mainRight}>
@@ -232,7 +293,7 @@ export default class DetailMovie extends Component {
             </Image>
             <TouchableOpacity
               onPress={() =>
-               this._showDateTimePicker
+                this._showDateTimePicker
                 //this.setReminder(params.item)
               }
               style={{
@@ -247,12 +308,12 @@ export default class DetailMovie extends Component {
               <Text style={[styles.text, { color: 'white' }]}>REMINDER</Text>
             </TouchableOpacity>
             <View style={{ flex: 1 }}>
-            <DateTimePicker
-              isVisible={this.state.isDateTimePickerVisible}
-              onConfirm={this._handleDatePicked}
-              onCancel={this._hideDateTimePicker}
-            />
-          </View>
+              <DateTimePicker
+                isVisible={this.state.isDateTimePickerVisible}
+                onConfirm={this._handleDatePicked}
+                onCancel={this._hideDateTimePicker}
+              />
+            </View>
           </View>
           <ScrollView>
             <Text style={styles.textRed}>Overview:</Text>
