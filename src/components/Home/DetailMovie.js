@@ -66,23 +66,26 @@ export default class DetailMovie extends Component {
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   _handleDatePicked = (date) => {
-    console.log('A date has been picked: ', date);
+    alert('A date has been picked: ', date);
     this._hideDateTimePicker();
   };
 
-  // _handleDatePicked = (date) => {
-  //   this._hideDateTimePicker();
-  //   currentDate = new Date();
-  //   if (date < currentDate) {
-  //     var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
-  //     date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
 
-  //     this.setState({ birthDay: dn })
-  //   } else {
-  //     Alert.alert("Invalid");
-  //     this._showDateTimePicker();
-  //   }
-  // };}
+//   _handleDatePicked = (date) => {
+//     this._hideDateTimePicker();
+//     currentDate = new Date();
+//     if (date < currentDate) {
+//       var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
+//       date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
+
+//       this.setState({ birthDay: dn });
+//       alert(dn)
+//     } else {
+//       Alert.alert("Invalid");
+//       this._showDateTimePicker();
+//     }
+// }
+
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
@@ -252,12 +255,6 @@ export default class DetailMovie extends Component {
       <View style={styles.container}>
         <Push />
         <View style={styles.above}>
-          {/* <TouchableOpacity onPress={() =>this.setFavourite(params.item)}
-          >
-            <Image
-              style={styles.icon}
-              source={require('../../images/nonStar.png')} />
-          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => this.setFavourite(params.item)}
           >
@@ -292,7 +289,7 @@ export default class DetailMovie extends Component {
             >
             </Image>
             <TouchableOpacity
-              onPress={() =>
+              onPress={
                 this._showDateTimePicker
                 //this.setReminder(params.item)
               }

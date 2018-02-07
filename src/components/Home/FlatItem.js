@@ -80,7 +80,6 @@ class FlatItem extends Component {
       { cancelable: false }
     )
   }
-
   setFavourite = (item) => {
     var check = false;
     getFavouriteList()

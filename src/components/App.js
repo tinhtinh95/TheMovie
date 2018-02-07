@@ -18,6 +18,7 @@ export default class App extends Component {
       <Provider store={store}>
         <ProfileDrawer />
       </Provider>
+      // <Text>fff</Text>
     );
   }
 }
