@@ -97,7 +97,7 @@ class Favourite extends Component {
           //  onRefresh={()=>this._onRefresh(this.state.page)}
           data={this.state.listFavourite}
           keyExtractor={(item, index) => item.id}
-          renderItem={({ item }) => <FavouriteItem item={item} />
+          renderItem={({ item }) => <FavouriteItem navigation={this.props.navigation} item={item} />
           }
         ></FlatList>
       </View>
