@@ -11,7 +11,7 @@ import {
   View,
   Button, Image, Dimensions
 } from 'react-native';
-import Favourite from './Favourite/Favourite';
+import StackConfigure from './Favourite/Favourite';
 import Home from './Home/Home';
 import Setting from './Settings/Settings';
 import About from './About/About';
@@ -33,7 +33,16 @@ const TabMain = TabNavigator({
     }
   },
   Favourite: {
-    screen: Favourite,
+    screen: StackConfigure,
+    navigationOptions: {
+      tabBarLabel: 'Favourites',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('../images/favourite.png')}
+          style={[styles.icon, { tintColor: tintColor }]}
+        />
+      ),
+    }
   },
   Setting: {
     screen: Setting,
@@ -63,18 +72,6 @@ const TabMain = TabNavigator({
   }
 )
 export default TabMain;
-// export default class TabMain extends Component {
-//   render() {
-//     return (
-//       // <View>
-// <TabConfigure />
-// // {/* <Button title="ahihi" onPress={()=>this.props.navigation.navigate('DrawerOpen')}></Button> */}
-//       // </View>
-
-//     ); 
-//   }
-// }
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',

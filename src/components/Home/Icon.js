@@ -13,23 +13,23 @@ import {
 } from 'react-native';
 import { insertNewFavourite, getFavouriteList, deleteFavourite } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
-
+import {connect} from 'react-redux';
+import {addFavourite} from '../../actions/actions';
 
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
 
-export default class Icon extends Component {
+class Icon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listFavourite: [],
       favourite: 0,
-      item: {}
     }
     this.reloadData();
     realm.addListener('change', () => {
       this.reloadData();
     });
+
   }
   reloadData = () => {
     var check = false;
@@ -52,10 +52,6 @@ export default class Icon extends Component {
       })
       .catch(err => console.log(err));
   }
-  // componentDidMount(){
-  //   const { item } = this.props;
-  //   this.setState({ item: item });
-  // }
   AlertRemoveFavourite = (item) => {
     Alert.alert(
       'Warning',
@@ -77,7 +73,7 @@ export default class Icon extends Component {
       { cancelable: false }
     )
   }
-  setFavourite = (item) => {
+  setFavourite =  (item) => {
     var check = false;
     getFavouriteList()
       .then(list => {
@@ -100,7 +96,12 @@ export default class Icon extends Component {
             release_date: item.release_date,
             poster_path: item.poster_path,
           };
-          insertNewFavourite(newFavourite).then(
+          // insertNewFavourite(newFavourite).then(
+          // ).catch((error) => {
+          //   alert(`Insert new Favourite  error ${error}`);
+          // })
+          //  this.props.addFavourite(newFavourite)
+           insertNewFavourite(newFavourite).then(
           ).catch((error) => {
             alert(`Insert new Favourite  error ${error}`);
           })
@@ -112,10 +113,27 @@ export default class Icon extends Component {
   render() {
     const { favourite } = this.state;
     const { item } = this.props
-    // alert(JSON.stringify(item))
     return (
       <TouchableOpacity
-        onPress={() => this.setFavourite(item)}
+        style={{ margin: 10 }}
+        onPress={() =>{
+          // const newFavourite = {
+          //   id: item.id,
+          //   title: item.title,
+          //   vote_average: item.vote_average,
+          //   overview: item.overview,
+          //   release_date: item.release_date,
+          //   poster_path: item.poster_path,
+          // };
+          // await this.props.addFavourite(newFavourite)
+          // await insertNewFavourite(newFavourite).then(
+          // ).catch((error) => {
+          //   alert(`Insert new Favourite  error ${error}`);
+          // })
+          this.setFavourite(item)
+        }
+          
+        }
       >
         {favourite === 0
           ?
@@ -133,6 +151,8 @@ export default class Icon extends Component {
     )
   }
 }
+
+export default connect(null, {addFavourite})(Icon);
 const styles = StyleSheet.create({
   icon: {
     width: 26,

@@ -18,7 +18,6 @@ import { StackNavigator } from 'react-navigation';
 import { getFavouriteList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import Search from 'react-native-search-box';
-import SearchBar from 'react-native-search-bar'
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,8 +28,7 @@ class Favourite extends Component {
       textSearch: '',
       listFavourite: [],
       copyListFavourite: [],
-    },
-
+    }
       this.reloadData();
     realm.addListener('change', () => {
       this.reloadData();
@@ -53,21 +51,21 @@ class Favourite extends Component {
       })
   }
 
-  static navigationOptions = {
-    tabBarLabel: 'Favourites',
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../images/favourite.png')}
-        style={[styles.icon, { tintColor: tintColor }]}
-      />
-    ),
-  };
+  // static navigationOptions = {
+  //   tabBarLabel: 'Favourites',
+  //   tabBarIcon: ({ tintColor }) => (
+  //     <Image
+  //       source={require('../../images/favourite.png')}
+  //       style={[styles.icon, { tintColor: tintColor }]}
+  //     />
+  //   ),
+  // };
 
   render() {
     return (
       <View style={styles.container}>
         <View style={{ width: width }}>
-          <Search
+          {/* <Search
             backgroundColor='lightblue'
             ref="search_box"
             onChangeText={(text) => {
@@ -85,17 +83,19 @@ class Favourite extends Component {
               })
             }}
             onDelete={() => {
-             listFavourite = this.state.copyListFavourite;
+              listFavourite = this.state.copyListFavourite;
               this.setState({
                 listFavourite
               })
-          }}
-          />
+            }}
+          /> */}
         </View>
         <FlatList
           //  refreshing={false}
           //  onRefresh={()=>this._onRefresh(this.state.page)}
-          data={this.state.listFavourite}
+          data=
+          // {this.props.listFavourite}
+          {this.state.listFavourite}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => <FavouriteItem navigation={this.props.navigation} item={item} />
           }
@@ -104,18 +104,22 @@ class Favourite extends Component {
     );
   }
 }
-const StackConfigure = StackNavigator({
-  Favourite: {
-    screen: Favourite,
-  },
-  DetailMovie: {
-    screen: DetailMovie,
+// const StackConfigure = StackNavigator({
+//   Favourite: {
+//     screen: Favourite,
+//   },
+//   // DetailMovie: {
+//   //   screen: DetailMovie,
+//   // }
+// })
+function mapStateToProps(state) {
+  console.log(state)
+  return {
+    listFavourite: state.listFavourite,
   }
-}, {
+}
 
-  })
-
-export default StackConfigure;
+export default connect(mapStateToProps)(Favourite);
 
 const styles = StyleSheet.create({
   container: {

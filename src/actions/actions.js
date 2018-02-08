@@ -31,10 +31,10 @@ export function fetchData(name, page) {
     }
 
 }
-// export function addFavourite(data) {
-//     return {
-//         type: types.ADD_FAVOURITE,
-//         payload: data,
+export function addFavourite(data) {
+    return {
+        type: types.ADD_FAVOURITE,
+        payload: data,
 
-//     }
-// }
+    }
+}

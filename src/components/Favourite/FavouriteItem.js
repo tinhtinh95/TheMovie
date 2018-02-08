@@ -44,8 +44,8 @@ export default class FlatItem extends Component {
   render() {
     const { item } = this.props;
     return (
-      <TouchableOpacity 
-      onPress={() => this.props.navigation.navigate('DetailMovie', { item })}
+      <View 
+      // onPress={() => this.props.navigation.navigate('DetailMovie', { item })}
       style={styles.container}>
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
@@ -80,7 +80,7 @@ export default class FlatItem extends Component {
           </View>
 
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }

@@ -21,12 +21,14 @@ const reducer = (state = defaultState, action) => {
                 ...state,
                 movies: action.payload
             }
-        //  case types.ADD_FAVOURITE:{
-        //      return{
-        //          ...state,
-        //          listFavourite: action.payload
-        //      }
-        //  }
+         case types.ADD_FAVOURITE:{
+             console.log(action.payload);
+             return{
+                 ...state,
+                 listFavourite: state.listFavourite.concat(action.payload),
+             }
+             
+         }
         default:
             { return state; }
     }

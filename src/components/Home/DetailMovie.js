@@ -54,14 +54,52 @@ class Push extends Component {
 export default class DetailMovie extends Component {
   constructor(props) {
     super(props);
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.state = {
       isDateTimePickerVisible: false,
       listFavourite: [],
-      // favourite: 0,
+      favourite: 0,
       listCast: [],
     }
+    // this.reloadData();
+    // realm.addListener('change', () => {
+    //   this.reloadData();
+    // });
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
   }
+
+  reloadData = () => {
+    var check = false;
+    const { item } = this.props.navigation.state.params;
+    getFavouriteList()
+      .then(list => {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          this.setState({ favourite: 1 })
+        } else {
+          this.setState({ favourite: 0 })
+        }
+      })
+      .catch(err => console.log(err));
+  }
+  // componentWillMount(){
+  //   this.reloadData();
+    // realm.addListener('change', () => {
+    //   this.reloadData();
+    // });
+  // }
+  // componentWillUnmount(){
+  //   realm.removeListener('change', () => {
+  //       this.reloadData();
+  //     });
+  // }
+
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
@@ -118,7 +156,6 @@ export default class DetailMovie extends Component {
     fetch(`https://api.themoviedb.org/3/movie/${params.item.id}/credits?api_key=0267c13d8c7d1dcddb40001ba6372235`)
       .then(res => res.json())
       .then(resJson => {
-        console.log(resJson.cast);
         this.setState({ listCast: resJson.cast })
       })
       .catch(err => console.log(err));
@@ -193,62 +230,61 @@ export default class DetailMovie extends Component {
       .catch(err => console.log(err))
   }
 
-  // AlertRemoveFavourite = (item) => {
-  //   Alert.alert(
-  //     'Warning',
-  //     'Do you want to delete this favourite film',
-  //     [
-  //       {
-  //         text: 'Cancel', onPress: () => {
-  //           console.log('Cancel');
-  //         }
-  //         , style: 'cancel',
-  //       },
-  //       {
-  //         text: 'OK', onPress: () => {
-  //           deleteFavourite(item.id).then().catch(error => {
-  //             alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
-  //           });
-  //           this.setState({ favourite: 0 })
-  //         }
-  //       },
-  //     ],
-  //     { cancelable: false }
-  //   )
-  // }
+  AlertRemoveFavourite = (item) => {
+    Alert.alert(
+      'Warning',
+      'Do you want to delete this favourite film',
+      [
+        {
+          text: 'Cancel', onPress: () => {
+          }
+          , style: 'cancel',
+        },
+        {
+          text: 'OK', onPress: () => {
+            deleteFavourite(item.id).then().catch(error => {
+              alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+            });
+            this.setState({ favourite: 0 })
+          }
+        },
+      ],
+      { cancelable: false }
+    )
+  }
 
-  // setFavourite = (item) => {
-  //   var check = false;
-  //   getFavouriteList()
-  //     .then(async (list) => {
-  //       for (var i = 0; i < list.length; i++) {
-  //         if (list[i].id === item.id) {
-  //           check = true;
-  //           break;
-  //         } else {
-  //           check = false;
-  //         }
-  //       }
-  //       if (check) {
-  //         this.AlertRemoveFavourite(item);
-  //       } else {
-  //         const newFavourite = {
-  //           id: item.id,
-  //           title: item.title,
-  //           vote_average: item.vote_average,
-  //           overview: item.overview,
-  //           release_date: item.release_date,
-  //           poster_path: item.poster_path,
-  //         };
-  //         insertNewFavourite(newFavourite).then(
-  //         ).catch((error) => {
-  //           alert(`Insert new Favourite  error ${error}`);
-  //         })
-  //         this.setState({ favourite: 1 })
-  //       }
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+  setFavourite = (item) => {
+    var check = false;
+    getFavouriteList()
+      .then(async (list) => {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id === item.id) {
+            check = true;
+            break;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          this.AlertRemoveFavourite(item);
+        } else {
+          const newFavourite = {
+            id: item.id,
+            title: item.title,
+            vote_average: item.vote_average,
+            overview: item.overview,
+            release_date: item.release_date,
+            poster_path: item.poster_path,
+          };
+          insertNewFavourite(newFavourite).then(
+          ).catch((error) => {
+            alert(`Insert new Favourite  error ${error}`);
+          })
+          this.setState({ favourite: 1 })
+        }
+      })
+      .catch(err => console.log(err))
+  }
   render() {
     const { params } = this.props.navigation.state;
     const { favourite } = this.state;
@@ -256,7 +292,24 @@ export default class DetailMovie extends Component {
       <View style={styles.container}>
         <Push />
         <View style={styles.above}>
-         <Icon item={params.item}/>
+         {/* <Icon item={params.item}/> */}
+         <TouchableOpacity
+        style={{ margin: 10 }}
+        onPress={() => this.setFavourite(params.item)}
+      >
+        {favourite === 0
+          ?
+          <Image
+            style={styles.icon}
+            source={require('../../images/nonStar.png')}
+          />
+          :
+          <Image
+            style={styles.icon}
+            source={require('../../images/fullStar.png')}
+          />
+        }
+      </TouchableOpacity>
           <View style={{ paddingTop: 10 }}>
             <View style={styles.mainRight}>
               <Text style={styles.text}> Release date: </Text>
