@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -40,8 +34,6 @@ var options = {
   }
 }
 
-
-
 export default class Profile extends Component {
   constructor(props) {
     super(props)
@@ -64,7 +56,7 @@ export default class Profile extends Component {
     currentDate = new Date();
     if (date < currentDate) {
       var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
-      date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
+      date.getDate();
       
       this.setState({ birthDay: dn })
     } else {
@@ -99,7 +91,7 @@ export default class Profile extends Component {
     })
   }
   _editInfo = async () => {
-    console.log("load truoc edit", this.state.avartarSource);
+    // console.log("load truoc edit", this.state.avartarSource);
     // console.log("load:",this.state.avartarSource.source);
     var object = {
       "name": this.state.name,
@@ -108,14 +100,13 @@ export default class Profile extends Component {
       "gender": this.state.value,
       "avatar": this.state.avartarSource
     };
-    console.log("load sau edit", this.state.avartarSource);
-    this.props.navigation.navigate('Popular');
+    // console.log("load sau edit", this.state.avartarSource);
+    this.props.navigation.navigate('Home');
     saveInfo(object);
   }
 
   componentDidMount() {
-    
-    console.log("load sau didmount", this.state.avartarSource);
+    // console.log("load sau didmount", this.state.avartarSource);
     getInfo()
       .then(myInfo => {
         if(JSON.stringify(myInfo) != JSON.stringify([])){
@@ -156,7 +147,7 @@ export default class Profile extends Component {
           flexDirection: 'row'
         }}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Popular')}
+            onPress={() => this.props.navigation.navigate('Home')}
             style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ fontSize: 20 }}>CANCEL</Text>
           </TouchableOpacity>

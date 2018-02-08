@@ -24,11 +24,11 @@ class FlatItem extends Component {
     }
   }
   render() {
-    const { item } = this.props;
+    const { item,index } = this.props;
     return (
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate('DetailMovie', { item })}
-        style={styles.container}>
+        style={[styles.container ]}>
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <View>
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#4bcb4d',
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    
   },
   above: {
     flexDirection: 'row',

@@ -70,14 +70,14 @@ class Home extends Component {
     return (
       this.state.isGridList ?
         <View style={styles.container}>
-          <Button title="click to see" onPress={() => deleteAllFavourites().then().catch(e => alert(e))} />
+          {/* <Button title="click to see" onPress={() => deleteAllFavourites().then().catch(e => alert(e))} /> */}
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}
             data={this.props.listPopular}
             keyExtractor={(item, index) => index}
-            renderItem={({ item }) =>
-              <FlatItem navigation={this.props.navigation} item={item} />}
+            renderItem={({ item,index }) =>
+              <FlatItem navigation={this.props.navigation} item={item}/>}
           /></View>
         :
         <ScrollView

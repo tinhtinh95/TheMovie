@@ -77,7 +77,8 @@ const TabMain = TabNavigator({
   }
 },
   {
-    // tabBarPosition: 'bottom',
+    tabBarPosition: 'bottom',
+    swipeEnabled: false,
     animationEnabled: true,
     tabBarOptions: {
       activeTintColor: 'white',
