@@ -38,3 +38,10 @@ export function addFavourite(data) {
 
     }
 }
+export function toggleFav() {
+    return {
+        type: types.TOGGLE_FAVOURITE,
+        // payload: data,
+
+    }
+}

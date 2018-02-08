@@ -15,16 +15,12 @@ import {
   FlatList,
   Dimensions
 } from 'react-native';
-import { DrawerNavigator, DrawerItems } from 'react-navigation';
-import TabMain from './TabMain';
-import EditProfile from './Profile/EditProfile';
+
 import getInfo from './Profile/getInfo';
 
 const { height, width } = Dimensions.get('window');
 
-
-
-class Profile extends React.Component {
+class ProfileOptions extends React.Component {
 
   constructor(props) {
     super(props);
@@ -126,25 +122,7 @@ class Profile extends React.Component {
     )
   }
 }
-
-
-
-const DrawerConfigure = DrawerNavigator({
-  Home: {
-    screen: TabMain,
-  },
-  EditProfile: {
-    screen: EditProfile
-  }
-},
-  {
-    drawerBackgroundColor: '#b7ffef',
-    drawerWidth: width * 0.9,
-    useNativeAnimations: true,
-    contentComponent: ({ navigation }) => <Profile navigation={navigation} />
-  })
-
-export default DrawerConfigure;
+export default ProfileOptions;
 
 const styles = StyleSheet.create({
   container: {

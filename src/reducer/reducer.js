@@ -6,7 +6,8 @@ import { combineReducers } from 'redux';
 
 const defaultState = {
     movies: [],
-    listFavourite: []
+    // listFavourite: [],
+    // isFavourite: false
 }
 
 const reducer = (state = defaultState, action) => {
@@ -21,14 +22,18 @@ const reducer = (state = defaultState, action) => {
                 ...state,
                 movies: action.payload
             }
-         case types.ADD_FAVOURITE:{
-             console.log(action.payload);
-             return{
-                 ...state,
-                 listFavourite: state.listFavourite.concat(action.payload),
-             }
-             
-         }
+        // case types.ADD_FAVOURITE:
+        //     console.log(action.payload);
+        //     return {
+        //         ...state,
+        //         listFavourite: state.listFavourite.concat(action.payload)
+        //     }
+        // case types.TOGGLE_FAVOURITE: {
+        //     return {
+        //         ...state,
+        //         isFavourite:true,
+        //     }
+        // }
         default:
             { return state; }
     }

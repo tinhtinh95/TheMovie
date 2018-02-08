@@ -13,11 +13,11 @@ import {
 } from 'react-native';
 import { insertNewFavourite, getFavouriteList, deleteFavourite } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
-import {connect} from 'react-redux';
-import {addFavourite} from '../../actions/actions';
+import { connect } from 'react-redux';
+// import { toggleFav } from '../../actions/actions';
+import { AlertRemoveFavourite,setFavourite } from './../../actions/model';
 
 const { height, width } = Dimensions.get('window');
-const uri = "https://image.tmdb.org/t/p/w185";
 
 class Icon extends Component {
   constructor(props) {
@@ -48,32 +48,32 @@ class Icon extends Component {
           this.setState({ favourite: 1 })
         } else {
           this.setState({ favourite: 0 })
+
         }
       })
       .catch(err => console.log(err));
   }
-  AlertRemoveFavourite = (item) => {
-    Alert.alert(
-      'Warning',
-      'Do you want to delete this favourite film',
-      [
-        {
-          text: 'Cancel', onPress: () => console.log('Cancel')
-          , style: 'cancel'
-        },
-        {
-          text: 'OK', onPress: () => {
-            deleteFavourite(item.id).then().catch(error => {
-              alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
-            });
-            this.setState({ favourite: 0 })
-          }
-        },
-      ],
-      { cancelable: false }
-    )
-  }
-  setFavourite =  (item) => {
+  // AlertRemoveFavourite = (item) => {
+  //   Alert.alert(
+  //     'Warning',
+  //     'Do you want to delete this favourite film',
+  //     [
+  //       {
+  //         text: 'Cancel', onPress: () => console.log('Cancel')
+  //         , style: 'cancel'
+  //       },
+  //       {
+  //         text: 'OK', onPress: () => {
+  //           deleteFavourite(item.id).then().catch(error => {
+  //             alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+  //           });
+  //         }
+  //       },
+  //     ],
+  //     { cancelable: false }
+  //   )
+  // }
+  setFavourite = (item) => {
     var check = false;
     getFavouriteList()
       .then(list => {
@@ -86,7 +86,7 @@ class Icon extends Component {
           }
         }
         if (check) {
-          this.AlertRemoveFavourite(item);
+          AlertRemoveFavourite(item);
         } else {
           const newFavourite = {
             id: item.id,
@@ -96,16 +96,11 @@ class Icon extends Component {
             release_date: item.release_date,
             poster_path: item.poster_path,
           };
-          // insertNewFavourite(newFavourite).then(
-          // ).catch((error) => {
-          //   alert(`Insert new Favourite  error ${error}`);
-          // })
           //  this.props.addFavourite(newFavourite)
-           insertNewFavourite(newFavourite).then(
+          insertNewFavourite(newFavourite).then(
           ).catch((error) => {
             alert(`Insert new Favourite  error ${error}`);
           })
-          this.setState({ favourite: 1 })
         }
       })
       .catch(err => console.log(err))
@@ -116,23 +111,8 @@ class Icon extends Component {
     return (
       <TouchableOpacity
         style={{ margin: 10 }}
-        onPress={() =>{
-          // const newFavourite = {
-          //   id: item.id,
-          //   title: item.title,
-          //   vote_average: item.vote_average,
-          //   overview: item.overview,
-          //   release_date: item.release_date,
-          //   poster_path: item.poster_path,
-          // };
-          // await this.props.addFavourite(newFavourite)
-          // await insertNewFavourite(newFavourite).then(
-          // ).catch((error) => {
-          //   alert(`Insert new Favourite  error ${error}`);
-          // })
-          this.setFavourite(item)
-        }
-          
+        onPress={() => {
+          this.setFavourite(item)}
         }
       >
         {favourite === 0
@@ -151,8 +131,16 @@ class Icon extends Component {
     )
   }
 }
+// const mapStateToProps = (state) => {
+//   return {
+//     isFavourite: state.isFavourite
+//   }
+// }
 
-export default connect(null, {addFavourite})(Icon);
+// export default connect(mapStateToProps, { toggleFav })(Icon);
+export default (Icon);
+
+
 const styles = StyleSheet.create({
   icon: {
     width: 26,

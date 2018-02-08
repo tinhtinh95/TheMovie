@@ -29,7 +29,7 @@ class Favourite extends Component {
       listFavourite: [],
       copyListFavourite: [],
     }
-      this.reloadData();
+    this.reloadData();
     realm.addListener('change', () => {
       this.reloadData();
     });
@@ -60,12 +60,17 @@ class Favourite extends Component {
   //     />
   //   ),
   // };
-
+  _onCancel = () => {
+    listFavourite = this.state.copyListFavourite;
+    this.setState({
+      listFavourite
+    })
+  }
   render() {
     return (
       <View style={styles.container}>
         <View style={{ width: width }}>
-          {/* <Search
+          <Search
             backgroundColor='lightblue'
             ref="search_box"
             onChangeText={(text) => {
@@ -76,23 +81,11 @@ class Favourite extends Component {
                 listFavourite
               })
             }}
-            onCancel={() => {
-              listFavourite = this.state.copyListFavourite;
-              this.setState({
-                listFavourite
-              })
-            }}
-            onDelete={() => {
-              listFavourite = this.state.copyListFavourite;
-              this.setState({
-                listFavourite
-              })
-            }}
-          /> */}
+            onCancel={this._onCancel}
+            onDelete={this._onCancel}
+          />
         </View>
         <FlatList
-          //  refreshing={false}
-          //  onRefresh={()=>this._onRefresh(this.state.page)}
           data=
           // {this.props.listFavourite}
           {this.state.listFavourite}
@@ -104,22 +97,16 @@ class Favourite extends Component {
     );
   }
 }
-// const StackConfigure = StackNavigator({
-//   Favourite: {
-//     screen: Favourite,
-//   },
-//   // DetailMovie: {
-//   //   screen: DetailMovie,
-//   // }
-// })
-function mapStateToProps(state) {
-  console.log(state)
-  return {
-    listFavourite: state.listFavourite,
-  }
-}
 
-export default connect(mapStateToProps)(Favourite);
+// function mapStateToProps(state) {
+//   console.log(state)
+//   return {
+//     listFavourite: state.listFavourite,
+//   }
+// }
+
+// export default connect(mapStateToProps)(Favourite);
+export default (Favourite);
 
 const styles = StyleSheet.create({
   container: {
