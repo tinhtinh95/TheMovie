@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 
 import getInfo from './Profile/getInfo';
+import {getReminderList} from '../databases/Schemas';
+import realm from '../databases/Schemas';
 
 const { height, width } = Dimensions.get('window');
 
@@ -30,7 +32,22 @@ class ProfileOptions extends React.Component {
       email: 'nttinh995@gmail.com',
       value: 0,
       avartarSource: '',
-    }
+      listReminder:[],
+    },
+    this.reloadData();
+    realm.addListener('change', () => {
+      this.reloadData();
+    });
+  }
+  reloadData = () => {
+    getReminderList()
+      .then(listReminder => {
+        this.setState({ listReminder})
+      })
+      .catch(err => {
+        this.setState({ listReminder: [] })
+        alert(`Error${err}`)
+      })
   }
 
   componentWillUpdate() {
@@ -99,11 +116,18 @@ class ProfileOptions extends React.Component {
         </TouchableOpacity>
         <Text style={styles.txtReminder}>Reminder List:</Text>
         <FlatList
-        // data={this.props.data}
-        // extraData={this.state}
-        // keyExtractor={this._keyExtractor}
-        // renderItem={this._renderItem}
+        data={this.state.listReminder}
+        keyExtractor={(item, index) => item.id}
+        renderItem={({ item }) => <Text>{item.title}</Text> }
         />
+        <FlatList
+          data=
+          // {this.props.listFavourite}
+          {this.state.listFavourite}
+          keyExtractor={(item, index) => item.id}
+          renderItem={({ item }) => <FavouriteItem navigation={this.props.navigation} item={item} />
+          }
+        ></FlatList>
         <View style={{
           backgroundColor: '#4dbebb',
           padding: 7,
@@ -127,7 +151,8 @@ export default ProfileOptions;
 const styles = StyleSheet.create({
   container: {
     marginTop: 40,
-    padding: 10
+    padding: 10, 
+    backgroundColor:'lightblue'
   },
   avatar: {
     alignSelf: 'center'

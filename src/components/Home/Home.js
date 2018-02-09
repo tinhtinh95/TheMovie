@@ -81,7 +81,6 @@ class Home extends Component {
           /></View>
         :
         <ScrollView
-
           refreshControl={
             <RefreshControl
               refreshing={false}

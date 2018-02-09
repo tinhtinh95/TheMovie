@@ -18,7 +18,7 @@ import { AsyncStorage } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const uri = "https://image.tmdb.org/t/p/w185";
 import { AlertRemoveReminder, AlertRemoveFavourite } from '../../actions/model';
-import { insertNewFavourite, getFavouriteList, deleteFavourite } from './../../databases/Schemas';
+import { insertNewReminder, getReminderList, deleteReminder } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Icon from './Icon';
@@ -54,61 +54,37 @@ class Push extends Component {
 export default class DetailMovie extends Component {
   constructor(props) {
     super(props);
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.state = {
       isDateTimePickerVisible: false,
       listFavourite: [],
       favourite: 0,
       listCast: [],
+      dateEx:new Date() +5000
     }
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
-  }
-
-  reloadData = () => {
-    var check = false;
-    const { item } = this.props.navigation.state.params;
-    getFavouriteList()
-      .then(list => {
-        for (var i = 0; i < list.length; i++) {
-          if (list[i].id === item.id) {
-            check = true;
-            break;
-          } else {
-            check = false;
-          }
-        }
-        if (check) {
-          this.setState({ favourite: 1 })
-        } else {
-          this.setState({ favourite: 0 })
-        }
-      })
-      .catch(err => console.log(err));
+    
   }
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   _handleDatePicked = (date) => {
+    console.log('A date has been picked: ', date);
     alert('A date has been picked: ', date);
+    // this.setState({dateEx:date})
     this._hideDateTimePicker();
+    // currentDate = new Date();
+    //     if (date < currentDate) {
+    //       var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
+    //       date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
+    
+    //       this.setState({ birthDay: dn });
+    //       alert(dn)
+    //     } else {
+    //       Alert.alert("Invalid");
+    //       this._showDateTimePicker();
+    //     }
   };
-
-
-//   _handleDatePicked = (date) => {
-//     this._hideDateTimePicker();
-//     currentDate = new Date();
-//     if (date < currentDate) {
-//       var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
-//       date.getDate()+ " "+date.getHours()+":"+date.getMinutes();
-
-//       this.setState({ birthDay: dn });
-//       alert(dn)
-//     } else {
-//       Alert.alert("Invalid");
-//       this._showDateTimePicker();
-//     }
-// }
-
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
@@ -148,16 +124,16 @@ export default class DetailMovie extends Component {
   }
   handleAppStateChange(appState) {
     if (appState === 'background') {
-      let date = new Date(Date.now() + (10 * 1000));
-      // console.log(date)
+      let date = new Date(this.state.dateEx);
+      console.log('here',date)
       PushNotification.localNotificationSchedule({
         message: "My Notification Message",
         date,
       });
     }
   }
-
-  setReminder = (item) => {
+  setReminder = async(item) => {
+    await this._showDateTimePicker();
     var check = false;
     getReminderList()
       .then(list => {
@@ -170,7 +146,7 @@ export default class DetailMovie extends Component {
           }
         }
         if (check) {
-          this.AlertRemoveReminder(item.id);
+          AlertRemoveReminder(item);
         } else {
           const newReminder = {
             id: item.id,
@@ -180,7 +156,7 @@ export default class DetailMovie extends Component {
             time_reminder: new Date(new Date() + 15 * 1000),
             poster_path: item.poster_path,
           };
-          // console.log(newReminder)
+          console.log(newReminder)
           insertNewReminder(newReminder).then(
           ).catch((error) => {
             alert(`Insert new Reminder  error ${error}`);
@@ -217,8 +193,9 @@ export default class DetailMovie extends Component {
             </Image>
             <TouchableOpacity
               onPress={
-                this._showDateTimePicker
-                //this.setReminder(params.item)
+                ()=>
+                // // this._showDateTimePicker()
+                this.setReminder(params.item)
               }
               style={{
                 borderRadius: 5,
@@ -236,6 +213,7 @@ export default class DetailMovie extends Component {
                 isVisible={this.state.isDateTimePickerVisible}
                 onConfirm={this._handleDatePicked}
                 onCancel={this._hideDateTimePicker}
+                mode='datetime'
               />
             </View>
           </View>

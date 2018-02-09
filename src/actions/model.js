@@ -59,7 +59,7 @@ export const AlertRemoveFavourite = (item) => {
 //     .catch(err => console.log(err))
 // }
 
-export const AlertRemoveReminder = (id) => {
+export const AlertRemoveReminder = (item) => {
   Alert.alert(
     'Warning',
     'Do you want to delete this favourite film',
@@ -70,8 +70,8 @@ export const AlertRemoveReminder = (id) => {
       },
       {
         text: 'OK', onPress: () => {
-          deleteReminder(id).then().catch(error => {
-            alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+          deleteReminder(item.id).then().catch(error => {
+            alert(`Failed to delete Favourite with id = ${item.id}, error=${error}`);
           })
         }
       },

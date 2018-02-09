@@ -69,7 +69,7 @@ class Favourite extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ width: width }}>
+        <View style={{ width: width, height:50 }}>
           <Search
             backgroundColor='lightblue'
             ref="search_box"

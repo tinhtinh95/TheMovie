@@ -6,6 +6,7 @@ import Reminder from './Settings/Reminder';
 import Favourite from './Favourite/Favourite';
 import DetailMovie from './Home/DetailMovie';
 import Home from './Home/Home';
+import Header from './Header/Header';
 import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
 import { Dimensions, Image, StyleSheet } from 'react-native';
 import React, { Component } from 'react';
@@ -24,8 +25,9 @@ const FavouriteConfigure = StackNavigator({
   DetailMovie: {
     screen: DetailMovie,
   }
+},{
+  navigationOptions :({ navigation }) => <Header navigation={navigation} titleHeader={'Favourite'} />
 })
-
 const HomeConfig = StackNavigator({
   Home: {
     screen: Home,
@@ -78,12 +80,12 @@ const TabMain = TabNavigator({
 },
   {
     tabBarPosition: 'bottom',
-    swipeEnabled: false,
+    swipeEnabled: true,
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: 'white',
+      activeTintColor: 'black',
       style: {
-        backgroundColor: 'rgb(90,100,174)',
+        backgroundColor: 'white',
       },
     },
   }
@@ -98,7 +100,7 @@ const DrawerConfigure = DrawerNavigator({
   }
 },
   {
-    drawerBackgroundColor: 'lightblue',
+    drawerBackgroundColor: '#ADD8E6',
     drawerWidth: width * 0.9,
     useNativeAnimations: true,
     contentComponent: ({ navigation }) => <ProfileOptions navigation={navigation} />
@@ -108,13 +110,7 @@ export default DrawerConfigure;
 
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    height: height * 0.1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: 'rgb(90,100,174)',
-  },
+
   icon: {
     margin: 10,
     width: 26,

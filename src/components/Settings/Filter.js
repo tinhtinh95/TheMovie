@@ -10,10 +10,15 @@ import {
     FlatList,
     Alert
 } from 'react-native';
+import Header from '../Header/Header';
 
 const { width, height } = Dimensions.get('window');
 
 export default class Filter extends Component {
+    static navigationOptions = ({ navigation }) => {
+        let header = (<Header navigation={navigation} titleHeader={'Settings'} />)
+        return { header }
+      }
     render() {
         return (
             <View style={{ padding: 10 }}>

@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -24,14 +18,10 @@ export default class Header extends Component {
       isGrid: true
     }
   }
-
-
   _toggleGridList = () => {
     this.setState({ isGrid: !this.state.isGrid });
     this.props.navigation.state.params.toggleGridList();
-
   }
-
   render() {
     if (this.props.navigation.state.params !== undefined) {
       const { toggleGridList } = this.props.navigation.state.params;
@@ -62,13 +52,21 @@ export default class Header extends Component {
       );
     } else {
       return (
-        <View></View>
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => { this.props.navigation.navigate('DrawerOpen') }}
+          >
+            <Image source={require('../../images/open.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
+          <View></View>
+        </View>
       )
     }
-
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -76,6 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'rgb(90,100,174)',
+    
   },
   icon: {
     margin: 10,
