@@ -1,8 +1,8 @@
 import Realm from 'realm';
-export const FAVOURITE = "Favourite";
-export const REMINDER = "Reminder";
+export const FAVOURITE = "FAVOURITE";
+export const REMINDER = "REMINDER";
 
-export const  Favourite= {
+export const Favourite = {
     name: FAVOURITE,
     primaryKey: 'id',
     properties: {
@@ -24,7 +24,7 @@ export const Reminder = {
         vote_average: 'int',
         time_reminder: { type: 'date', optional: true },
         poster_path: 'string',
-        id_user:{type:'int', default:0}
+        id_user: { type: 'int', default: 0 }
     }
 };
 
@@ -45,14 +45,37 @@ export const insertNewFavourite = newFavourite => new Promise((resolve, reject) 
         });
     }).catch((error) => reject(error));
 });
-export const getFavouriteList = () => new Promise((resolve, reject) => {
+// export const getFavouriteList = () => new Promise((resolve, reject) => {
+//     Realm.open(databaseOptions).then(realm => {
+//         let FavouriteList = realm.objects(FAVOURITE);
+//         resolve(FavouriteList);
+//     }).catch((error) => {
+//         reject(error);
+//     });;
+// });
+export const getTableList = (table) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
-        let FavouriteList = realm.objects(FAVOURITE);
-        resolve(FavouriteList);
+        let TableList = realm.objects(table);
+        resolve(TableList);
     }).catch((error) => {
         reject(error);
     });;
 });
+
+// export const checkObject = async (item, table) => {
+//     var list = [];
+//     await getTableList(table).then(
+//         list => {
+//             list = list
+//         }
+//     )
+//     for (let i = 0; i < list.length; i++) {
+//         if (item.id === list[i].id) {
+//             console.log('bang nahu roi')
+//             return true;
+//         }
+//     } return false;
+// }
 export const deleteFavourite = favouriteId => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {
@@ -82,14 +105,14 @@ export const insertNewReminder = newReminder => new Promise((resolve, reject) =>
         });
     }).catch((error) => reject(error));
 });
-export const getReminderList = () => new Promise((resolve, reject) => {
-    Realm.open(databaseOptions).then(realm => {
-        let ReminderList = realm.objects(REMINDER);
-        resolve(ReminderList);
-    }).catch((error) => {
-        reject(error);
-    });;
-});
+// export const getReminderList = () => new Promise((resolve, reject) => {
+//     Realm.open(databaseOptions).then(realm => {
+//         let ReminderList = realm.objects(REMINDER);
+//         resolve(ReminderList);
+//     }).catch((error) => {
+//         reject(error);
+//     });;
+// });
 export const deleteReminder = reminderId => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {

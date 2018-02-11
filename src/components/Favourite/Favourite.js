@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import DetailMovie from '../Home/DetailMovie';
 import Header from '../Header/Header';
 import { StackNavigator } from 'react-navigation';
-import { getFavouriteList } from './../../databases/Schemas';
+import { getTableList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import Search from 'react-native-search-box';
 
@@ -41,7 +41,7 @@ class Favourite extends Component {
   }
 
   reloadData = () => {
-    getFavouriteList()
+    getTableList('FAVOURITE')
       .then(listFavourite => {
         this.setState({ listFavourite, copyListFavourite: listFavourite })
       })

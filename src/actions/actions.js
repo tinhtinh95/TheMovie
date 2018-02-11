@@ -38,9 +38,11 @@ export function addFavourite(data) {
 
     }
 }
-export function toggleFav() {
+export function toggleFav(id) {
     return {
         type: types.TOGGLE_FAVOURITE,
+        payid:id,
+        // payIsFav: isFav,
         // payload: data,
 
     }

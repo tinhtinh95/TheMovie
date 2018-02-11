@@ -1,5 +1,6 @@
 import * as types from '../actions/actionTypes';
 import { combineReducers } from 'redux';
+import { getTableList, FAVOURITE } from './../databases/Schemas';
 
 
 
@@ -7,7 +8,7 @@ import { combineReducers } from 'redux';
 const defaultState = {
     movies: [],
     // listFavourite: [],
-    // isFavourite: false
+    isFavourite: false
 }
 
 const reducer = (state = defaultState, action) => {
@@ -34,6 +35,16 @@ const reducer = (state = defaultState, action) => {
         //         isFavourite:true,
         //     }
         // }
+        case types.TOGGLE_FAVOURITE: {
+            getTableList(FAVOURITE)
+            .then()
+            .catch();
+            return {
+                ...state,
+                isFavourite: !state.isFavourite,
+                
+            }
+        }
         default:
             { return state; }
     }

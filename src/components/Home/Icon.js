@@ -11,11 +11,11 @@ import {
   Button,
   Alert
 } from 'react-native';
-import { insertNewFavourite, getFavouriteList, deleteFavourite } from './../../databases/Schemas';
+import { insertNewFavourite, deleteFavourite, checkObject, getTableList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import { connect } from 'react-redux';
-// import { toggleFav } from '../../actions/actions';
-import { AlertRemoveFavourite,setFavourite } from './../../actions/model';
+import { toggleFav } from '../../actions/actions';
+import { AlertRemoveFavourite, setFavourite } from './../../actions/model';
 
 const { height, width } = Dimensions.get('window');
 
@@ -25,16 +25,16 @@ class Icon extends Component {
     this.state = {
       favourite: 0,
     }
-    this.reloadData();
-    realm.addListener('change', () => {
-      this.reloadData();
-    });
+    // this.reloadData();
+    // realm.addListener('change', () => {
+    //   this.reloadData();
+    // });
 
   }
   reloadData = () => {
     var check = false;
     const { item } = this.props;
-    getFavouriteList()
+    getTableList('FAVOURITE')
       .then(list => {
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === item.id) {
@@ -53,6 +53,19 @@ class Icon extends Component {
       })
       .catch(err => console.log(err));
   }
+
+  componentWillMount(){
+    this.reloadData();
+    realm.addListener('change', () => {
+      this.reloadData();
+    });
+  }
+  // componentWillUnmount(){
+  //   realm.removeListener('change', () => {
+  //     this.reloadData();
+  //   });
+  // }
+
   // AlertRemoveFavourite = (item) => {
   //   Alert.alert(
   //     'Warning',
@@ -74,8 +87,28 @@ class Icon extends Component {
   //   )
   // }
   setFavourite = (item) => {
+    // let check=checkObject(item,"FAVOURITE");
+    // console.log('check o day ', check);
+    // if (checkObject(item,"FAVOURITE")) {
+    //   AlertRemoveFavourite(item);
+    // } else {
+    //   const newFavourite = {
+    //     id: item.id,
+    //     title: item.title,
+    //     vote_average: item.vote_average,
+    //     overview: item.overview,
+    //     release_date: item.release_date,
+    //     poster_path: item.poster_path,
+    //   };
+    //   //  this.props.addFavourite(newFavourite)
+    //   insertNewFavourite(newFavourite).then(
+    //   ).catch((error) => {
+    //     alert(`Insert new Favourite  error ${error}`);
+    //   })
+    // }
+
     var check = false;
-    getFavouriteList()
+    getTableList('FAVOURITE')
       .then(list => {
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === item.id) {
@@ -112,7 +145,8 @@ class Icon extends Component {
       <TouchableOpacity
         style={{ margin: 10 }}
         onPress={() => {
-          this.setFavourite(item)}
+          this.setFavourite(item)
+        }
         }
       >
         {favourite === 0
@@ -131,14 +165,14 @@ class Icon extends Component {
     )
   }
 }
-// const mapStateToProps = (state) => {
-//   return {
-//     isFavourite: state.isFavourite
-//   }
-// }
+const mapStateToProps = (state) => {
+  return {
+    isFavourite: state.isFavourite
+  }
+}
 
-// export default connect(mapStateToProps, { toggleFav })(Icon);
-export default (Icon);
+export default connect(mapStateToProps, { toggleFav })(Icon);
+// export default (Icon); 
 
 
 const styles = StyleSheet.create({

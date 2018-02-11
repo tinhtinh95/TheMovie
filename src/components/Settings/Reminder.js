@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 // import Swipeout from 'react-native-swipeout';
 import ReminderItem from './ReminderItem';
-import { getReminderList } from '../../databases/Schemas';
+import { getTableList } from '../../databases/Schemas';
 import realm from '../../databases/Schemas';
 
 const { width, height } = Dimensions.get('window');
@@ -36,7 +36,7 @@ export default class Reminder extends Component {
     });
   }
   reloadData=()=> {
-    getReminderList()
+    getTableList('REMINDER')
       .then(listReminder => {
         this.setState({ listReminder})
       })

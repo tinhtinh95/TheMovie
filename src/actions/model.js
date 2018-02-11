@@ -1,4 +1,4 @@
-import { deleteFavourite,getFavouriteList } from "../databases/Schemas";
+import { deleteFavourite } from "../databases/Schemas";
 import { deleteReminder } from './../databases/Schemas';
 import { Alert } from 'react-native';
 

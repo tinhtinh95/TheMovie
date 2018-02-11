@@ -85,7 +85,7 @@ const TabMain = TabNavigator({
     tabBarOptions: {
       activeTintColor: 'black',
       style: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgb(90,100,174)',
       },
     },
   }

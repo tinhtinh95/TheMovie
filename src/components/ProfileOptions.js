@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import getInfo from './Profile/getInfo';
-import {getReminderList} from '../databases/Schemas';
+import {getTableList} from '../databases/Schemas';
 import realm from '../databases/Schemas';
 
 const { height, width } = Dimensions.get('window');
@@ -40,7 +40,7 @@ class ProfileOptions extends React.Component {
     });
   }
   reloadData = () => {
-    getReminderList()
+    getTableList('REMINDER')
       .then(listReminder => {
         this.setState({ listReminder})
       })
