@@ -60,6 +60,7 @@ export default class DetailMovie extends Component {
       listFavourite: [],
       favourite: 0,
       listCast: [],
+      timeReminder:new Date(),
     }
 
   }
@@ -83,7 +84,8 @@ export default class DetailMovie extends Component {
     insertNewReminder(newReminder).then(
     ).catch((error) => {
       alert(`Insert new Reminder  error ${error}`);
-    })
+    });
+    this.setState({timeReminder:date})
   };
   setReminder =(item) => {
     var check = false;
@@ -143,7 +145,7 @@ export default class DetailMovie extends Component {
   }
   handleAppStateChange(appState) {
     if (appState === 'background') {
-      let date = new Date(this.state.dateEx);
+      let date = this.state.timeReminder;
       console.log('here', date)
       PushNotification.localNotificationSchedule({
         message: "My Notification Message",

@@ -88,7 +88,8 @@ const TabMain = TabNavigator({
       activeTintColor: 'blue',
       inactiveTintColor: 'gray',
       style: {
-        backgroundColor: 'rgb(90,100,174)',
+        // backgroundColor: 'rgb(90,100,174)',
+        backgroundColor:'white'
       },
       showIcon:true
     },
@@ -120,6 +121,6 @@ const styles = StyleSheet.create({
     // margin: 10,
     width: 26,
     height: 26,
-    tintColor: 'white'
+    // tintColor: 'white'
   },
 });
