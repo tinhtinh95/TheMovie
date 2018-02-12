@@ -150,7 +150,7 @@ export default class Profile extends Component {
           {this.state.avartarSource === null ?
             <Image
               style={{ height: 200, width: 200, borderRadius: 50 }}
-              source={require('../../images/smile.png')}
+              source={require('../../images/smile.jpg')}
             />
             :
             <Image

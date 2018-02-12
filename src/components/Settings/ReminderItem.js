@@ -117,12 +117,12 @@ export default class ReminderItem extends Component {
       (item.time_reminder.getMinutes() <= 9 ? ('0' + item.time_reminder.getMinutes()) : item.time_reminder.getMinutes())
     return (
       <Swipeout style={{ backgroundColor: 'white' }}
-       {...swipeoutSetting}
-      // right={swipeoutBtns}
-      // autoClose
-      // onClose={() => this.setState({ opened: false })}
-      // openRight={this.state.opened}
-      // sensitivity={50}
+      //  {...swipeoutSetting}
+      right={swipeoutBtns}
+      autoClose
+      onClose={() => this.setState({ opened: false })}
+      openRight={this.state.opened}
+      sensitivity={50}
        >
         <View style={{
           flexDirection: 'row',

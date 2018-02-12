@@ -85,11 +85,14 @@ const TabMain = TabNavigator({
     swipeEnabled: true,
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: 'black',
+      activeTintColor: 'blue',
+      inactiveTintColor: 'gray',
       style: {
         backgroundColor: 'rgb(90,100,174)',
       },
+      showIcon:true
     },
+   
   }
 )
 
@@ -114,7 +117,7 @@ export default DrawerConfigure;
 const styles = StyleSheet.create({
 
   icon: {
-    margin: 10,
+    // margin: 10,
     width: 26,
     height: 26,
     tintColor: 'white'
