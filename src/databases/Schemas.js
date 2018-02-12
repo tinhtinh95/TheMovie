@@ -105,14 +105,15 @@ export const insertNewReminder = newReminder => new Promise((resolve, reject) =>
         });
     }).catch((error) => reject(error));
 });
-// export const getReminderList = () => new Promise((resolve, reject) => {
-//     Realm.open(databaseOptions).then(realm => {
-//         let ReminderList = realm.objects(REMINDER);
-//         resolve(ReminderList);
-//     }).catch((error) => {
-//         reject(error);
-//     });;
-// });
+export const getReminderLimit = () => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then(realm => {
+        let ReminderList = realm.objects(REMINDER)
+        .sorted('time_reminder',true).slice(0,2);
+        resolve(ReminderList);
+    }).catch((error) => {
+        reject(error);
+    });;
+});
 export const deleteReminder = reminderId => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {

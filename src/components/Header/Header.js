@@ -61,7 +61,7 @@ export default class Header extends Component {
             />
           </TouchableOpacity>
           <Text style={styles.titleHeader}>{this.props.titleHeader}</Text>
-          <View></View>
+          <View style={{width:width/6}}></View>
         </View>
       )
     }

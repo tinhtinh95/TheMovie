@@ -3838,6 +3838,14 @@ react-native-swipeout@^2.3.3:
     prop-types "^15.5.10"
     react-tween-state "^0.1.5"
 
+"react-native-swipeout@git+https://github.com/CandyOgre/react-native-swipeout.git":
+  version "2.1.1"
+  resolved "git+https://github.com/CandyOgre/react-native-swipeout.git#1807ff3d03eb2743d636f57f084e0906fa5ce2a9"
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.6.0"
+    react-tween-state "^0.1.5"
+
 react-native-tab-view@^0.0.74:
   version "0.0.74"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.74.tgz#62c0c882d9232b461ce181d440d683b4f99d1bd8"

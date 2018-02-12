@@ -1,7 +1,7 @@
 import StackConfigure from './Favourite/Favourite';
 import About from './About/About';
 import EditProfile from './Profile/EditProfile';
-import Filter from './Settings/Filter';
+import Settings from './Settings/Settings';
 import Reminder from './Settings/Reminder';
 import Favourite from './Favourite/Favourite';
 import DetailMovie from './Home/DetailMovie';
@@ -15,9 +15,11 @@ import ProfileOptions from './ProfileOptions';
 const { width, height } = Dimensions.get('window');
 
 const SettingConfigure = StackNavigator({
-  Filter: { screen: Filter },
+  Settings: { screen: Settings },
   Reminder: { screen: Reminder },
-})
+}, {
+    // navigationOptions: ({ navigation }) => <Header navigation={navigation} titleHeader={'Settings'} />
+  })
 const FavouriteConfigure = StackNavigator({
   Favourite: {
     screen: Favourite,
@@ -25,9 +27,9 @@ const FavouriteConfigure = StackNavigator({
   DetailMovie: {
     screen: DetailMovie,
   }
-},{
-  navigationOptions :({ navigation }) => <Header navigation={navigation} titleHeader={'Favourite'} />
-})
+}, {
+    // navigationOptions: ({ navigation }) => <Header navigation={navigation} titleHeader={'Favourite'} />
+  })
 const HomeConfig = StackNavigator({
   Home: {
     screen: Home,
@@ -100,7 +102,7 @@ const DrawerConfigure = DrawerNavigator({
   }
 },
   {
-    drawerBackgroundColor: '#ADD8E6',
+    drawerBackgroundColor: 'white',
     drawerWidth: width * 0.9,
     useNativeAnimations: true,
     contentComponent: ({ navigation }) => <ProfileOptions navigation={navigation} />

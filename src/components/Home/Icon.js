@@ -25,10 +25,10 @@ class Icon extends Component {
     this.state = {
       favourite: 0,
     }
-    // this.reloadData();
-    // realm.addListener('change', () => {
-    //   this.reloadData();
-    // });
+    this.reloadData();
+    realm.addListener('change', () => {
+      this.reloadData();
+    });
 
   }
   reloadData = () => {
@@ -54,12 +54,16 @@ class Icon extends Component {
       .catch(err => console.log(err));
   }
 
-  componentWillMount(){
-    this.reloadData();
-    realm.addListener('change', () => {
-      this.reloadData();
-    });
-  }
+  // componentWillUpdate(){
+    // this.reloadData();
+  // }
+
+  // componentWillMount(){
+  //   this.reloadData();
+  //   realm.addListener('change', () => {
+  //     this.reloadData();
+  //   });
+  // }
   // componentWillUnmount(){
   //   realm.removeListener('change', () => {
   //     this.reloadData();

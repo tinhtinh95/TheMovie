@@ -8,7 +8,8 @@ import {
   Image,
   FlatList,
   Dimensions,
-  TextInput, DatePickerIOS, Button, Alert
+  TextInput, DatePickerIOS, Button,
+  KeyboardAvoidingView
 } from 'react-native';
 import RadioButton from 'radio-button-react-native';
 const { width, height } = Dimensions.get('window');
@@ -33,7 +34,6 @@ var options = {
     path: 'images'
   }
 }
-
 export default class Profile extends Component {
   constructor(props) {
     super(props)
@@ -42,22 +42,21 @@ export default class Profile extends Component {
       birthDay: '1995-07-12',
       email: 'nttinh995@gmail.com',
       value: 0,
-      avartarSource: null ,
+      avartarSource: null,
       isDateTimePickerVisible: false,
+      borderWidthName:0,
+      borderWidthMail:0,
     }
   }
-
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
-
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-
   _handleDatePicked = (date) => {
     this._hideDateTimePicker();
     currentDate = new Date();
     if (date < currentDate) {
-      var dn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + 
-      date.getDate();
-      
+      let month = (date.getMonth() <= 9 ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1))
+      let day = date.getDate() <= 9 ? ('0' + date.getDate()) : date.getDate();
+      var dn = date.getFullYear() + "-" + month + "-" + day;
       this.setState({ birthDay: dn })
     } else {
       Alert.alert("Invalid");
@@ -72,27 +71,19 @@ export default class Profile extends Component {
       console.log('Res=', res);
       if (res.didCancel) {
         console.log('User canceled image picker');
-        // this.setState({
-        //   avartarSource: this.state.avartarSource
-        // });
-        console.log("load khi cancel", this.state.avartarSource);
       } else if (res.error) {
         console.log('ImagePicker Err ', res.error);
       } else if (res.customButton) {
         console.log('User tapped custom button: ', res.customButton);
       } else {
         let source = { uri: res.uri, crop: { left: 10, top: 50, width: 20, height: 40 } };
-        console.log(res.uri)
         this.setState({
           avartarSource: source
         });
-        console.log("load sau khi chon", this.state.avartarSource);
       }
     })
   }
   _editInfo = async () => {
-    // console.log("load truoc edit", this.state.avartarSource);
-    // console.log("load:",this.state.avartarSource.source);
     var object = {
       "name": this.state.name,
       "birthDay": this.state.birthDay,
@@ -100,16 +91,13 @@ export default class Profile extends Component {
       "gender": this.state.value,
       "avatar": this.state.avartarSource
     };
-    // console.log("load sau edit", this.state.avartarSource);
     this.props.navigation.navigate('Home');
     saveInfo(object);
   }
-
   componentDidMount() {
-    // console.log("load sau didmount", this.state.avartarSource);
     getInfo()
       .then(myInfo => {
-        if(JSON.stringify(myInfo) != JSON.stringify([])){
+        if (JSON.stringify(myInfo) != JSON.stringify([])) {
           this.setState({
             name: myInfo.name,
             birthDay: myInfo.birthDay,
@@ -118,14 +106,13 @@ export default class Profile extends Component {
             avartarSource: myInfo.avatar
           })
         }
-        
+
       })
       ;
   }
-
   render() {
     return (
-      <View style={{ backgroundColor: 'white', height: height}}>
+      <KeyboardAvoidingView style={{ backgroundColor: 'white', height: height }}>
         <View style={{
           flex: 1,
           width: '100%',
@@ -160,34 +147,34 @@ export default class Profile extends Component {
         <TouchableOpacity
           onPress={this.show}
           style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
-          {this.state.avartarSource === null ? 
-          <Image
-            style={{ height: 200, width: 200, borderRadius: 50 }}
-            source={require('../../images/smile.png')}
-          /> 
-          :
+          {this.state.avartarSource === null ?
+            <Image
+              style={{ height: 200, width: 200, borderRadius: 50 }}
+              source={require('../../images/smile.png')}
+            />
+            :
             <Image
               style={{ height: 200, width: 200, borderRadius: 100 }}
               source={this.state.avartarSource}
             />}
 
         </TouchableOpacity>
-        <TextInput style={{
+        <TextInput style={[{
           width: width * 0.8,
-          alignSelf: 'center',
-          alignContent: 'center',
-          justifyContent: 'center',
+          textAlign: 'center',
           padding: 3,
           fontSize: 25,
           borderColor: 'gray',
           borderRadius: 5,
-          borderWidth: 1,
-          marginBottom: 20
-        }}
+          borderWidth: this.state.borderWidthName,
+          marginBottom: 20,
+          justifyContent:'center',
+          alignSelf:'center'
+        },]}
           value={this.state.name}
-          onChangeText={(text) => this.setState({ name: text })
-
-          }
+          onChangeText={(text) => this.setState({ name: text })}
+          onFocus={()=>this.setState({borderWidthName:1})}
+          onBlur={()=>this.setState({borderWidthName:0})}
         />
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15, }}>
           <Image
@@ -214,12 +201,14 @@ export default class Profile extends Component {
               width: width * 0.8,
               borderColor: 'gray',
               borderRadius: 5,
-              borderWidth: 1,
+              borderWidth: this.state.borderWidthMail,
               padding: 5,
               fontSize: 17
             }}
             value={this.state.email}
             onChangeText={(text) => this.setState({ email: text })}
+            onFocus={()=>this.setState({borderWidthMail:1})}
+            onBlur={()=>this.setState({borderWidthMail:0})}
           />
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
@@ -238,7 +227,7 @@ export default class Profile extends Component {
 
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

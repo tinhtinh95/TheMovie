@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import getInfo from './Profile/getInfo';
-import {getTableList} from '../databases/Schemas';
+import { getTableList, getReminderLimit } from '../databases/Schemas';
 import realm from '../databases/Schemas';
 
 const { height, width } = Dimensions.get('window');
@@ -32,28 +32,27 @@ class ProfileOptions extends React.Component {
       email: 'nttinh995@gmail.com',
       value: 0,
       avartarSource: '',
-      listReminder:[],
+      listReminder: [],
     },
-    this.reloadData();
+      this.reloadData();
     realm.addListener('change', () => {
       this.reloadData();
     });
   }
   reloadData = () => {
-    getTableList('REMINDER')
+    getReminderLimit()
       .then(listReminder => {
-        this.setState({ listReminder})
+        this.setState({ listReminder })
       })
       .catch(err => {
         this.setState({ listReminder: [] })
         alert(`Error${err}`)
       })
   }
-
   componentWillUpdate() {
     getInfo()
       .then(myInfo => {
-        if(JSON.stringify(myInfo) != JSON.stringify([])){
+        if (JSON.stringify(myInfo) != JSON.stringify([])) {
           this.setState({
             name: myInfo.name,
             birthDay: myInfo.birthDay,
@@ -70,7 +69,6 @@ class ProfileOptions extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <TouchableOpacity style={styles.avatar}>
-
           {this.state.avartarSource === '' ?
             <Image
               style={styles.avatarImage}
@@ -81,8 +79,6 @@ class ProfileOptions extends React.Component {
               style={{ height: 200, width: 200, borderRadius: 100 }}
               source={this.state.avartarSource}
             />}
-
-
         </TouchableOpacity>
         <Text style={styles.textName}>{this.state.name}</Text>
         <View style={styles.infor}>
@@ -116,28 +112,35 @@ class ProfileOptions extends React.Component {
         </TouchableOpacity>
         <Text style={styles.txtReminder}>Reminder List:</Text>
         <FlatList
-        data={this.state.listReminder}
-        keyExtractor={(item, index) => item.id}
-        renderItem={({ item }) => <Text>{item.title}</Text> }
-        />
-        <FlatList
           data=
-          // {this.props.listFavourite}
-          {this.state.listFavourite}
+          {this.state.listReminder}
           keyExtractor={(item, index) => item.id}
-          renderItem={({ item }) => <FavouriteItem navigation={this.props.navigation} item={item} />
+          renderItem={({ item }) => (
+            <View style={{
+              backgroundColor: '#4dbebb',
+              padding: 7,
+              marginBottom: 20
+            }}>
+              <Text style={{ fontSize: 20 }}>{item.title} - {item.year_release} - {item.vote_average}/10</Text>
+              <Text style={{ fontSize: 20 }}>
+                {
+                  item.time_reminder.getFullYear()
+                  + "-" +
+                  (item.time_reminder.getMonth() <= 9 ? ('0' + (item.time_reminder.getMonth() + 1)) : (item.time_reminder.getMonth() + 1))
+                  + "-" +
+                  (item.time_reminder.getDate() <= 9 ? ('0' + item.time_reminder.getDate()) : item.time_reminder.getDate())
+                  + " "
+                  + (item.time_reminder.getHours() <= 9 ? ('0' + item.time_reminder.getHours()) : item.time_reminder.getHours())
+                  + ":" +
+                  (item.time_reminder.getMinutes() <= 9 ? ('0' + item.time_reminder.getMinutes()) : item.time_reminder.getMinutes())
+                }
+              </Text>
+            </View>
+          )
           }
         ></FlatList>
-        <View style={{
-          backgroundColor: '#4dbebb',
-          padding: 7,
-          marginBottom: 20
-        }}>
-          <Text style={{ fontSize: 20 }}>Reminder List:</Text>
-          <Text style={{ fontSize: 20 }}>Reminder List:</Text>
-        </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Reminder')}
+          onPress={() => navigation.navigate('Reminder',)}
           style={styles.btnShowAll}>
           <Text style={styles.txtEdit}>Show All</Text>
         </TouchableOpacity>
@@ -150,9 +153,9 @@ export default ProfileOptions;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
-    padding: 10, 
-    backgroundColor:'lightblue'
+    paddingTop: 30,
+    padding: 10,
+    backgroundColor: 'white'
   },
   avatar: {
     alignSelf: 'center'
