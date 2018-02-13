@@ -23,6 +23,9 @@ class FlatItem extends Component {
       listFavourite: [],
     }
   }
+  componentWillUnmount(){
+    this.forceUpdate()
+  }
   render() {
     const { item,index } = this.props;
     return (

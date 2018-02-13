@@ -137,7 +137,9 @@ export default class DetailMovie extends Component {
   }
   componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
+    this.forceUpdate()
   }
+ 
   handleAppStateChange(appState) {
     if (appState === 'background') {
       let date = this.state.timeReminder;

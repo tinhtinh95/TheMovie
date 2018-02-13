@@ -52,6 +52,7 @@ const TabMain = TabNavigator({
   Favourite: {
     screen: FavouriteConfigure,
     navigationOptions: {
+      badgeNumber:3,
       tabBarLabel: 'Favourites',
       tabBarIcon: ({ tintColor }) => (
         <Image
@@ -82,13 +83,13 @@ const TabMain = TabNavigator({
     swipeEnabled: true,
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: 'blue',
+      activeTintColor: '#287b6a',
       inactiveTintColor: 'gray',
       style: {
         // backgroundColor: 'rgb(90,100,174)',
         backgroundColor: 'white'
       },
-      showIcon: true
+      showIcon: true,
     },
 
   }

@@ -54,9 +54,9 @@ class Icon extends Component {
       .catch(err => console.log(err));
   }
 
-  // componentWillUpdate(){
-    // this.reloadData();
-  // }
+  componentWillUnmount(){
+    this.forceUpdate()
+  }
 
   // componentWillMount(){
   //   this.reloadData();
@@ -144,7 +144,7 @@ class Icon extends Component {
   }
   render() {
     const { favourite } = this.state;
-    const { item } = this.props
+    const { item } = this.props;
     return (
       <TouchableOpacity
         style={{ margin: 10 }}
