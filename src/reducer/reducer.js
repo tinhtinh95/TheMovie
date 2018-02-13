@@ -8,7 +8,7 @@ import { getTableList, FAVOURITE } from './../databases/Schemas';
 const defaultState = {
     movies: [],
     // listFavourite: [],
-    isFavourite: false
+    isFavourite: false 
 }
 
 const reducer = (state = defaultState, action) => {

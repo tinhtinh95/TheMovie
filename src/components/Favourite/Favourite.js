@@ -57,11 +57,11 @@ class Favourite extends Component {
     })
   }
   render() {
-    console.log(this.state.listFavourite);
     return (
       <View style={styles.container}>
         <View style={{ width: width, height: 50 }}>
           <Search
+            heightAdjust={40}
             backgroundColor='lightblue'
             ref="search_box"
             onChangeText={(text) => {
@@ -78,7 +78,6 @@ class Favourite extends Component {
         </View>
         <FlatList
           data=
-          // {this.props.listFavourite}
           {this.state.listFavourite}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => <FavouriteItem navigation={this.props.navigation} item={item} />

@@ -10,16 +10,15 @@ import Header from './Header/Header';
 import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
 import { Dimensions, Image, StyleSheet } from 'react-native';
 import React, { Component } from 'react';
-import ProfileOptions from './ProfileOptions';
+import ProfileDrawer from './ProfileDrawer';
+import Splash from './SplashScreen';
 
 const { width, height } = Dimensions.get('window');
 
 const SettingConfigure = StackNavigator({
   Settings: { screen: Settings },
   Reminder: { screen: Reminder },
-}, {
-    // navigationOptions: ({ navigation }) => <Header navigation={navigation} titleHeader={'Settings'} />
-  })
+})
 const FavouriteConfigure = StackNavigator({
   Favourite: {
     screen: Favourite,
@@ -27,9 +26,7 @@ const FavouriteConfigure = StackNavigator({
   DetailMovie: {
     screen: DetailMovie,
   }
-}, {
-    // navigationOptions: ({ navigation }) => <Header navigation={navigation} titleHeader={'Favourite'} />
-  })
+})
 const HomeConfig = StackNavigator({
   Home: {
     screen: Home,
@@ -89,11 +86,11 @@ const TabMain = TabNavigator({
       inactiveTintColor: 'gray',
       style: {
         // backgroundColor: 'rgb(90,100,174)',
-        backgroundColor:'white'
+        backgroundColor: 'white'
       },
-      showIcon:true
+      showIcon: true
     },
-   
+
   }
 )
 
@@ -109,18 +106,28 @@ const DrawerConfigure = DrawerNavigator({
     drawerBackgroundColor: 'white',
     drawerWidth: width * 0.9,
     useNativeAnimations: true,
-    contentComponent: ({ navigation }) => <ProfileOptions navigation={navigation} />
+    contentComponent: ({ navigation }) => <ProfileDrawer navigation={navigation} />
   })
 
-export default DrawerConfigure;
+export default Main = StackNavigator({
+  Splash: {
+    screen: Splash,
+    navigationOptions: {
+      header: null
+    }
+  },
+  DrawerConfigure: {
+    screen: DrawerConfigure,
+    navigationOptions: {
+      header: null
+    }
+  }
+})
 
 
 const styles = StyleSheet.create({
-
   icon: {
-    // margin: 10,
     width: 26,
     height: 26,
-    // tintColor: 'white'
   },
 });

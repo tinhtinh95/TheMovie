@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -22,7 +16,7 @@ import realm from '../databases/Schemas';
 
 const { height, width } = Dimensions.get('window');
 
-class ProfileOptions extends React.Component {
+class ProfileDrawer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -155,7 +149,7 @@ class ProfileOptions extends React.Component {
     )
   }
 }
-export default ProfileOptions;
+export default ProfileDrawer;
 
 const styles = StyleSheet.create({
   container: {

@@ -148,7 +148,6 @@ export default class DetailMovie extends Component {
       });
     }
   }
-
   render() {
     const { params } = this.props.navigation.state;
     const { favourite } = this.state;
@@ -156,7 +155,7 @@ export default class DetailMovie extends Component {
       <View style={styles.container}>
         <Push />
         <View style={styles.above}>
-          {/* <Icon item={params.item}/> */}
+          <Icon item={params.item}/>
           <View style={styles.containerAbove}>
             <View style={styles.mainRight}>
               <Text style={styles.text}> Release date: </Text>

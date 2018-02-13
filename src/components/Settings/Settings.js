@@ -24,22 +24,22 @@ export default class Settings extends Component {
             <View style={{ padding: 10 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 18, backgroundColor: 'gray' }}> Fitlter</Text>
                 <TouchableOpacity 
-                onPress={()=>this.props.navigation.navigate('Popular', {name:'popular'})}
+                onPress={()=>this.props.navigation.navigate('Home', {name:'popular'})}
                 style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <Text style={{ fontSize: 18 }}>Popular Movies</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                onPress={()=>this.props.navigation.navigate('Popular', {name:'top_rated'})}
+                onPress={()=>this.props.navigation.navigate('Home', {name:'top_rated'})}
                 style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <Text style={{ fontSize: 18 }}>Top Rated Movies</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                onPress={()=>this.props.navigation.navigate('Popular', {name:'upcoming'})}
+                onPress={()=>this.props.navigation.navigate('Home', {name:'upcoming'})}
                 style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1 }} >
                     <Text style={{ fontSize: 18 }}>Upcoming Movies</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                onPress={()=>this.props.navigation.navigate('Popular', {name:'now_playing'})}
+                onPress={()=>this.props.navigation.navigate('Home', {name:'now_playing'})}
                 style={{ paddingTop: 12, paddingBottom: 12, borderBottomWidth: 1, flexDirection: 'row' }} >
                     <Text style={{ fontSize: 18 }}>NowPlaying Movies</Text>
                     <Image />
