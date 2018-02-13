@@ -50,16 +50,6 @@ class Favourite extends Component {
         alert(`Error${err}`)
       })
   }
-
-  // static navigationOptions = {
-  //   tabBarLabel: 'Favourites',
-  //   tabBarIcon: ({ tintColor }) => (
-  //     <Image
-  //       source={require('../../images/favourite.png')}
-  //       style={[styles.icon, { tintColor: tintColor }]}
-  //     />
-  //   ),
-  // };
   _onCancel = () => {
     listFavourite = this.state.copyListFavourite;
     this.setState({
@@ -67,9 +57,10 @@ class Favourite extends Component {
     })
   }
   render() {
+    console.log(this.state.listFavourite);
     return (
       <View style={styles.container}>
-        <View style={{ width: width, height:50 }}>
+        <View style={{ width: width, height: 50 }}>
           <Search
             backgroundColor='lightblue'
             ref="search_box"

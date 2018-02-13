@@ -72,11 +72,11 @@ class ProfileOptions extends React.Component {
           {this.state.avartarSource === '' ?
             <Image
               style={styles.avatarImage}
-              source={require('../images/smile.png')}
+              source={require('../images/smile.jpg')}
             />
             :
             <Image
-              style={{ height: 200, width: 200, borderRadius: 100 }}
+              style={styles.avatarImage}
               source={this.state.avartarSource}
             />}
         </TouchableOpacity>
@@ -110,14 +110,17 @@ class ProfileOptions extends React.Component {
           style={styles.btnEdit}>
           <Text style={styles.txtEdit}>Edit</Text>
         </TouchableOpacity>
-        <Text style={styles.txtReminder}>Reminder List:</Text>
+        {
+          JSON.stringify(this.state.listReminder) != JSON.stringify([]) ?
+        <View>
+          <Text style={styles.txtReminder}>Reminder List:</Text>
         <FlatList
           data=
           {this.state.listReminder}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => (
             <View style={{
-              backgroundColor: '#4dbebb',
+              backgroundColor: '#74fcc8',
               padding: 7,
               marginBottom: 20
             }}>
@@ -140,11 +143,14 @@ class ProfileOptions extends React.Component {
           }
         ></FlatList>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Reminder',)}
+          onPress={() => navigation.navigate('Reminder', )}
           style={styles.btnShowAll}>
           <Text style={styles.txtEdit}>Show All</Text>
         </TouchableOpacity>
-        <Text style={{ fontSize: 15, alignSelf: 'center' }}>CopyRight@Enclave 2017</Text>
+        </View>
+        : null}
+        
+        <Text style={{ fontSize: 15, alignSelf: 'center', marginTop:20 }}>CopyRight@Enclave 2017</Text>
       </ScrollView>
     )
   }
@@ -155,14 +161,15 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
     padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: '#eff7fc'
   },
   avatar: {
     alignSelf: 'center'
   },
   avatarImage: {
-    height: 150,
-    width: 150
+    height: 200,
+    width: 200,
+    borderRadius: 100
   },
   textName: {
     fontSize: 25,

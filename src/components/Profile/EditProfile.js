@@ -44,8 +44,8 @@ export default class Profile extends Component {
       value: 0,
       avartarSource: null,
       isDateTimePickerVisible: false,
-      borderWidthName:0,
-      borderWidthMail:0,
+      borderWidthName: 0,
+      borderWidthMail: 0,
     }
   }
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -106,79 +106,55 @@ export default class Profile extends Component {
             avartarSource: myInfo.avatar
           })
         }
-
       })
       ;
   }
   render() {
     return (
-      <KeyboardAvoidingView style={{ backgroundColor: 'white', height: height }}>
-        <View style={{
-          flex: 1,
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-        }}>
+      <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.avatarContainer}>
           <Image
-            style={{
-              flex: 1,
-              width: null,
-              height: null,
-            }}
+            style={styles.background}
             source={require('../../images/info.jpg')}
           />
         </View>
-        <View style={{
-          marginTop: 20, padding: 10,
-          justifyContent: 'space-between',
-          flexDirection: 'row'
-        }}>
+        <View style={styles.select}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Home')}
-            style={{ backgroundColor: '#4dbebb', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+            style={styles.cancel}>
             <Text style={{ fontSize: 20 }}>CANCEL</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={this._editInfo}
-            style={{ backgroundColor: '#4374fd', padding: 7, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
+            style={styles.done}>
             <Text style={{ fontSize: 20 }}>DONE</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
           onPress={this.show}
-          style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+          style={styles.imgContainer}>
           {this.state.avartarSource === null ?
             <Image
-              style={{ height: 200, width: 200, borderRadius: 50 }}
+              style={styles.avatar}
               source={require('../../images/smile.jpg')}
             />
             :
             <Image
-              style={{ height: 200, width: 200, borderRadius: 100 }}
+              style={styles.avatar}
               source={this.state.avartarSource}
             />}
 
         </TouchableOpacity>
-        <TextInput style={[{
-          width: width * 0.8,
-          textAlign: 'center',
-          padding: 3,
-          fontSize: 25,
-          borderColor: 'gray',
-          borderRadius: 5,
-          borderWidth: this.state.borderWidthName,
-          marginBottom: 20,
-          justifyContent:'center',
-          alignSelf:'center'
-        },]}
+        <TextInput style={[styles.name,
+        { borderWidth: this.state.borderWidthName, }]}
           value={this.state.name}
           onChangeText={(text) => this.setState({ name: text })}
-          onFocus={()=>this.setState({borderWidthName:1})}
-          onBlur={()=>this.setState({borderWidthName:0})}
+          onFocus={() => this.setState({ borderWidthName: 1 })}
+          onBlur={() => this.setState({ borderWidthName: 0 })}
         />
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15, }}>
+        <View style={styles.viewProperties}>
           <Image
-            style={{ height: 26, width: 26, marginRight: 20 }}
+            style={styles.icon}
             source={require('../../images/birthdayCake.png')}
           />
           <Text style={{ fontSize: 17 }} onPress={this._showDateTimePicker}>{this.state.birthDay}</Text>
@@ -191,34 +167,27 @@ export default class Profile extends Component {
             />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
+        <View style={styles.viewProperties}>
           <Image
-            style={{ height: 26, width: 26, marginRight: 20 }}
+            style={styles.icon}
             source={require('../../images/mail.png')}
           />
           <TextInput
-            style={{
-              width: width * 0.8,
-              borderColor: 'gray',
-              borderRadius: 5,
-              borderWidth: this.state.borderWidthMail,
-              padding: 5,
-              fontSize: 17
-            }}
+            style={[styles.txtMail, { borderWidth: this.state.borderWidthMail, }]}
             value={this.state.email}
             onChangeText={(text) => this.setState({ email: text })}
-            onFocus={()=>this.setState({borderWidthMail:1})}
-            onBlur={()=>this.setState({borderWidthMail:0})}
+            onFocus={() => this.setState({ borderWidthMail: 1 })}
+            onBlur={() => this.setState({ borderWidthMail: 0 })}
           />
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, }}>
+        <View style={styles.viewProperties}>
           <Image
-            style={{ height: 26, width: 26, marginRight: 20 }}
+            style={styles.icon}
             source={require('../../images/male.png')}
           />
           <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
             <RadioButton currentValue={this.state.value} value={0} onPress={this.handleOnPress}>
-              <Text style={{ fontSize: 17 }} >Male</Text>
+              <Text style={{ fontSize: 17, marginRight:width/7 }} >Male</Text>
             </RadioButton>
 
             <RadioButton currentValue={this.state.value} value={1} onPress={this.handleOnPress}>
@@ -233,6 +202,76 @@ export default class Profile extends Component {
 }
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
+    height: height
   },
+  avatarContainer: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  background: {
+    flex: 1,
+    width: null,
+    height: null,
+  },
+  select: {
+    marginTop: 20, padding: 10,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  },
+  cancel: {
+    backgroundColor: '#4dbebb',
+    padding: 7,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  done: {
+    backgroundColor: '#4374fd',
+    padding: 7,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  imgContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  avatar: {
+    height: 200,
+    width: 200,
+    borderRadius: 100
+  },
+  name: {
+    width: width * 0.8,
+    textAlign: 'center',
+    padding: 3,
+    fontSize: 25,
+    borderColor: 'gray',
+    borderRadius: 5,
 
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  viewProperties: {
+    paddingLeft: 10,
+    flexDirection: 'row', alignItems: 'center', marginBottom: 15,
+  },
+  icon: {
+    height: 26,
+    width: 26,
+    marginRight: 20
+  },
+  txtMail: {
+    width: width * 0.8,
+    borderColor: 'gray',
+    borderRadius: 5,
+
+    padding: 5,
+    fontSize: 17
+  }
 });
