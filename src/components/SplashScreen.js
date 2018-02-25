@@ -17,8 +17,8 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#99d4a3', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ fontSize: width / 3, color: 'white' }}>THE</Text>
-        <Text style={{ fontSize: width / 3, color: 'white' }}>MOVIE</Text>
+        <Text style={{ fontSize: 75, color: 'white' }}>THE</Text>
+        <Text style={{ fontSize: 75, color: 'white' }}>MOVIE</Text>
       </View>
     );
   }

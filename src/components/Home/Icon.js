@@ -14,7 +14,7 @@ import {
 import { insertNewFavourite, deleteFavourite, checkObject, getTableList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import { connect } from 'react-redux';
-import { toggleFav } from '../../actions/actions';
+import { toggleFav, addFavourite } from '../../actions/actions';
 import { AlertRemoveFavourite, setFavourite } from './../../actions/model';
 
 const { height, width } = Dimensions.get('window');
@@ -29,13 +29,24 @@ class Icon extends Component {
     realm.addListener('change', () => {
       this.reloadData();
     });
-
+    // const { item } = this.props;
   }
+
   reloadData = () => {
     var check = false;
     const { item } = this.props;
     getTableList('FAVOURITE')
-      .then(list => {
+      .then(async(res) => {
+        let list = await res.map(item=>{
+          return {
+           id: item.id,
+           title: item.title,
+           vote_average: item.vote_average,
+           overview: item.overview,
+           release_date: item.release_date,
+           poster_path: item.poster_path,
+          }
+        })
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === item.id) {
             check = true;
@@ -53,22 +64,6 @@ class Icon extends Component {
       })
       .catch(err => console.log(err));
   }
-
-  componentWillUnmount(){
-    this.forceUpdate()
-  }
-
-  // componentWillMount(){
-  //   this.reloadData();
-  //   realm.addListener('change', () => {
-  //     this.reloadData();
-  //   });
-  // }
-  // componentWillUnmount(){
-  //   realm.removeListener('change', () => {
-  //     this.reloadData();
-  //   });
-  // }
 
   // AlertRemoveFavourite = (item) => {
   //   Alert.alert(
@@ -91,24 +86,40 @@ class Icon extends Component {
   //   )
   // }
   setFavourite = (item) => {
-    // let check=checkObject(item,"FAVOURITE");
-    // console.log('check o day ', check);
-    // if (checkObject(item,"FAVOURITE")) {
-    //   AlertRemoveFavourite(item);
-    // } else {
-    //   const newFavourite = {
-    //     id: item.id,
-    //     title: item.title,
-    //     vote_average: item.vote_average,
-    //     overview: item.overview,
-    //     release_date: item.release_date,
-    //     poster_path: item.poster_path,
-    //   };
-    //   //  this.props.addFavourite(newFavourite)
-    //   insertNewFavourite(newFavourite).then(
-    //   ).catch((error) => {
-    //     alert(`Insert new Favourite  error ${error}`);
-    //   })
+    // const newFavourite = {
+    //   id: item.id,
+    //   title: item.title,
+    //   vote_average: item.vote_average,
+    //   overview: item.overview,
+    //   release_date: item.release_date,
+    //   poster_path: item.poster_path,
+    // };
+    // if (this.props.isFavorite) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'Are you sure you want to unfavorite this item?',
+    //     [
+    //       {
+    //         text: 'Cancel', onPress: () => console.log('Cancel')
+    //         , style: 'cancel'
+    //       },
+    //       {
+    //         text: 'OK', onPress: () => {
+    //           // deleteFavourite(item.id).then().catch(error => {
+    //           //   alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+    //           // })
+    //           this.props.addFavourite(newFavourite);
+    //           //  deleteFavourite(newFavourite.id).then().catch(error => {
+    //           //   alert(`Failed to delete Favourite with id = ${newFavourite.id}, error=${error}`);
+    //           // })
+    //         }
+    //       },
+    //     ],
+    //     { cancelable: false }
+    //   ) 
+    // }
+    // else {
+    //   this.props.addFavourite(newFavourite);
     // }
 
     var check = false;
@@ -137,7 +148,8 @@ class Icon extends Component {
           insertNewFavourite(newFavourite).then(
           ).catch((error) => {
             alert(`Insert new Favourite  error ${error}`);
-          })
+          });
+
         }
       })
       .catch(err => console.log(err))
@@ -154,6 +166,7 @@ class Icon extends Component {
         }
       >
         {favourite === 0
+        // {!this.props.isFavorite
           ?
           <Image
             style={styles.icon}
@@ -169,13 +182,16 @@ class Icon extends Component {
     )
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const { item } = props;
   return {
-    isFavourite: state.isFavourite
+    isFavorite: state.listFavourite
+      .map(movie => { return movie.id })
+      .indexOf(item.id) != -1 ? true : false,
   }
 }
 
-export default connect(mapStateToProps, { toggleFav })(Icon);
+export default connect(mapStateToProps, {addFavourite })(Icon);
 // export default (Icon); 
 
 

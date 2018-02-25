@@ -8,10 +8,11 @@ import DetailMovie from './Home/DetailMovie';
 import Home from './Home/Home';
 import Header from './Header/Header';
 import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
-import { Dimensions, Image, StyleSheet } from 'react-native';
+import { Dimensions, Image, StyleSheet,View,Platform,Text } from 'react-native';
 import React, { Component } from 'react';
 import ProfileDrawer from './ProfileDrawer';
 import Splash from './SplashScreen';
+import IconBadge from 'react-native-icon-badge';
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,10 +43,30 @@ const TabMain = TabNavigator({
     navigationOptions: {
       tabBarLabel: 'Movies',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../images/home.png')}
-          style={[styles.icon, { tintColor: tintColor }]}
-        />
+        // <Image
+        //   source={require('../images/home.png')}
+        //   style={[styles.icon, { tintColor: tintColor }]}
+        // />
+        <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',}}>
+  <IconBadge
+    MainElement={
+      <View style={{backgroundColor:'#489EFE',
+        width:50,
+        height:50,
+        margin:6
+      }}/>
+    }
+    BadgeElement={
+      <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
+    }
+    IconBadgeStyle={
+      {width:30,
+      height:30,
+      backgroundColor: '#FF00EE'}
+    }
+    Hidden={this.state.BadgeCount==0}
+    />
+</View>
       ),
     }
   },
@@ -55,10 +76,42 @@ const TabMain = TabNavigator({
       badgeNumber:3,
       tabBarLabel: 'Favourites',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../images/favourite.png')}
-          style={[styles.icon, { tintColor: tintColor }]}
-        />
+        // <Image
+        //   source={require('../images/favourite.png')}
+        //   style={[styles.icon, { tintColor: tintColor }]}
+        // />
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image
+                    source={require('../images/favourite.png')}
+                    style={[styles.icon ,{tintColor: tintColor,margin:5,padding:5 }]}
+                />
+                {/* {this.props.numberOfFavoriteMovies != 0 ? */}
+                    <View style={{
+                        // position: 'absolute',
+                        // height: 30,
+                        // // width: 30,
+                        // borderRadius: 10,
+                        // backgroundColor: 'red',
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
+                        // left: 20, 
+                        // top: -8,
+                        position:'absolute',
+  top:1,
+  right:1,
+  minWidth:20,
+  height:20,
+  borderRadius:15,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'red'
+                    }}>
+                        <Text style={{ fontSize: 10, color: "white" }}>1</Text>
+                    </View>
+                    {/* : 
+                    <View />
+                } */}
+            </View>
       ),
     }
   },
@@ -85,7 +138,10 @@ const TabMain = TabNavigator({
     tabBarOptions: {
       activeTintColor: '#287b6a',
       inactiveTintColor: 'gray',
+      upperCaseLabel: false,
       style: {
+      // borderTopWidth: 1,
+      borderColor: 'gray',
         // backgroundColor: 'rgb(90,100,174)',
         backgroundColor: 'white'
       },

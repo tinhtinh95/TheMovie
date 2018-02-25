@@ -9,8 +9,10 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -20,9 +22,22 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+
+  handleAppStateChange() {
+      PushNotification.localNotificationSchedule({
+        message: "My Notification Message",
+        date: new Date(Date.now() + (5 * 1000))
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>
+      <TouchableOpacity
+      onPress={this.handleAppStateChange.bind(this)}
+      >
+        <Text>ahihi</Text>
+      </TouchableOpacity>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>

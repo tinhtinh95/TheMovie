@@ -18,6 +18,7 @@ import { StackNavigator } from 'react-navigation';
 import { getTableList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
 import Search from 'react-native-search-box';
+import { getFavourite } from '../../actions/actions'
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,10 +40,20 @@ class Favourite extends Component {
     let header = (<Header navigation={navigation} titleHeader={'Favourite'} />)
     return { header }
   }
-
   reloadData = () => {
     getTableList('FAVOURITE')
-      .then(listFavourite => {
+      .then(async(res) => {
+         let listFavourite = await res.map(item=>{
+           return {
+            id: item.id,
+            title: item.title,
+            vote_average: item.vote_average,
+            overview: item.overview,
+            release_date: item.release_date,
+            poster_path: item.poster_path,
+           }
+         })
+        // this.props.getFavourite(listFavourite);
         this.setState({ listFavourite, copyListFavourite: listFavourite })
       })
       .catch(err => {
@@ -78,8 +89,9 @@ class Favourite extends Component {
         </View>
         <FlatList
           data=
+          // {this.props.listFavourite}
           {this.state.listFavourite}
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item,index) => item.id}
           renderItem={({ item }) => <FavouriteItem navigation={this.props.navigation} item={item} />
           }
         ></FlatList>
@@ -88,15 +100,14 @@ class Favourite extends Component {
   }
 }
 
-// function mapStateToProps(state) {
-//   console.log(state)
-//   return {
-//     listFavourite: state.listFavourite,
-//   }
-// }
+function mapStateToProps(state) {
+  return {
+    listFavourite: state.listFavourite,
+  }
+}
 
-// export default connect(mapStateToProps)(Favourite);
-export default (Favourite);
+export default connect(mapStateToProps, { getFavourite })(Favourite);
+// export default (Favourite);
 
 const styles = StyleSheet.create({
   container: {

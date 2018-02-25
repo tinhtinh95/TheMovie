@@ -83,6 +83,7 @@ class Home extends Component {
     return (
       this.state.isGridList ?
         <View style={styles.container}>
+        <TouchableOpacity onPress={()=>deleteAllFavourites()}><Text>delete</Text></TouchableOpacity>
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}

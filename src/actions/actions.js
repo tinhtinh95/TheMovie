@@ -31,19 +31,18 @@ export function fetchData(name, page) {
     }
 
 }
-export function addFavourite(data) {
-    return {
-        type: types.ADD_FAVOURITE,
-        payload: data,
+// export function addFavourite(data) {
+//     return {
+//         type: types.ADD_FAVOURITE,
+//         payload: data,
 
-    }
-}
-export function toggleFav(id) {
-    return {
-        type: types.TOGGLE_FAVOURITE,
-        payid:id,
-        // payIsFav: isFav,
-        // payload: data,
+//     }
+// }
 
-    }
-}
+// export function getFavourite(data) {
+//     return {
+//         type: types.GET_FAVOURITE,
+//         payload: data,
+
+//     }
+// }

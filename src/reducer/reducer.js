@@ -1,14 +1,11 @@
 import * as types from '../actions/actionTypes';
 import { combineReducers } from 'redux';
-import { getTableList, FAVOURITE } from './../databases/Schemas';
-
-
-
+import { insertNewFavourite, deleteFavourite } from '../databases/Schemas';
 
 const defaultState = {
     movies: [],
-    // listFavourite: [],
-    isFavourite: false 
+    listFavourite: [],
+    isFavourite: false
 }
 
 const reducer = (state = defaultState, action) => {
@@ -24,27 +21,32 @@ const reducer = (state = defaultState, action) => {
                 movies: action.payload
             }
         // case types.ADD_FAVOURITE:
-        //     console.log(action.payload);
-        //     return {
-        //         ...state,
-        //         listFavourite: state.listFavourite.concat(action.payload)
+        //     if (state.listFavourite.map(e => { return e.id })
+        //         .indexOf(action.payload.id) != -1) {
+        //         deleteFavourite(action.payload.id).then().catch(error => {
+        //             alert(`Failed to delete Favourite with id = ${action.payload.id}, error=${error}`);
+        //         });
+        //         return {
+        //             ...state,
+        //             listFavourite: state.listFavourite.filter(e => (e.id != action.payload.id))
+        //         }
         //     }
-        // case types.TOGGLE_FAVOURITE: {
+        //     else {
+        //         insertNewFavourite(action.payload).then(
+        //         ).catch((error) => {
+        //             alert(`Insert new Favourite  error ${error}`);
+        //         })
+        //         return {
+        //             ...state,
+        //             listFavourite: state.listFavourite.concat(action.payload)
+        //         }
+        //     }
+        // case types.GET_FAVOURITE: {
         //     return {
         //         ...state,
-        //         isFavourite:true,
+        //         listFavourite: action.payload
         //     }
         // }
-        case types.TOGGLE_FAVOURITE: {
-            getTableList(FAVOURITE)
-            .then()
-            .catch();
-            return {
-                ...state,
-                isFavourite: !state.isFavourite,
-                
-            }
-        }
         default:
             { return state; }
     }

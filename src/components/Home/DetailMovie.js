@@ -48,7 +48,7 @@ class Push extends Component {
 export default class DetailMovie extends Component {
   constructor(props) {
     super(props);
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    // this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.state = {
       isDateTimePickerVisible: false,
       listFavourite: [],
@@ -63,10 +63,10 @@ export default class DetailMovie extends Component {
 
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
-  _handleDatePicked = (date) => {
+  _handleDatePicked = async (date) => {
     const { item } = this.props.navigation.state.params;
     console.log('A date has been picked: ', date);
-    this._hideDateTimePicker();
+    await this._hideDateTimePicker();
     const newReminder = {
       id: item.id,
       title: item.title,
@@ -76,11 +76,17 @@ export default class DetailMovie extends Component {
       poster_path: item.poster_path,
     };
     console.log(newReminder)
-    insertNewReminder(newReminder).then(
+    await insertNewReminder(newReminder).then(
     ).catch((error) => {
       alert(`Insert new Reminder  error ${error}`);
     });
-    this.setState({ timeReminder: date})
+    await this.setState({ timeReminder: date});
+    // let date1 = new Date(Date.now() + (5 * 1000))
+    // console.log('here', date1)
+    // await PushNotification.localNotificationSchedule({
+    //   message: "Noti",
+    //   date1,
+    // });
   };
   setReminder = async (item) => {
     var check = false;
@@ -126,7 +132,7 @@ export default class DetailMovie extends Component {
     return { header }
   }
   componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
+    // AppState.addEventListener('change', this.handleAppStateChange);
     const { params } = this.props.navigation.state;
     fetch(`https://api.themoviedb.org/3/movie/${params.item.id}/credits?api_key=0267c13d8c7d1dcddb40001ba6372235`)
       .then(res => res.json())
@@ -136,19 +142,19 @@ export default class DetailMovie extends Component {
       .catch(err => console.log(err));
   }
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
-    this.forceUpdate()
+    // AppState.removeEventListener('change', this.handleAppStateChange);
+    // this.forceUpdate()
   }
- 
-  handleAppStateChange(appState) {
-    if (appState === 'background') {
-      let date = this.state.timeReminder;
+  handleAppStateChange() {
+    // if ((appState === 'background' || appState === 'inactive') ) {
+      let date = new Date(Date.now() + (5 * 1000))
+      // this.state.timeReminder;
       console.log('here', date)
       PushNotification.localNotificationSchedule({
         message: "My Notification Message",
         date,
       });
-    }
+    // }
   }
   render() {
     const { params } = this.props.navigation.state;
@@ -177,8 +183,9 @@ export default class DetailMovie extends Component {
             </Image>
             <TouchableOpacity
               onPress={
-                () =>
-                  this.setReminder(params.item)
+                () => 
+                // this.handleAppStateChange.bind(this)
+                  {this.setReminder(params.item)}
               }
               style={[styles.reminder, { backgroundColor: this.state.reminderColor }]}>
               <Text style={[styles.text, { color: 'white' }]}>REMINDER</Text>

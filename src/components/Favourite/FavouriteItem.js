@@ -17,30 +17,34 @@ import {
 } from 'react-native';
 import { deleteFavourite } from './../../databases/Schemas';
 const { height, width } = Dimensions.get('window');
+import { toggleFav,addFavourite } from '../../actions/actions';
+import { connect } from 'react-redux';
 const uri = "https://image.tmdb.org/t/p/w185";
+import { AlertRemoveFavourite } from './../../actions/model';
 
-export default class FlatItem extends Component {
+class FlatItem extends Component {
 
-  AlertRemoveFavourite = (item) => {
-    Alert.alert(
-      'Warning',
-      'Do you want to delete this favourite film',
-      [
-        {
-          text: 'Cancel', onPress: () => console.log('Cancel')
-          , style: 'cancel'
-        },
-        {
-          text: 'OK', onPress: () => {
-            deleteFavourite(item.id).then().catch(error => {
-              alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
-            })
-          }
-        },
-      ],
-      { cancelable: false }
-    )
-  }
+  // AlertRemoveFavourite = (item) => {
+  //   Alert.alert(
+  //     'Warning',
+  //     'Are you sure you want to unfavorite this item?',
+  //     [
+  //       {
+  //         text: 'Cancel', onPress: () => console.log('Cancel')
+  //         , style: 'cancel'
+  //       },
+  //       {
+  //         text: 'OK', onPress: () => {
+  //           deleteFavourite(item.id).then().catch(error => {
+  //             alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
+  //           })
+  //           // this.props.addFavourite(item);
+  //         }
+  //       },
+  //     ],
+  //     { cancelable: false }
+  //   )
+  // }
   render() {
     const { item } = this.props;
     return (
@@ -50,7 +54,7 @@ export default class FlatItem extends Component {
         <View style={styles.above}>
           <View style={{ width: width * 0.8 }}><Text numberOfLines={1} style={styles.title}>{item.title}</Text></View>
           <TouchableOpacity
-            onPress={() => this.AlertRemoveFavourite(item)}
+            onPress={() => AlertRemoveFavourite(item)}
           >
             <Image
               style={styles.icon}
@@ -84,6 +88,8 @@ export default class FlatItem extends Component {
     );
   }
 }
+
+export default connect(null, {addFavourite})(FlatItem);
 
 const styles = StyleSheet.create({
   container: {

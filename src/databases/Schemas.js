@@ -80,18 +80,20 @@ export const deleteFavourite = favouriteId => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {
             let objDel = realm.objectForPrimaryKey(FAVOURITE, favouriteId);
-            realm.delete(objDel);
+            // if (objDel.isValid()) {
+                realm.delete(objDel);
+            // }
             resolve('thanhcong');
         });
-    }).catch((error) => reject(error));;
+    }).catch((error) => reject(error));
 });
 export const deleteAllFavourites = () => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {
             let allFavourites = realm.objects(FAVOURITE);
             realm.delete(allFavourites);
-            let allReminders = realm.objects(REMINDER);
-            realm.delete(allReminders);
+            // let allReminders = realm.objects(REMINDER);
+            // realm.delete(allReminders);
             resolve();
         });
     }).catch((error) => reject(error));;
@@ -108,7 +110,7 @@ export const insertNewReminder = newReminder => new Promise((resolve, reject) =>
 export const getReminderLimit = () => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         let ReminderList = realm.objects(REMINDER)
-        .sorted('time_reminder',true).slice(0,2);
+            .sorted('time_reminder', true).slice(0, 2);
         resolve(ReminderList);
     }).catch((error) => {
         reject(error);

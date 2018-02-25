@@ -3801,6 +3801,10 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-icon-badge@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-icon-badge/-/react-native-icon-badge-1.1.3.tgz#43de0c923afe4968dfcff127ec5c57057b16f787"
+
 react-native-image-picker@^0.26.7:
   version "0.26.7"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.7.tgz#ad2ee957f7f6cc01396893ea03d84cb2adb2e376"
@@ -3836,14 +3840,6 @@ react-native-swipeout@^2.3.3:
   dependencies:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
-    react-tween-state "^0.1.5"
-
-"react-native-swipeout@git+https://github.com/CandyOgre/react-native-swipeout.git":
-  version "2.1.1"
-  resolved "git+https://github.com/CandyOgre/react-native-swipeout.git#1807ff3d03eb2743d636f57f084e0906fa5ce2a9"
-  dependencies:
-    create-react-class "^15.6.0"
-    prop-types "^15.6.0"
     react-tween-state "^0.1.5"
 
 react-native-tab-view@^0.0.74:
