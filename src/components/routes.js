@@ -12,7 +12,7 @@ import { Dimensions, Image, StyleSheet,View,Platform,Text } from 'react-native';
 import React, { Component } from 'react';
 import ProfileDrawer from './ProfileDrawer';
 import Splash from './SplashScreen';
-import IconBadge from 'react-native-icon-badge';
+// import IconBadge from 'react-native-icon-badge';
 import BadgeIcon from './Favourite/BadgeIcon';
 
 const { width, height } = Dimensions.get('window');
@@ -61,7 +61,7 @@ const TabMain = TabNavigator({
         //   source={require('../images/favourite.png')}
         //   style={[styles.icon, { tintColor: tintColor }]}
         // />
-       <BadgeIcon />
+       <BadgeIcon tintColor={tintColor}/>
       ),
     }
   },
@@ -90,7 +90,6 @@ const TabMain = TabNavigator({
       inactiveTintColor: 'gray',
       upperCaseLabel: false,
       style: {
-      // borderTopWidth: 1,
       borderColor: 'gray',
         // backgroundColor: 'rgb(90,100,174)',
         backgroundColor: 'white'
