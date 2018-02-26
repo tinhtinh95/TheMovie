@@ -32,11 +32,7 @@ const databaseOptions = {
     path: 'Favourite.realm',
     schema: [Favourite, Reminder],
     schemaVersion: 4,
-    // migration: function(oldRealm, newRealm) {
-    //   newRealm.deleteAll();  
-    // }
 };
-//functions for TodoLists
 export const insertNewFavourite = newFavourite => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {
@@ -45,14 +41,7 @@ export const insertNewFavourite = newFavourite => new Promise((resolve, reject) 
         });
     }).catch((error) => reject(error));
 });
-// export const getFavouriteList = () => new Promise((resolve, reject) => {
-//     Realm.open(databaseOptions).then(realm => {
-//         let FavouriteList = realm.objects(FAVOURITE);
-//         resolve(FavouriteList);
-//     }).catch((error) => {
-//         reject(error);
-//     });;
-// });
+
 export const getTableList = (table) => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         let TableList = realm.objects(table);
@@ -62,27 +51,11 @@ export const getTableList = (table) => new Promise((resolve, reject) => {
     });;
 });
 
-// export const checkObject = async (item, table) => {
-//     var list = [];
-//     await getTableList(table).then(
-//         list => {
-//             list = list
-//         }
-//     )
-//     for (let i = 0; i < list.length; i++) {
-//         if (item.id === list[i].id) {
-//             console.log('bang nahu roi')
-//             return true;
-//         }
-//     } return false;
-// }
 export const deleteFavourite = favouriteId => new Promise((resolve, reject) => {
     Realm.open(databaseOptions).then(realm => {
         realm.write(() => {
             let objDel = realm.objectForPrimaryKey(FAVOURITE, favouriteId);
-            // if (objDel.isValid()) {
-                realm.delete(objDel);
-            // }
+            realm.delete(objDel);
             resolve('thanhcong');
         });
     }).catch((error) => reject(error));
@@ -92,8 +65,8 @@ export const deleteAllFavourites = () => new Promise((resolve, reject) => {
         realm.write(() => {
             let allFavourites = realm.objects(FAVOURITE);
             realm.delete(allFavourites);
-            // let allReminders = realm.objects(REMINDER);
-            // realm.delete(allReminders);
+            let allReminders = realm.objects(REMINDER);
+            realm.delete(allReminders);
             resolve();
         });
     }).catch((error) => reject(error));;

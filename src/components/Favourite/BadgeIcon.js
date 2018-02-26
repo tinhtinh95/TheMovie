@@ -38,7 +38,6 @@ class BadgeIcon extends Component {
           }
         })
         let count = listFavourite.length;
-        console.log(count)
         await this.setState({ number: count })
       })
       .catch(err => {

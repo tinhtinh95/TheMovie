@@ -30,7 +30,17 @@ export default class Reminder extends Component {
   }
   reloadData = () => {
     getTableList('REMINDER')
-      .then(listReminder => {
+    .then(async(res) => {
+      let listReminder = await res.map(e=>{
+        return {
+          id: e.id,
+          title: e.title,
+          year_release: e.year_release,
+          vote_average: e.vote_average,
+          time_reminder: e.time_reminder,
+          poster_path: e.poster_path,
+        }
+      })
         this.setState({ listReminder })
       })
       .catch(err => {
@@ -38,13 +48,13 @@ export default class Reminder extends Component {
         alert(`Error${err}`)
       })
   }
-  refreshFlatList = (deletedKey) => {
-    this.setState((prevState) => {
-      return {
-        deletedRowKey: deletedKey
-      }
-    })
-  }
+  // refreshFlatList = (deletedKey) => {
+  //   this.setState((prevState) => {
+  //     return {
+  //       deletedRowKey: deletedKey
+  //     }
+  //   })
+  // }
   static navigationOptions = ({ navigation }) => {
     let header = (
       <View style={styles.containerHeader}>

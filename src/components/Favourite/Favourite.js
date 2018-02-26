@@ -35,7 +35,6 @@ class Favourite extends Component {
       this.reloadData();
     });
   }
-
   static navigationOptions = ({ navigation }) => {
     let header = (<Header navigation={navigation} titleHeader={'Favourite'} />)
     return { header }
@@ -100,14 +99,14 @@ class Favourite extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    listFavourite: state.listFavourite,
-  }
-}
+// function mapStateToProps(state) {
+//   return {
+//     listFavourite: state.listFavourite,
+//   }
+// }
 
-export default connect(mapStateToProps, { getFavourite })(Favourite);
-// export default (Favourite);
+// export default connect(mapStateToProps, { getFavourite })(Favourite);
+export default (Favourite);
 
 const styles = StyleSheet.create({
   container: {

@@ -13,9 +13,7 @@ import {
 } from 'react-native';
 import { insertNewFavourite, deleteFavourite, checkObject, getTableList } from './../../databases/Schemas';
 import realm from './../../databases/Schemas';
-import { connect } from 'react-redux';
-import { toggleFav, addFavourite } from '../../actions/actions';
-import { AlertRemoveFavourite, setFavourite } from './../../actions/model';
+import { AlertRemoveFavourite,  } from './../../actions/model';
 
 const { height, width } = Dimensions.get('window');
 
@@ -29,9 +27,7 @@ class Icon extends Component {
     realm.addListener('change', () => {
       this.reloadData();
     });
-    // const { item } = this.props;
   }
-
   reloadData = () => {
     var check = false;
     const { item } = this.props;
@@ -64,67 +60,10 @@ class Icon extends Component {
       })
       .catch(err => console.log(err));
   }
-
-  // AlertRemoveFavourite = (item) => {
-  //   Alert.alert(
-  //     'Warning',
-  //     'Do you want to delete this favourite film',
-  //     [
-  //       {
-  //         text: 'Cancel', onPress: () => console.log('Cancel')
-  //         , style: 'cancel'
-  //       },
-  //       {
-  //         text: 'OK', onPress: () => {
-  //           deleteFavourite(item.id).then().catch(error => {
-  //             alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
-  //           });
-  //         }
-  //       },
-  //     ],
-  //     { cancelable: false }
-  //   )
-  // }
   setFavourite = (item) => {
-    // const newFavourite = {
-    //   id: item.id,
-    //   title: item.title,
-    //   vote_average: item.vote_average,
-    //   overview: item.overview,
-    //   release_date: item.release_date,
-    //   poster_path: item.poster_path,
-    // };
-    // if (this.props.isFavorite) {
-    //   Alert.alert(
-    //     'Warning',
-    //     'Are you sure you want to unfavorite this item?',
-    //     [
-    //       {
-    //         text: 'Cancel', onPress: () => console.log('Cancel')
-    //         , style: 'cancel'
-    //       },
-    //       {
-    //         text: 'OK', onPress: () => {
-    //           // deleteFavourite(item.id).then().catch(error => {
-    //           //   alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
-    //           // })
-    //           this.props.addFavourite(newFavourite);
-    //           //  deleteFavourite(newFavourite.id).then().catch(error => {
-    //           //   alert(`Failed to delete Favourite with id = ${newFavourite.id}, error=${error}`);
-    //           // })
-    //         }
-    //       },
-    //     ],
-    //     { cancelable: false }
-    //   ) 
-    // }
-    // else {
-    //   this.props.addFavourite(newFavourite);
-    // }
-
     var check = false;
     getTableList('FAVOURITE')
-      .then(list => {
+      .then((list) => {
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === item.id) {
             check = true;
@@ -144,12 +83,10 @@ class Icon extends Component {
             release_date: item.release_date,
             poster_path: item.poster_path,
           };
-          //  this.props.addFavourite(newFavourite)
           insertNewFavourite(newFavourite).then(
           ).catch((error) => {
             alert(`Insert new Favourite  error ${error}`);
           });
-
         }
       })
       .catch(err => console.log(err))
@@ -166,7 +103,6 @@ class Icon extends Component {
         }
       >
         {favourite === 0
-        // {!this.props.isFavorite
           ?
           <Image
             style={styles.icon}
@@ -182,19 +118,7 @@ class Icon extends Component {
     )
   }
 }
-const mapStateToProps = (state, props) => {
-  const { item } = props;
-  return {
-    isFavorite: state.listFavourite
-      .map(movie => { return movie.id })
-      .indexOf(item.id) != -1 ? true : false,
-  }
-}
-
-export default connect(mapStateToProps, {addFavourite })(Icon);
-// export default (Icon); 
-
-
+export default (Icon); 
 const styles = StyleSheet.create({
   icon: {
     width: 26,
