@@ -11,8 +11,10 @@ const reducer = (state = defaultState, action) => {
         case types.GET_POPULAR:
             return {
                 ...state,
-                movies: action.payload
+                movies: //action.payload
+                state.movies.concat(action.payload),
             }
+        
         case types.GET_TOP_RATED:
             return {
                 ...state,
@@ -21,6 +23,6 @@ const reducer = (state = defaultState, action) => {
         default:
             { return state; }
     }
-}
+} 
 
 export default reducer;

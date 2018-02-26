@@ -25,24 +25,8 @@ export function fetchData(name, page) {
                 console.log('top')
                 dispatch(getTopRated(data));
             }
-
         })
             .catch((err) => console.log(err))
     }
 
 }
-// export function addFavourite(data) {
-//     return {
-//         type: types.ADD_FAVOURITE,
-//         payload: data,
-
-//     }
-// }
-
-// export function getFavourite(data) {
-//     return {
-//         type: types.GET_FAVOURITE,
-//         payload: data,
-
-//     }
-// }

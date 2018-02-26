@@ -21,7 +21,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      list: [],
       isRefresh: true,
       page: 1,
       isGridList: true,
@@ -29,7 +29,7 @@ class Home extends Component {
       name: 'popular'
     }
     // this.props.fetchData(this.state.name, this.state.page);
-   
+
   }
 
   _toggleGridList = () => {
@@ -43,54 +43,34 @@ class Home extends Component {
 
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    // // console.log(this.state.name)
     if (params !== undefined) {
-    //   console.log('choose params:',params.name)
-    //   // this.setState({name:params.name})
+      //   // this.setState({name:params.name})
       this.props.fetchData(params.name, this.state.page);
-    }else{
-    //   console.log('k co')
+    } else {
       this.props.fetchData(this.state.name, this.state.page);
     }
-    // console.log(this.state.name)
     this.props.navigation.setParams({
       toggleGridList: this._toggleGridList,
     });
   }
-  // componentWillUpdate(){
-  //   const { params } = this.props.navigation.state;
-  //   // console.log(this.state.name)
-  //   if (params !== undefined) {
-  //     console.log('choose params:',params.name)
-  //     this.setState({name:params.name})
-  //     this.props.fetchData(params.name, this.state.page);
-  //   }else{
-  //     console.log('k co')
-  //     this.props.fetchData(this.state.name, this.state.page);
-  //   }
-    
-  // }
-
   _onRefresh = (page) => {
     this.setState({ page: page + 1 });
     this.props.fetchData("popular", this.state.page);
   }
-
-
   render() {
-    // console.log('params', params.name);
-    // {params==='Popular' ? console.log('ahihi'): console.log('bibi')} 
     return (
       this.state.isGridList ?
         <View style={styles.container}>
-        {/* <TouchableOpacity onPress={()=>deleteAllFavourites()}><Text>delete</Text></TouchableOpacity> */}
+          {/* <TouchableOpacity onPress={()=>deleteAllFavourites()}><Text>delete</Text></TouchableOpacity> */}
           <FlatList
             refreshing={false}
             onRefresh={() => this._onRefresh(this.state.page)}
-            data={this.props.listPopular}
+            data={this.props.listMovies}
+            onEndReachedThreshold={0.1}
+            onEndReached={() => { this._onRefresh(this.state.page) }}
             keyExtractor={(item, index) => index}
-            renderItem={({ item,index }) =>
-              <FlatItem navigation={this.props.navigation} item={item}/>}
+            renderItem={({ item, index }) =>
+              <FlatItem navigation={this.props.navigation} item={item} />}
           /></View>
         :
         <ScrollView
@@ -124,7 +104,7 @@ class Home extends Component {
 
 function mapStateToProps(state) {
   return {
-    listPopular: state.movies,
+    listMovies: state.movies,
   }
 }
 

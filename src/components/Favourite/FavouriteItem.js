@@ -23,28 +23,6 @@ const uri = "https://image.tmdb.org/t/p/w185";
 import { AlertRemoveFavourite } from './../../actions/model';
 
 class FlatItem extends Component {
-
-  // AlertRemoveFavourite = (item) => {
-  //   Alert.alert(
-  //     'Warning',
-  //     'Are you sure you want to unfavorite this item?',
-  //     [
-  //       {
-  //         text: 'Cancel', onPress: () => console.log('Cancel')
-  //         , style: 'cancel'
-  //       },
-  //       {
-  //         text: 'OK', onPress: () => {
-  //           deleteFavourite(item.id).then().catch(error => {
-  //             alert(`Failed to delete Favourite with id = ${id}, error=${error}`);
-  //           })
-  //           // this.props.addFavourite(item);
-  //         }
-  //       },
-  //     ],
-  //     { cancelable: false }
-  //   )
-  // }
   render() {
     const { item } = this.props;
     return (
