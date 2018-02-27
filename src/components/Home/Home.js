@@ -82,7 +82,7 @@ class Home extends Component {
           }
         >
           <View style={styles.wrapperItems}>
-            {this.props.listPopular.map(e => (
+            {this.props.listMovies.map(e => (
               <TouchableOpacity key={e.id}
                 style={styles.wrapperItem}
                 onPress={() => this.props.navigation.navigate('DetailMovie', { item: e })}
